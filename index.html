@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0f19">
+    <title>MY AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+<div class="app">
+
+    <header class="header">
+        <div class="brand">
+            <div class="logo">✦</div>
+            <div>
+                <h1>MY AI</h1>
+                <div class="online"><span></span> Online</div>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="icon-btn" id="themeButton" title="Change theme">☼</button>
+            <button class="new-chat" id="newChat">＋ New chat</button>
+        </div>
+    </header>
+
+    <main class="chat-area" id="chatArea">
+        <section class="welcome" id="welcome">
+            <div class="welcome-icon">✦</div>
+            <h2>How can I help you?</h2>
+            <p>Ask me anything. I'm here to help with explanations, ideas, coding and more.</p>
+
+            <div class="suggestions">
+                <button data-prompt="Explain Python in simple words">Explain Python simply</button>
+                <button data-prompt="Help me write a professional email">Write an email</button>
+                <button data-prompt="Give me a study plan for today">Make a study plan</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="input-wrapper">
+            <button class="plus-btn" title="More options">＋</button>
+            <input
+                type="text"
+                id="messageInput"
+                placeholder="Message Hani AI..."
+                autocomplete="off"
+                maxlength="8000"
+            >
+            <button id="sendButton" class="send-button" title="Send">↑</button>
+        </div>
+
+        <div class="footer-row">
+            <span>Hani AI can make mistakes. Check important information.</span>
+            <button class="stop-button" id="stopVoice">🔇 Stop voice</button>
+        </div>
+    </footer>
+</div>
+
+<script>
+const input = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+const chatArea = document.getElementById("chatArea");
+const newChatButton = document.getElementById("newChat");
+const stopVoiceButton = document.getElementById("stopVoice");
+const themeButton = document.getElementById("themeButton");
+
+let history = [];
+let busy = false;
+
+function scrollBottom() {
+    chatArea.scrollTo({ top: chatArea.scrollHeight, behavior: "smooth" });
+}
+
+function removeWelcome() {
+    const welcome = document.getElementById("welcome");
+    if (welcome) welcome.remove();
+}
+
+function addMessage(sender, message) {
+    const row = document.createElement("div");
+    row.className = `message-row ${sender === "You" ? "user-row" : "ai-row"}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = `avatar ${sender === "You" ? "user-avatar" : "ai-avatar"}`;
+    avatar.textContent = sender === "You" ? "You" : "✦";
+
+    const body = document.createElement("div");
+    body.className = "message-body";
+
+    const name = document.createElement("div");
+    name.className = "sender-name";
+    name.textContent = sender === "You" ? "You" : "Hani AI";
+
+    const text = document.createElement("div");
+    text.className = "message-text";
+    text.textContent = message;
+
+    body.appendChild(name);
+    body.appendChild(text);
+
+    if (sender !== "You") {
+        const actions = document.createElement("div");
+        actions.className = "message-actions";
+
+        const copy = document.createElement("button");
+        copy.textContent = "Copy";
+        copy.onclick = async () => {
+            try {
+                await navigator.clipboard.writeText(message);
+                copy.textContent = "Copied ✓";
+                setTimeout(() => copy.textContent = "Copy", 1200);
+            } catch {
+                copy.textContent = "Copy failed";
+                setTimeout(() => copy.textContent = "Copy", 1200);
+            }
+        };
+
+        const speakBtn = document.createElement("button");
+        speakBtn.textContent = "🔊 Read";
+        speakBtn.onclick = () => speak(message);
+
+        actions.append(copy, speakBtn);
+        body.appendChild(actions);
+    }
+
+    row.append(avatar, body);
+    chatArea.appendChild(row);
+    scrollBottom();
+}
+
+function showTyping() {
+    const row = document.createElement("div");
+    row.id = "typing";
+    row.className = "message-row ai-row";
+
+    row.innerHTML = `
+        <div class="avatar ai-avatar">✦</div>
+        <div class="typing-bubble">
+            <span></span><span></span><span></span>
+        </div>
+    `;
+
+    chatArea.appendChild(row);
+    scrollBottom();
+}
+
+function removeTyping() {
+    document.getElementById("typing")?.remove();
+}
+
+async function sendMessage() {
+    const message = input.value.trim();
+    if (!message || busy) return;
+
+    removeWelcome();
+    addMessage("You", message);
+    input.value = "";
+    busy = true;
+    sendButton.disabled = true;
+    sendButton.innerHTML = "…";
+    showTyping();
+
+    try {
+        const response = await fetch("/chat", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                message: message,
+                history: history
+            })
+        });
+
+        const data = await response.json();
+        removeTyping();
+
+        if (!response.ok) {
+            throw new Error(data.reply || "Server error");
+        }
+
+        const reply = data.reply || "I couldn't generate a response.";
+        addMessage("AI", reply);
+
+        history.push({role: "user", content: message});
+        history.push({role: "assistant", content: reply});
+
+        speak(reply);
+    } catch (error) {
+        removeTyping();
+        addMessage("AI", "⚠️ I couldn't connect to the server. Please try again.");
+        console.error(error);
+    } finally {
+        busy = false;
+        sendButton.disabled = false;
+        sendButton.innerHTML = "↑";
+        input.focus();
+    }
+}
+
+function clearChat() {
+    if (busy) return;
+
+    window.speechSynthesis?.cancel();
+    history = [];
+
+    chatArea.innerHTML = `
+        <section class="welcome" id="welcome">
+            <div class="welcome-icon">✦</div>
+            <h2>How can I help you?</h2>
+            <p>Ask me anything. I'm here to help with explanations, ideas, coding and more.</p>
+            <div class="suggestions">
+                <button data-prompt="Explain Python in simple words">Explain Python simply</button>
+                <button data-prompt="Help me write a professional email">Write an email</button>
+                <button data-prompt="Give me a study plan for today">Make a study plan</button>
+            </div>
+        </section>
+    `;
+
+    attachSuggestions();
+    input.focus();
+}
+
+function speak(text) {
+    if (!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.rate = 1;
+    speech.volume = 1;
+    speechSynthesis.speak(speech);
+}
+
+function attachSuggestions() {
+    document.querySelectorAll("[data-prompt]").forEach(button => {
+        button.onclick = () => {
+            input.value = button.dataset.prompt;
+            sendMessage();
+        };
+    });
+}
+
+newChatButton.addEventListener("click", clearChat);
+stopVoiceButton.addEventListener("click", () => speechSynthesis?.cancel());
+
+input.addEventListener("keydown", event => {
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+    }
+});
+
+sendButton.addEventListener("click", sendMessage);
+
+themeButton.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+    themeButton.textContent = document.body.classList.contains("light") ? "☾" : "☼";
+});
+
+attachSuggestions();
+input.focus();
+</script>
+</body>
+</html>
