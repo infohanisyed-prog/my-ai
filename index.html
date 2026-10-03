@@ -1,21 +1,19 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+```
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>My AI</title>
+<title>Hani AI</title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+```
 
 </head>
 
@@ -23,276 +21,254 @@
 
 <div class="app">
 
-    <!-- ============================================= -->
-    <!-- SIDEBAR -->
-    <!-- ============================================= -->
+```
+<!-- ================= SIDEBAR ================= -->
 
-    <aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
 
-        <div class="sidebar-header">
+    <div class="sidebar-header">
 
-            <div class="brand">
-                <span class="brand-icon">✦</span>
-                <span>My AI</span>
-            </div>
-
-            <button
-                class="close-sidebar"
-                onclick="toggleSidebar()"
-            >
-                ×
-            </button>
-
+        <div class="brand">
+            <span class="brand-icon">✦</span>
+            <span>Hani AI</span>
         </div>
 
-
-        <button
-            class="new-chat-button"
-            onclick="createNewChat()"
-        >
-            <span>＋</span>
-            <span>New Chat</span>
+        <button class="close-sidebar"
+                onclick="toggleSidebar()"
+                aria-label="Close sidebar">
+            ×
         </button>
 
+    </div>
 
-        <div class="history-title">
-            Chat History
-        </div>
+    <button class="new-chat-button"
+            onclick="createNewChat()">
+
+        <span class="new-chat-icon">＋</span>
+        <span>New Chat</span>
+
+    </button>
+
+    <div class="history-title">
+        Chat History
+    </div>
+
+    <div class="chat-list" id="chatList"></div>
+
+    <div class="sidebar-bottom">
+
+        <button class="clear-history"
+                onclick="clearAllHistory()">
+
+            <span>🗑️</span>
+            <span>Clear History</span>
+
+        </button>
+
+    </div>
+
+</aside>
 
 
-        <div
-            class="chat-list"
-            id="chatList"
-        >
-        </div>
+<!-- ================= MAIN ================= -->
 
+<main class="main">
 
-        <div class="sidebar-bottom">
+    <!-- TOP BAR -->
 
-            <button
-                class="clear-history"
-                onclick="clearAllHistory()"
-            >
-                🗑️
-                <span>Clear History</span>
-            </button>
+    <header class="topbar">
 
-        </div>
-
-    </aside>
-
-
-    <!-- ============================================= -->
-    <!-- MAIN AREA -->
-    <!-- ============================================= -->
-
-    <main class="main">
-
-        <!-- TOP BAR -->
-
-        <header class="topbar">
-
-            <button
-                class="menu-button"
+        <button class="menu-button"
                 onclick="toggleSidebar()"
-            >
-                ☰
-            </button>
+                aria-label="Open sidebar">
+            ☰
+        </button>
 
+        <div class="topbar-title">
 
-            <div class="topbar-title">
-
-                <div class="topbar-logo">
-                    ✦
-                </div>
-
-                <div>
-
-                    <strong>
-                        My AI
-                    </strong>
-
-                    <span>
-                        AI Assistant
-                    </span>
-
-                </div>
-
+            <div class="topbar-logo">
+                ✦
             </div>
 
+            <div>
+                <strong>Hani AI</strong>
+                <span>AI Assistant</span>
+            </div>
 
-            <button
-                class="theme-button"
+        </div>
+
+        <button class="theme-button"
+                id="themeButton"
                 onclick="toggleTheme()"
                 title="Toggle theme"
-            >
-                ◐
-            </button>
+                aria-label="Toggle theme">
+            ☾
+        </button>
 
-        </header>
-
-
-        <!-- ========================================= -->
-        <!-- CHAT -->
-        <!-- ========================================= -->
-
-        <section
-            class="chat-area"
-            id="chatArea"
-        >
-
-            <div
-                class="welcome"
-                id="welcome"
-            >
-
-                <div class="welcome-icon">
-                    ✦
-                </div>
-
-                <h1>
-                    How can I help you?
-                </h1>
-
-                <p>
-                    Ask me anything. I can understand
-                    multiple languages and remember
-                    your conversation.
-                </p>
+    </header>
 
 
-                <div class="suggestions">
+    <!-- ================= CHAT ================= -->
 
-                    <button
-                        onclick="useSuggestion('Explain Python in simple words')"
-                    >
-                        💻 Explain Python
-                    </button>
+    <section class="chat-area" id="chatArea">
 
-                    <button
-                        onclick="useSuggestion('Teach me computer networking')"
-                    >
-                        🌐 Learn Networking
-                    </button>
+        <div class="welcome" id="welcome">
 
-                    <button
-                        onclick="useSuggestion('Explain this in Roman Urdu')"
-                    >
-                        🇵🇰 Roman Urdu
-                    </button>
-
-                    <button
-                        onclick="useSuggestion('Help me with my project')"
-                    >
-                        ✨ Project Help
-                    </button>
-
-                </div>
-
+            <div class="welcome-icon">
+                ✦
             </div>
 
-        </section>
+            <div class="welcome-badge">
+                <span></span>
+                Hani AI is ready
+            </div>
 
+            <h1>
+                How can I help you?
+            </h1>
 
-        <!-- ========================================= -->
-        <!-- INPUT -->
-        <!-- ========================================= -->
+            <p>
+                Ask me anything. I can understand
+                English, Urdu, Roman Urdu and many
+                other languages.
+            </p>
 
-        <div class="input-section">
+            <div class="suggestions">
 
-            <div class="input-box">
+                <button onclick="useSuggestion('Explain Python in simple words')">
+                    <span class="suggestion-icon">💻</span>
+                    <span>
+                        <strong>Explain Python</strong>
+                        <small>Learn programming easily</small>
+                    </span>
+                </button>
 
-             <button
-    id="micButton"
-    class="mic-button"
-    type="button"
-    onclick="toggleVoiceInput()"
-    aria-label="Voice input"
-    title="Voice input"
->
-    <svg
-        class="mic-svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <rect
-            x="9"
-            y="3"
-            width="6"
-            height="11"
-            rx="3"
-            class="mic-stroke"
-        />
+                <button onclick="useSuggestion('Teach me computer networking')">
+                    <span class="suggestion-icon">🌐</span>
+                    <span>
+                        <strong>Learn Networking</strong>
+                        <small>Understand networks step by step</small>
+                    </span>
+                </button>
 
-        <path
-            d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
-            class="mic-stroke"
-        />
+                <button onclick="useSuggestion('Mujhe ye topic Roman Urdu mein samjhao')">
+                    <span class="suggestion-icon">🇵🇰</span>
+                    <span>
+                        <strong>Roman Urdu</strong>
+                        <small>Easy explanation in Roman Urdu</small>
+                    </span>
+                </button>
 
-        <path
-            d="M12 18V21"
-            class="mic-stroke"
-        />
-
-        <path
-            d="M8.5 21H15.5"
-            class="mic-stroke"
-        />
-    </svg>
-
-    <span class="mic-pulse"></span>
-</button>
-
-
-                <textarea
-                    id="messageInput"
-                    placeholder="Message Hani AI..."
-                    rows="1"
-                    autocomplete="off"
-                ></textarea>
-
-
-                <button
-                    class="send-button"
-                    id="sendButton"
-                    onclick="sendMessage()"
-                    title="Send"
-                >
-                    ↑
+                <button onclick="useSuggestion('Help me with my project')">
+                    <span class="suggestion-icon">✨</span>
+                    <span>
+                        <strong>Project Help</strong>
+                        <small>Build and improve your project</small>
+                    </span>
                 </button>
 
             </div>
 
+        </div>
 
-            <div class="input-hint">
+    </section>
 
-                My AI can make mistakes.
-                Check important information.
 
-            </div>
+    <!-- ================= INPUT ================= -->
+
+    <div class="input-section">
+
+        <div class="input-box">
+
+            <!-- MICROPHONE -->
+
+            <button id="micButton"
+                    class="mic-button"
+                    type="button"
+                    onclick="toggleVoiceInput()"
+                    aria-label="Voice input"
+                    title="Voice input">
+
+                <svg class="mic-svg"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+
+                    <rect x="9"
+                          y="3"
+                          width="6"
+                          height="11"
+                          rx="3"
+                          class="mic-stroke"/>
+
+                    <path d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
+                          class="mic-stroke"/>
+
+                    <path d="M12 18V21"
+                          class="mic-stroke"/>
+
+                    <path d="M8.5 21H15.5"
+                          class="mic-stroke"/>
+
+                </svg>
+
+                <span class="mic-pulse"></span>
+
+            </button>
+
+
+            <!-- TEXT INPUT -->
+
+            <textarea
+                id="messageInput"
+                placeholder="Message Hani AI..."
+                rows="1"
+                autocomplete="off"
+                aria-label="Message"
+            ></textarea>
+
+
+            <!-- SEND -->
+
+            <button class="send-button"
+                    id="sendButton"
+                    onclick="sendMessage()"
+                    title="Send message"
+                    aria-label="Send message">
+
+                <span>↑</span>
+
+            </button>
 
         </div>
 
-    </main>
+        <div class="input-hint">
+            Hani AI can make mistakes. Check important information.
+        </div>
+
+    </div>
+
+</main>
+```
 
 </div>
 
-
-<!-- ============================================= -->
-<!-- JAVASCRIPT -->
-<!-- ============================================= -->
-
 <script>
+
+/* ============================================================
+   STATE
+============================================================ */
 
 let currentChatId = null;
 let isLoading = false;
 let recognition = null;
+let isRecording = false;
+let availableVoices = [];
 
 
-/* ==================================================
+/* ============================================================
    ELEMENTS
-================================================== */
+============================================================ */
 
 const chatArea =
     document.getElementById("chatArea");
@@ -306,34 +282,90 @@ const input =
 const sendButton =
     document.getElementById("sendButton");
 
-const voiceButton =
-    document.getElementById("voiceButton");
+const micButton =
+    document.getElementById("micButton");
 
 const sidebar =
     document.getElementById("sidebar");
 
+const themeButton =
+    document.getElementById("themeButton");
 
-/* ==================================================
+
+/* ============================================================
    INITIALIZE
-================================================== */
+============================================================ */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async function () {
+document.addEventListener("DOMContentLoaded", async () => {
 
-        await loadChatHistory();
+    loadTheme();
 
-        setupVoiceRecognition();
+    loadSpeechVoices();
 
-        autoResize();
+    setupVoiceRecognition();
+
+    await loadChatHistory();
+
+    autoResize();
+
+    input.focus();
+
+});
+
+
+/* ============================================================
+   THEME
+============================================================ */
+
+function toggleTheme() {
+
+    document.body.classList.toggle("dark-mode");
+
+    const dark =
+        document.body.classList.contains("dark-mode");
+
+    localStorage.setItem(
+        "hani-theme",
+        dark ? "dark" : "light"
+    );
+
+    updateThemeIcon();
+
+}
+
+
+function loadTheme() {
+
+    const theme =
+        localStorage.getItem("hani-theme");
+
+    if (theme === "dark") {
+
+        document.body.classList.add("dark-mode");
 
     }
-);
+
+    updateThemeIcon();
+
+}
 
 
-/* ==================================================
+function updateThemeIcon() {
+
+    if (!themeButton) return;
+
+    const dark =
+        document.body.classList.contains("dark-mode");
+
+    themeButton.textContent =
+        dark ? "☀" : "☾";
+
+}
+
+
+/* ============================================================
    SIDEBAR
-================================================== */
+============================================================ */
 
 function toggleSidebar() {
 
@@ -342,9 +374,9 @@ function toggleSidebar() {
 }
 
 
-/* ==================================================
-   LOAD CHAT HISTORY
-================================================== */
+/* ============================================================
+   CHAT HISTORY
+============================================================ */
 
 async function loadChatHistory() {
 
@@ -356,17 +388,16 @@ async function loadChatHistory() {
         const data =
             await response.json();
 
-        if (!data.success) {
-            return;
-        }
+        if (!data.success) return;
 
         renderChatList(data.chats);
 
-        if (data.chats.length > 0) {
+        if (
+            data.chats.length > 0 &&
+            !currentChatId
+        ) {
 
-            await openChat(
-                data.chats[0].id
-            );
+            await openChat(data.chats[0].id);
 
         }
 
@@ -382,18 +413,15 @@ async function loadChatHistory() {
 }
 
 
-/* ==================================================
-   RENDER CHAT LIST
-================================================== */
-
 function renderChatList(chats) {
 
     chatList.innerHTML = "";
 
-    if (!chats.length) {
+    if (!chats || !chats.length) {
 
         chatList.innerHTML = `
             <div class="empty-history">
+                <div class="empty-history-icon">💬</div>
                 No previous chats
             </div>
         `;
@@ -410,7 +438,6 @@ function renderChatList(chats) {
         item.className =
             "chat-history-item";
 
-
         if (chat.id === currentChatId) {
 
             item.classList.add("active");
@@ -422,30 +449,27 @@ function renderChatList(chats) {
 
             <button
                 class="chat-history-main"
-                onclick="openChat('${chat.id}')"
-            >
+                onclick="openChat('${escapeAttribute(chat.id)}')">
 
                 <span class="chat-history-icon">
                     💬
                 </span>
 
                 <span class="chat-history-title">
-                    ${escapeHtml(chat.title)}
+                    ${escapeHtml(chat.title || "New Chat")}
                 </span>
 
             </button>
 
-
             <button
                 class="delete-chat"
-                onclick="deleteChat(event, '${chat.id}')"
-                title="Delete chat"
-            >
+                onclick="deleteChat(event, '${escapeAttribute(chat.id)}')"
+                title="Delete chat">
+
                 ⋮
+
             </button>
-
         `;
-
 
         chatList.appendChild(item);
 
@@ -454,9 +478,9 @@ function renderChatList(chats) {
 }
 
 
-/* ==================================================
-   CREATE NEW CHAT
-================================================== */
+/* ============================================================
+   CREATE CHAT
+============================================================ */
 
 async function createNewChat() {
 
@@ -473,53 +497,40 @@ async function createNewChat() {
         const data =
             await response.json();
 
-
         if (!data.success) {
 
-            alert(
-                "Could not create a new chat."
-            );
+            alert("Could not create a new chat.");
 
             return;
 
         }
 
-
         currentChatId =
             data.chat.id;
 
-
         clearChatUI();
-
 
         await loadChatHistory();
 
-
-        if (
-            window.innerWidth < 800
-        ) {
-
-            sidebar.classList.remove(
-                "open"
-            );
-
-        }
+        closeMobileSidebar();
 
         input.focus();
 
-
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Create chat error:",
+            error
+        );
 
     }
 
 }
 
 
-/* ==================================================
+/* ============================================================
    OPEN CHAT
-================================================== */
+============================================================ */
 
 async function openChat(chatId) {
 
@@ -527,47 +538,29 @@ async function openChat(chatId) {
 
         const response =
             await fetch(
-                `/api/chats/${chatId}`
+                `/api/chats/${encodeURIComponent(chatId)}`
             );
 
         const data =
             await response.json();
 
-
-        if (!data.success) {
-
-            return;
-
-        }
-
+        if (!data.success) return;
 
         currentChatId =
             chatId;
 
-
         renderMessages(
-            data.chat.messages
+            data.chat.messages || []
         );
 
+        const chats =
+            await getChatList();
 
-        renderChatList(
-            await getChatList()
-        );
+        renderChatList(chats);
 
-
-        if (
-            window.innerWidth < 800
-        ) {
-
-            sidebar.classList.remove(
-                "open"
-            );
-
-        }
-
+        closeMobileSidebar();
 
         input.focus();
-
 
     } catch (error) {
 
@@ -581,18 +574,12 @@ async function openChat(chatId) {
 }
 
 
-/* ==================================================
-   GET CHAT LIST
-================================================== */
-
 async function getChatList() {
 
     try {
 
         const response =
-            await fetch(
-                "/api/chats"
-            );
+            await fetch("/api/chats");
 
         const data =
             await response.json();
@@ -608,14 +595,13 @@ async function getChatList() {
 }
 
 
-/* ==================================================
+/* ============================================================
    RENDER MESSAGES
-================================================== */
+============================================================ */
 
 function renderMessages(messages) {
 
     chatArea.innerHTML = "";
-
 
     if (!messages.length) {
 
@@ -624,7 +610,6 @@ function renderMessages(messages) {
         return;
 
     }
-
 
     messages.forEach(message => {
 
@@ -638,24 +623,28 @@ function renderMessages(messages) {
 
     });
 
-
     scrollToBottom();
 
 }
 
 
-/* ==================================================
+/* ============================================================
    WELCOME
-================================================== */
+============================================================ */
 
 function showWelcome() {
 
     chatArea.innerHTML = `
 
-        <div class="welcome">
+        <div class="welcome" id="welcome">
 
             <div class="welcome-icon">
                 ✦
+            </div>
+
+            <div class="welcome-badge">
+                <span></span>
+                Hani AI is ready
             </div>
 
             <h1>
@@ -664,72 +653,76 @@ function showWelcome() {
 
             <p>
                 Ask me anything. I can understand
-                multiple languages and remember
-                your conversation.
+                English, Urdu, Roman Urdu and many
+                other languages.
             </p>
-
 
             <div class="suggestions">
 
-                <button
-                    onclick="useSuggestion('Explain Python in simple words')"
-                >
-                    💻 Explain Python
+                <button onclick="useSuggestion('Explain Python in simple words')">
+                    <span class="suggestion-icon">💻</span>
+                    <span>
+                        <strong>Explain Python</strong>
+                        <small>Learn programming easily</small>
+                    </span>
                 </button>
 
-                <button
-                    onclick="useSuggestion('Teach me computer networking')"
-                >
-                    🌐 Learn Networking
+                <button onclick="useSuggestion('Teach me computer networking')">
+                    <span class="suggestion-icon">🌐</span>
+                    <span>
+                        <strong>Learn Networking</strong>
+                        <small>Understand networks step by step</small>
+                    </span>
                 </button>
 
-                <button
-                    onclick="useSuggestion('Explain this in Roman Urdu')"
-                >
-                    🇵🇰 Roman Urdu
+                <button onclick="useSuggestion('Mujhe ye topic Roman Urdu mein samjhao')">
+                    <span class="suggestion-icon">🇵🇰</span>
+                    <span>
+                        <strong>Roman Urdu</strong>
+                        <small>Easy explanation in Roman Urdu</small>
+                    </span>
                 </button>
 
-                <button
-                    onclick="useSuggestion('Help me with my project')"
-                >
-                    ✨ Project Help
+                <button onclick="useSuggestion('Help me with my project')">
+                    <span class="suggestion-icon">✨</span>
+                    <span>
+                        <strong>Project Help</strong>
+                        <small>Build and improve your project</small>
+                    </span>
                 </button>
 
             </div>
 
         </div>
-
     `;
 
 }
 
 
-/* ==================================================
+/* ============================================================
    ADD MESSAGE
-================================================== */
+============================================================ */
 
 function addMessage(
     sender,
     message,
-    scroll = true
+    shouldScroll = true
 ) {
 
-    const messageWrapper =
+    const wrapper =
         document.createElement("div");
 
-    messageWrapper.className =
+    wrapper.className =
         sender === "You"
             ? "message user-message"
             : "message ai-message";
-
 
     const avatar =
         sender === "You"
             ? "👤"
             : "✦";
 
-
-    messageWrapper.innerHTML = `
+    wrapper.innerHTML = `
 
         <div class="message-avatar">
             ${avatar}
@@ -746,16 +739,11 @@ function addMessage(
             </div>
 
         </div>
-
     `;
 
+    chatArea.appendChild(wrapper);
 
-    chatArea.appendChild(
-        messageWrapper
-    );
-
-
-    if (scroll) {
+    if (shouldScroll) {
 
         scrollToBottom();
 
@@ -764,669 +752,76 @@ function addMessage(
 }
 
 
-/* ==================================================
+/* ============================================================
    FORMAT MESSAGE
-================================================== */
+============================================================ */
 
 function formatMessage(text) {
 
     const escaped =
-        escapeHtml(text);
-
+        escapeHtml(text || "");
 
     return escaped
+
         .replace(
             /```([\s\S]*?)```/g,
             "<pre><code>$1</code></pre>"
-        )
-        .replace(
-            /\n/g,
-            "<br>"
-        );
+
+```
+    )
+
+    .replace(
+        /\n/g,
+        "<br>"
+    );
+```
 
 }
 
-
-/* ==================================================
-   ESCAPE HTML
-================================================== */
+/* ============================================================
+HTML ESCAPE
+============================================================ */
 
 function escapeHtml(text) {
 
-    const div =
-        document.createElement("div");
+```
+const div =
+    document.createElement("div");
 
-    div.textContent =
-        text;
+div.textContent =
+    String(text);
 
-    return div.innerHTML;
+return div.innerHTML;
+```
 
 }
 
+function escapeAttribute(text) {
 
-/* ==================================================
-   SEND MESSAGE
-================================================== */
+```
+return String(text)
+    .replace(/\\/g, "\\\\")
+    .replace(/'/g, "\\'");
+```
+
+}
+
+/* ============================================================
+SEND MESSAGE
+============================================================ */
 
 async function sendMessage() {
 
-    if (isLoading) {
-        return;
-    }
+```
+if (isLoading) return;
 
+const message =
+    input.value.trim();
 
-    const message =
-        input.value.trim();
+if (!message) return;
 
 
-    if (!message) {
-        return;
-    }
-
-
-    if (!currentChatId) {
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/chats",
-                    {
-                        method: "POST"
-                    }
-                );
-
-            const data =
-                await response.json();
-
-
-            if (!data.success) {
-                return;
-            }
-
-            currentChatId =
-                data.chat.id;
-
-        } catch {
-
-            return;
-
-        }
-
-    }
-
-
-    const welcome =
-        document.querySelector(
-            ".welcome"
-        );
-
-
-    if (welcome) {
-        welcome.remove();
-    }
-
-
-    addMessage(
-        "You",
-        message
-    );
-
-
-    input.value = "";
-
-    autoResize();
-
-
-    isLoading = true;
-
-    sendButton.disabled = true;
-
-    voiceButton.disabled = true;
-
-
-    showTyping();
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/chat",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        message: message,
-                        chat_id:
-                            currentChatId
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        removeTyping();
-
-
-        if (!response.ok) {
-
-            addMessage(
-                "AI",
-                data.reply ||
-                "Something went wrong."
-            );
-
-        } else {
-
-            addMessage(
-                "AI",
-                data.reply
-            );
-
-
-            if (data.chat_id) {
-
-                currentChatId =
-                    data.chat_id;
-
-            }
-
-
-            if (
-                "speechSynthesis"
-                in window
-            ) {
-
-                speak(
-                    data.reply
-                );
-
-            }
-
-
-            await loadChatHistory();
-
-        }
-
-
-    } catch (error) {
-
-        removeTyping();
-
-        addMessage(
-            "AI",
-            "⚠️ I couldn't connect to the server. Please try again."
-        );
-
-    }
-
-
-    isLoading = false;
-
-    sendButton.disabled = false;
-
-    voiceButton.disabled = false;
-
-    input.focus();
-
-}
-
-
-/* ==================================================
-   TYPING
-================================================== */
-
-function showTyping() {
-
-    const typing =
-        document.createElement("div");
-
-    typing.id =
-        "typingIndicator";
-
-    typing.className =
-        "message ai-message";
-
-
-    typing.innerHTML = `
-
-        <div class="message-avatar">
-            ✦
-        </div>
-
-        <div class="message-content">
-
-            <div class="message-name">
-                AI
-            </div>
-
-            <div class="typing">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    chatArea.appendChild(
-        typing
-    );
-
-
-    scrollToBottom();
-
-}
-
-
-function removeTyping() {
-
-    const typing =
-        document.getElementById(
-            "typingIndicator"
-        );
-
-    if (typing) {
-
-        typing.remove();
-
-    }
-
-}
-
-
-/* ==================================================
-   VOICE INPUT
-================================================== */
-
-function setupVoiceRecognition() {
-
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-
-    if (!SpeechRecognition) {
-
-        voiceButton.title =
-            "Voice input is not supported by this browser.";
-
-        voiceButton.style.opacity =
-            "0.5";
-
-        return;
-
-    }
-
-
-    recognition =
-        new SpeechRecognition();
-
-
-    recognition.continuous =
-        false;
-
-    recognition.interimResults =
-        true;
-
-    recognition.lang =
-        "en-US";
-
-
-    recognition.onstart =
-        function () {
-
-            voiceButton.classList.add(
-                "recording"
-            );
-
-            voiceButton.innerHTML =
-                "⏹";
-
-        };
-
-
-    recognition.onresult =
-        function (event) {
-
-            let transcript = "";
-
-
-            for (
-                let i =
-                    event.resultIndex;
-                i <
-                    event.results.length;
-                i++
-            ) {
-
-                transcript +=
-                    event.results[i][0].transcript;
-
-            }
-
-
-            input.value =
-                transcript;
-
-            autoResize();
-
-        };
-
-
-    recognition.onend =
-        function () {
-
-            voiceButton.classList.remove(
-                "recording"
-            );
-
-            voiceButton.innerHTML =
-                "🎤";
-
-        };
-
-
-    recognition.onerror =
-        function (event) {
-
-            console.error(
-                "Voice error:",
-                event.error
-            );
-
-            voiceButton.classList.remove(
-                "recording"
-            );
-
-            voiceButton.innerHTML =
-                "🎤";
-
-        };
-
-}
-
-
-/* ==================================================
-   START VOICE INPUT
-================================================== */
-
-function startVoiceInput() {
-
-    if (!recognition) {
-
-        alert(
-            "Voice input is not supported by this browser."
-        );
-
-        return;
-
-    }
-
-
-    if (
-        voiceButton.classList.contains(
-            "recording"
-        )
-    ) {
-
-        recognition.stop();
-
-        return;
-
-    }
-
-
-    recognition.lang =
-        detectSpeechLanguage();
-
-
-    recognition.start();
-
-}
-
-
-/* ==================================================
-   DETECT SPEECH LANGUAGE
-================================================== */
-
-function detectSpeechLanguage() {
-
-    const text =
-        input.value.trim();
-
-
-    if (!text) {
-
-        return "en-US";
-
-    }
-
-
-    // Urdu / Roman Urdu commonly typed words
-    const romanUrduWords = [
-        "kya",
-        "hai",
-        "hain",
-        "mujhe",
-        "aap",
-        "kaise",
-        "kyun",
-        "mera",
-        "meri",
-        "batao",
-        "samjhao",
-        "chahiye"
-    ];
-
-
-    const lower =
-        text.toLowerCase();
-
-
-    const isRomanUrdu =
-        romanUrduWords.some(
-            word =>
-                lower.includes(word)
-        );
-
-
-    if (isRomanUrdu) {
-
-        return "ur-PK";
-
-    }
-
-
-    // Urdu / Arabic script
-    if (
-        /[\u0600-\u06FF]/.test(text)
-    ) {
-
-        return "ur-PK";
-
-    }
-
-
-    return "en-US";
-
-}
-
-
-/* ==================================================
-   AI VOICE OUTPUT
-================================================== */
-
-function speak(text) {
-
-    if (
-        !("speechSynthesis" in window)
-    ) {
-
-        return;
-
-    }
-
-
-    window.speechSynthesis.cancel();
-
-
-    const utterance =
-        new SpeechSynthesisUtterance(
-            text
-        );
-
-
-    utterance.lang =
-        detectVoiceLanguage(text);
-
-
-    utterance.rate =
-        1;
-
-    utterance.pitch =
-        1;
-
-
-    window.speechSynthesis.speak(
-        utterance
-    );
-
-}
-
-
-/* ==================================================
-   DETECT OUTPUT VOICE
-================================================== */
-
-function detectVoiceLanguage(text) {
-
-    if (
-        /[\u0600-\u06FF]/.test(text)
-    ) {
-
-        return "ur-PK";
-
-    }
-
-
-    if (
-        /[\u0900-\u097F]/.test(text)
-    ) {
-
-        return "hi-IN";
-
-    }
-
-
-    if (
-        /[\u0600-\u06FF]/.test(text)
-    ) {
-
-        return "ar-SA";
-
-    }
-
-
-    return "en-US";
-
-}
-
-
-/* ==================================================
-   DELETE CHAT
-================================================== */
-
-async function deleteChat(
-    event,
-    chatId
-) {
-
-    event.stopPropagation();
-
-
-    const confirmed =
-        confirm(
-            "Delete this chat?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                `/api/chats/${chatId}`,
-                {
-                    method: "DELETE"
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-            return;
-        }
-
-
-        if (
-            currentChatId === chatId
-        ) {
-
-            currentChatId = null;
-
-            clearChatUI();
-
-        }
-
-
-        await loadChatHistory();
-
-    } catch (error) {
-
-        console.error(error);
-
-    }
-
-}
-
-
-/* ==================================================
-   CLEAR ALL HISTORY
-================================================== */
-
-async function clearAllHistory() {
-
-    const confirmed =
-        confirm(
-            "Delete all your chat history?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
+if (!currentChatId) {
 
     try {
 
@@ -1434,168 +829,921 @@ async function clearAllHistory() {
             await fetch(
                 "/api/chats",
                 {
-                    method: "DELETE"
+                    method: "POST"
                 }
             );
-
 
         const data =
             await response.json();
 
+        if (!data.success) return;
 
-        if (data.success) {
+        currentChatId =
+            data.chat.id;
 
-            currentChatId =
-                null;
+    } catch {
 
-            clearChatUI();
-
-            await loadChatHistory();
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
+        return;
 
     }
 
 }
 
 
-/* ==================================================
-   CLEAR CHAT UI
-================================================== */
+const welcome =
+    document.querySelector(".welcome");
 
-function clearChatUI() {
+if (welcome) {
 
-    showWelcome();
+    welcome.remove();
 
 }
 
 
-/* ==================================================
-   SUGGESTIONS
-================================================== */
+addMessage(
+    "You",
+    message
+);
 
-function useSuggestion(text) {
+input.value = "";
+
+autoResize();
+
+isLoading = true;
+
+sendButton.disabled = true;
+micButton.disabled = true;
+
+showTyping();
+
+
+try {
+
+    const response =
+        await fetch(
+            "/chat",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    message: message,
+                    chat_id:
+                        currentChatId
+                })
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+    removeTyping();
+
+
+    if (!response.ok) {
+
+        addMessage(
+            "AI",
+            data.reply ||
+            "Something went wrong."
+        );
+
+    } else {
+
+        addMessage(
+            "AI",
+            data.reply
+        );
+
+
+        if (data.chat_id) {
+
+            currentChatId =
+                data.chat_id;
+
+        }
+
+
+        if (
+            "speechSynthesis" in window &&
+            data.reply
+        ) {
+
+            speak(data.reply);
+
+        }
+
+
+        await loadChatHistory();
+
+    }
+
+} catch (error) {
+
+    console.error(error);
+
+    removeTyping();
+
+    addMessage(
+        "AI",
+        "⚠️ I couldn't connect to the server. Please try again."
+    );
+
+}
+
+
+isLoading = false;
+
+sendButton.disabled = false;
+micButton.disabled = false;
+
+input.focus();
+```
+
+}
+
+/* ============================================================
+TYPING
+============================================================ */
+
+function showTyping() {
+
+```
+const typing =
+    document.createElement("div");
+
+typing.id =
+    "typingIndicator";
+
+typing.className =
+    "message ai-message";
+
+typing.innerHTML = `
+
+    <div class="message-avatar">
+        ✦
+    </div>
+
+    <div class="message-content">
+
+        <div class="message-name">
+            AI
+        </div>
+
+        <div class="typing">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+`;
+
+chatArea.appendChild(typing);
+
+scrollToBottom();
+```
+
+}
+
+function removeTyping() {
+
+```
+const typing =
+    document.getElementById(
+        "typingIndicator"
+    );
+
+if (typing) {
+
+    typing.remove();
+
+}
+```
+
+}
+
+/* ============================================================
+VOICE RECOGNITION
+============================================================ */
+
+function setupVoiceRecognition() {
+
+```
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+if (!SpeechRecognition) {
+
+    micButton.disabled = true;
+
+    micButton.title =
+        "Voice input is not supported by this browser.";
+
+    micButton.style.opacity =
+        "0.45";
+
+    return;
+
+}
+
+
+recognition =
+    new SpeechRecognition();
+
+recognition.continuous = false;
+
+recognition.interimResults = true;
+
+recognition.maxAlternatives = 1;
+
+
+recognition.onstart = () => {
+
+    isRecording = true;
+
+    micButton.classList.add(
+        "recording"
+    );
+
+    micButton.setAttribute(
+        "aria-label",
+        "Stop recording"
+    );
+
+    micButton.title =
+        "Stop recording";
+
+};
+
+
+recognition.onresult = (event) => {
+
+    let transcript = "";
+
+    for (
+        let i = event.resultIndex;
+        i < event.results.length;
+        i++
+    ) {
+
+        transcript +=
+            event.results[i][0].transcript;
+
+    }
 
     input.value =
-        text;
+        transcript;
 
     autoResize();
 
-    input.focus();
+};
+
+
+recognition.onend = () => {
+
+    isRecording = false;
+
+    micButton.classList.remove(
+        "recording"
+    );
+
+    micButton.setAttribute(
+        "aria-label",
+        "Voice input"
+    );
+
+    micButton.title =
+        "Voice input";
+
+};
+
+
+recognition.onerror = (event) => {
+
+    console.error(
+        "Voice recognition error:",
+        event.error
+    );
+
+    isRecording = false;
+
+    micButton.classList.remove(
+        "recording"
+    );
+
+    if (event.error === "not-allowed") {
+
+        alert(
+            "Microphone permission allow karein taake voice input use ho sake."
+        );
+
+    }
+
+};
+```
+
+}
+
+/* ============================================================
+TOGGLE VOICE
+============================================================ */
+
+function toggleVoiceInput() {
+
+```
+if (!recognition) {
+
+    alert(
+        "Is browser mein voice input supported nahi hai."
+    );
+
+    return;
 
 }
 
 
-/* ==================================================
-   ENTER TO SEND
-================================================== */
+if (isRecording) {
 
-input.addEventListener(
-    "keydown",
-    function (event) {
+    recognition.stop();
 
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
+    return;
 
-            event.preventDefault();
+}
 
-            sendMessage();
 
-        }
+try {
+
+    recognition.lang =
+        detectSpeechLanguage();
+
+    recognition.start();
+
+} catch (error) {
+
+    console.error(
+        "Voice start error:",
+        error
+    );
+
+}
+```
+
+}
+
+/* ============================================================
+SPEECH INPUT LANGUAGE
+============================================================ */
+
+function detectSpeechLanguage() {
+
+```
+const text =
+    input.value.trim().toLowerCase();
+
+
+if (
+    /[\u0600-\u06FF]/.test(text)
+) {
+
+    return "ur-PK";
+
+}
+
+
+const romanUrduWords = [
+    "kya",
+    "hai",
+    "hain",
+    "mujhe",
+    "aap",
+    "kaise",
+    "kyun",
+    "mera",
+    "meri",
+    "mere",
+    "batao",
+    "samjhao",
+    "chahiye",
+    "mujhy",
+    "apko",
+    "aapko",
+    "karo",
+    "karna",
+    "krna",
+    "kyunke",
+    "acha",
+    "theek",
+    "nahi",
+    "nahin"
+];
+
+
+const isRomanUrdu =
+    romanUrduWords.some(
+        word =>
+            text.split(/\s+/).includes(word)
+    );
+
+
+if (isRomanUrdu) {
+
+    return "ur-PK";
+
+}
+
+
+return "en-US";
+```
+
+}
+
+/* ============================================================
+LOAD BROWSER VOICES
+============================================================ */
+
+function loadSpeechVoices() {
+
+```
+if (!("speechSynthesis" in window)) {
+    return;
+}
+
+
+availableVoices =
+    window.speechSynthesis.getVoices();
+
+
+if (
+    !availableVoices.length &&
+    "onvoiceschanged" in window.speechSynthesis
+) {
+
+    window.speechSynthesis.onvoiceschanged =
+        () => {
+
+            availableVoices =
+                window.speechSynthesis.getVoices();
+
+        };
+
+}
+```
+
+}
+
+/* ============================================================
+FIND BEST VOICE
+============================================================ */
+
+function getBestVoice(language) {
+
+```
+if (!availableVoices.length) {
+
+    availableVoices =
+        window.speechSynthesis.getVoices();
+
+}
+
+
+const target =
+    language.toLowerCase();
+
+
+let voice =
+    availableVoices.find(
+        v =>
+            v.lang &&
+            v.lang.toLowerCase() === target
+    );
+
+
+if (voice) return voice;
+
+
+if (target.startsWith("ur")) {
+
+    voice =
+        availableVoices.find(
+            v =>
+                /urdu/i.test(v.name) ||
+                /pakistan/i.test(v.name)
+        );
+
+    if (voice) return voice;
+
+}
+
+
+const prefix =
+    target.split("-")[0];
+
+
+voice =
+    availableVoices.find(
+        v =>
+            v.lang &&
+            v.lang
+                .toLowerCase()
+                .startsWith(prefix)
+    );
+
+
+return voice || null;
+```
+
+}
+
+/* ============================================================
+DETECT OUTPUT LANGUAGE
+============================================================ */
+
+function detectVoiceLanguage(text) {
+
+```
+if (!text) return "en-US";
+
+
+if (
+    /[\u0600-\u06FF]/.test(text)
+) {
+
+    return "ur-PK";
+
+}
+
+
+if (
+    /[\u0900-\u097F]/.test(text)
+) {
+
+    return "hi-IN";
+
+}
+
+
+return "en-US";
+```
+
+}
+
+/* ============================================================
+SPEAK AI RESPONSE
+============================================================ */
+
+function speak(text) {
+
+```
+if (
+    !("speechSynthesis" in window)
+) {
+
+    return;
+
+}
+
+
+window.speechSynthesis.cancel();
+
+
+const cleanText =
+    removeCodeForSpeech(text);
+
+
+if (!cleanText.trim()) return;
+
+
+const language =
+    detectVoiceLanguage(cleanText);
+
+
+const utterance =
+    new SpeechSynthesisUtterance(
+        cleanText
+    );
+
+
+const voice =
+    getBestVoice(language);
+
+
+if (voice) {
+
+    utterance.voice =
+        voice;
+
+    utterance.lang =
+        voice.lang;
+
+} else {
+
+    utterance.lang =
+        language;
+
+}
+
+
+utterance.rate =
+    language === "ur-PK"
+        ? 0.88
+        : 1;
+
+utterance.pitch =
+    1;
+
+utterance.volume =
+    1;
+
+
+window.speechSynthesis.speak(
+    utterance
+);
+```
+
+}
+
+/* ============================================================
+REMOVE CODE BEFORE SPEECH
+============================================================ */
+
+function removeCodeForSpeech(text) {
+
+````
+return String(text)
+    .replace(
+        /```[\s\S]*?```/g,
+        " Code example omitted. "
+    )
+    .replace(
+        /`([^`]+)`/g,
+        "$1"
+    )
+    .replace(
+        /https?:\/\/\S+/g,
+        " link "
+    );
+````
+
+}
+
+/* ============================================================
+DELETE CHAT
+============================================================ */
+
+async function deleteChat(
+event,
+chatId
+) {
+
+```
+event.stopPropagation();
+
+
+const confirmed =
+    confirm(
+        "Delete this chat?"
+    );
+
+
+if (!confirmed) return;
+
+
+try {
+
+    const response =
+        await fetch(
+            `/api/chats/${encodeURIComponent(chatId)}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+    const data =
+        await response.json();
+
+
+    if (!data.success) return;
+
+
+    if (
+        currentChatId === chatId
+    ) {
+
+        currentChatId = null;
+
+        clearChatUI();
 
     }
-);
 
 
-/* ==================================================
-   AUTO RESIZE TEXTAREA
-================================================== */
+    await loadChatHistory();
+
+} catch (error) {
+
+    console.error(
+        "Delete chat error:",
+        error
+    );
+
+}
+```
+
+}
+
+/* ============================================================
+CLEAR ALL
+============================================================ */
+
+async function clearAllHistory() {
+
+```
+const confirmed =
+    confirm(
+        "Delete all your chat history?"
+    );
+
+
+if (!confirmed) return;
+
+
+try {
+
+    const response =
+        await fetch(
+            "/api/chats",
+            {
+                method: "DELETE"
+            }
+        );
+
+    const data =
+        await response.json();
+
+
+    if (data.success) {
+
+        currentChatId = null;
+
+        clearChatUI();
+
+        await loadChatHistory();
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "Clear history error:",
+        error
+    );
+
+}
+```
+
+}
+
+/* ============================================================
+CLEAR UI
+============================================================ */
+
+function clearChatUI() {
+
+```
+showWelcome();
+```
+
+}
+
+/* ============================================================
+SUGGESTIONS
+============================================================ */
+
+function useSuggestion(text) {
+
+```
+input.value =
+    text;
+
+autoResize();
+
+input.focus();
+```
+
+}
+
+/* ============================================================
+ENTER TO SEND
+============================================================ */
 
 input.addEventListener(
-    "input",
-    autoResize
+"keydown",
+event => {
+
+```
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey
+    ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+    }
+
+}
+```
+
 );
 
+/* ============================================================
+AUTO RESIZE
+============================================================ */
+
+input.addEventListener(
+"input",
+autoResize
+);
 
 function autoResize() {
 
-    input.style.height =
-        "auto";
+```
+input.style.height =
+    "auto";
 
-    input.style.height =
-        Math.min(
-            input.scrollHeight,
-            150
-        ) + "px";
+input.style.height =
+    Math.min(
+        input.scrollHeight,
+        150
+    ) + "px";
+```
 
 }
 
-
-/* ==================================================
-   SCROLL
-================================================== */
+/* ============================================================
+SCROLL
+============================================================ */
 
 function scrollToBottom() {
 
-    chatArea.scrollTop =
-        chatArea.scrollHeight;
+```
+chatArea.scrollTop =
+    chatArea.scrollHeight;
+```
 
 }
 
+/* ============================================================
+MOBILE SIDEBAR
+============================================================ */
 
-/* ==================================================
-   THEME
-================================================== */
+function closeMobileSidebar() {
 
-function toggleTheme() {
+```
+if (
+    window.innerWidth <= 800
+) {
 
-    document.body.classList.toggle(
-        "dark-mode"
-    );
-
-
-    const dark =
-        document.body.classList.contains(
-            "dark-mode"
-        );
-
-
-    localStorage.setItem(
-        "hani-theme",
-        dark
-            ? "dark"
-            : "light"
+    sidebar.classList.remove(
+        "open"
     );
 
 }
+```
 
+}
 
-function loadTheme() {
+/* ============================================================
+STOP SPEECH WHEN LEAVING
+============================================================ */
 
-    const theme =
-        localStorage.getItem(
-            "hani-theme"
-        );
+window.addEventListener(
+"beforeunload",
+() => {
 
+```
+    if (
+        "speechSynthesis" in window
+    ) {
 
-    if (theme === "dark") {
-
-        document.body.classList.add(
-            "dark-mode"
-        );
+        window.speechSynthesis.cancel();
 
     }
 
 }
+```
 
-
-loadTheme();
+);
 
 </script>
 
