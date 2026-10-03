@@ -1,269 +1,347 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
 
-```
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Hani AI</title>
+    <title>Hani AI</title>
 
-<link rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}">
-```
-
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
 <div class="app">
 
-```
-<!-- ================= SIDEBAR ================= -->
+    <!-- ================= SIDEBAR ================= -->
 
-<aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar">
 
-    <div class="sidebar-header">
+        <div class="sidebar-header">
 
-        <div class="brand">
-            <span class="brand-icon">✦</span>
-            <span>Hani AI</span>
-        </div>
+            <div class="brand">
+                <span class="brand-icon">✦</span>
+                <span>Hani AI</span>
+            </div>
 
-        <button class="close-sidebar"
+            <button
+                class="close-sidebar"
                 onclick="toggleSidebar()"
                 aria-label="Close sidebar">
-            ×
-        </button>
+                ×
+            </button>
 
-    </div>
+        </div>
 
-    <button class="new-chat-button"
+
+        <button
+            class="new-chat-button"
             onclick="createNewChat()">
 
-        <span class="new-chat-icon">＋</span>
-        <span>New Chat</span>
+            <span class="new-chat-icon">＋</span>
+            <span>New Chat</span>
 
-    </button>
+        </button>
 
-    <div class="history-title">
-        Chat History
-    </div>
 
-    <div class="chat-list" id="chatList"></div>
+        <div class="history-title">
+            Chat History
+        </div>
 
-    <div class="sidebar-bottom">
 
-        <button class="clear-history"
+        <div class="chat-list" id="chatList"></div>
+
+
+        <div class="sidebar-bottom">
+
+            <button
+                class="clear-history"
                 onclick="clearAllHistory()">
 
-            <span>🗑️</span>
-            <span>Clear History</span>
+                <span>🗑️</span>
+                <span>Clear History</span>
 
-        </button>
+            </button>
 
-    </div>
+        </div>
 
-</aside>
+    </aside>
 
 
-<!-- ================= MAIN ================= -->
+    <!-- ================= MAIN ================= -->
 
-<main class="main">
+    <main class="main">
 
-    <!-- TOP BAR -->
+        <!-- TOP BAR -->
 
-    <header class="topbar">
+        <header class="topbar">
 
-        <button class="menu-button"
+            <button
+                class="menu-button"
                 onclick="toggleSidebar()"
                 aria-label="Open sidebar">
-            ☰
-        </button>
+                ☰
+            </button>
 
-        <div class="topbar-title">
 
-            <div class="topbar-logo">
-                ✦
+            <div class="topbar-title">
+
+                <div class="topbar-logo">
+                    ✦
+                </div>
+
+                <div>
+                    <strong>Hani AI</strong>
+                    <span>AI Assistant</span>
+                </div>
+
             </div>
 
-            <div>
-                <strong>Hani AI</strong>
-                <span>AI Assistant</span>
-            </div>
 
-        </div>
-
-        <button class="theme-button"
+            <button
+                class="theme-button"
                 id="themeButton"
                 onclick="toggleTheme()"
-                title="Toggle theme"
-                aria-label="Toggle theme">
-            ☾
-        </button>
+                title="Toggle theme">
 
-    </header>
+                ☀
+
+            </button>
+
+        </header>
 
 
-    <!-- ================= CHAT ================= -->
+        <!-- ================= CHAT AREA ================= -->
 
-    <section class="chat-area" id="chatArea">
+        <section
+            class="chat-area"
+            id="chatArea">
 
-        <div class="welcome" id="welcome">
+            <div
+                class="welcome"
+                id="welcome">
 
-            <div class="welcome-icon">
-                ✦
+                <div class="welcome-icon">
+                    ✦
+                </div>
+
+
+                <div class="welcome-badge">
+
+                    <span></span>
+
+                    Hani AI is ready
+
+                </div>
+
+
+                <h1>
+                    How can I help you?
+                </h1>
+
+
+                <p>
+                    Ask me anything. I can understand
+                    English, Urdu, Roman Urdu and many
+                    other languages.
+                </p>
+
+
+                <div class="suggestions">
+
+                    <button
+                        onclick="useSuggestion('Explain Python in simple words')">
+
+                        <span class="suggestion-icon">
+                            💻
+                        </span>
+
+                        <span>
+                            <strong>
+                                Explain Python
+                            </strong>
+
+                            <small>
+                                Learn programming easily
+                            </small>
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        onclick="useSuggestion('Teach me computer networking')">
+
+                        <span class="suggestion-icon">
+                            🌐
+                        </span>
+
+                        <span>
+                            <strong>
+                                Learn Networking
+                            </strong>
+
+                            <small>
+                                Understand networks step by step
+                            </small>
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        onclick="useSuggestion('Mujhe ye topic Roman Urdu mein samjhao')">
+
+                        <span class="suggestion-icon">
+                            🇵🇰
+                        </span>
+
+                        <span>
+                            <strong>
+                                Roman Urdu
+                            </strong>
+
+                            <small>
+                                Easy explanation in Roman Urdu
+                            </small>
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        onclick="useSuggestion('Help me with my project')">
+
+                        <span class="suggestion-icon">
+                            ✨
+                        </span>
+
+                        <span>
+                            <strong>
+                                Project Help
+                            </strong>
+
+                            <small>
+                                Build and improve your project
+                            </small>
+                        </span>
+
+                    </button>
+
+                </div>
+
             </div>
 
-            <div class="welcome-badge">
-                <span></span>
-                Hani AI is ready
-            </div>
-
-            <h1>
-                How can I help you?
-            </h1>
-
-            <p>
-                Ask me anything. I can understand
-                English, Urdu, Roman Urdu and many
-                other languages.
-            </p>
-
-            <div class="suggestions">
-
-                <button onclick="useSuggestion('Explain Python in simple words')">
-                    <span class="suggestion-icon">💻</span>
-                    <span>
-                        <strong>Explain Python</strong>
-                        <small>Learn programming easily</small>
-                    </span>
-                </button>
-
-                <button onclick="useSuggestion('Teach me computer networking')">
-                    <span class="suggestion-icon">🌐</span>
-                    <span>
-                        <strong>Learn Networking</strong>
-                        <small>Understand networks step by step</small>
-                    </span>
-                </button>
-
-                <button onclick="useSuggestion('Mujhe ye topic Roman Urdu mein samjhao')">
-                    <span class="suggestion-icon">🇵🇰</span>
-                    <span>
-                        <strong>Roman Urdu</strong>
-                        <small>Easy explanation in Roman Urdu</small>
-                    </span>
-                </button>
-
-                <button onclick="useSuggestion('Help me with my project')">
-                    <span class="suggestion-icon">✨</span>
-                    <span>
-                        <strong>Project Help</strong>
-                        <small>Build and improve your project</small>
-                    </span>
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
+        </section>
 
 
-    <!-- ================= INPUT ================= -->
+        <!-- ================= INPUT ================= -->
 
-    <div class="input-section">
+        <div class="input-section">
 
-        <div class="input-box">
+            <div class="input-box">
 
-            <!-- MICROPHONE -->
+                <!-- MICROPHONE -->
 
-            <button id="micButton"
+                <button
+                    id="micButton"
                     class="mic-button"
                     type="button"
                     onclick="toggleVoiceInput()"
                     aria-label="Voice input"
                     title="Voice input">
 
-                <svg class="mic-svg"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+                    <svg
+                        class="mic-svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
 
-                    <rect x="9"
-                          y="3"
-                          width="6"
-                          height="11"
-                          rx="3"
-                          class="mic-stroke"/>
+                        <rect
+                            x="9"
+                            y="3"
+                            width="6"
+                            height="11"
+                            rx="3"
+                            class="mic-stroke"/>
 
-                    <path d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
-                          class="mic-stroke"/>
+                        <path
+                            d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
+                            class="mic-stroke"/>
 
-                    <path d="M12 18V21"
-                          class="mic-stroke"/>
+                        <path
+                            d="M12 18V21"
+                            class="mic-stroke"/>
 
-                    <path d="M8.5 21H15.5"
-                          class="mic-stroke"/>
+                        <path
+                            d="M8.5 21H15.5"
+                            class="mic-stroke"/>
 
-                </svg>
+                    </svg>
 
-                <span class="mic-pulse"></span>
+                    <span class="mic-pulse"></span>
 
-            </button>
-
-
-            <!-- TEXT INPUT -->
-
-            <textarea
-                id="messageInput"
-                placeholder="Message Hani AI..."
-                rows="1"
-                autocomplete="off"
-                aria-label="Message"
-            ></textarea>
+                </button>
 
 
-            <!-- SEND -->
+                <!-- TEXT INPUT -->
 
-            <button class="send-button"
+                <textarea
+                    id="messageInput"
+                    placeholder="Message Hani AI..."
+                    rows="1"
+                    autocomplete="off"
+                    aria-label="Message">
+                </textarea>
+
+
+                <!-- SEND -->
+
+                <button
+                    class="send-button"
                     id="sendButton"
                     onclick="sendMessage()"
                     title="Send message"
                     aria-label="Send message">
 
-                <span>↑</span>
+                    ↑
 
-            </button>
+                </button>
+
+            </div>
+
+
+            <div class="input-hint">
+                Hani AI can make mistakes. Check important information.
+            </div>
 
         </div>
 
-        <div class="input-hint">
-            Hani AI can make mistakes. Check important information.
-        </div>
-
-    </div>
-
-</main>
-```
+    </main>
 
 </div>
+
 
 <script>
 
 /* ============================================================
-   STATE
+   GLOBAL VARIABLES
 ============================================================ */
 
 let currentChatId = null;
+
 let isLoading = false;
+
 let recognition = null;
+
 let isRecording = false;
+
 let availableVoices = [];
+
+let speechGeneration = 0;
 
 
 /* ============================================================
@@ -293,24 +371,27 @@ const themeButton =
 
 
 /* ============================================================
-   INITIALIZE
+   START
 ============================================================ */
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
-    loadTheme();
+        loadTheme();
 
-    loadSpeechVoices();
+        setupVoiceRecognition();
 
-    setupVoiceRecognition();
+        setupSpeechSynthesis();
 
-    await loadChatHistory();
+        await loadChatHistory();
 
-    autoResize();
+        autoResize();
 
-    input.focus();
+        input.focus();
 
-});
+    }
+);
 
 
 /* ============================================================
@@ -319,47 +400,58 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function toggleTheme() {
 
-    document.body.classList.toggle("dark-mode");
+    document.body.classList.toggle(
+        "dark-mode"
+    );
 
-    const dark =
-        document.body.classList.contains("dark-mode");
+    const isDark =
+        document.body.classList.contains(
+            "dark-mode"
+        );
 
     localStorage.setItem(
         "hani-theme",
-        dark ? "dark" : "light"
+        isDark ? "dark" : "light"
     );
 
     updateThemeIcon();
-
 }
 
 
 function loadTheme() {
 
-    const theme =
-        localStorage.getItem("hani-theme");
+    const savedTheme =
+        localStorage.getItem(
+            "hani-theme"
+        );
 
-    if (theme === "dark") {
 
-        document.body.classList.add("dark-mode");
+    /*
+       Dark blue is default.
+    */
+
+    if (savedTheme !== "light") {
+
+        document.body.classList.add(
+            "dark-mode"
+        );
 
     }
 
-    updateThemeIcon();
 
+    updateThemeIcon();
 }
 
 
 function updateThemeIcon() {
 
-    if (!themeButton) return;
-
-    const dark =
-        document.body.classList.contains("dark-mode");
+    const isDark =
+        document.body.classList.contains(
+            "dark-mode"
+        );
 
     themeButton.textContent =
-        dark ? "☀" : "☾";
-
+        isDark ? "☀" : "☾";
 }
 
 
@@ -369,7 +461,9 @@ function updateThemeIcon() {
 
 function toggleSidebar() {
 
-    sidebar.classList.toggle("open");
+    sidebar.classList.toggle(
+        "open"
+    );
 
 }
 
@@ -383,21 +477,32 @@ async function loadChatHistory() {
     try {
 
         const response =
-            await fetch("/api/chats");
+            await fetch(
+                "/api/chats"
+            );
 
         const data =
             await response.json();
 
-        if (!data.success) return;
 
-        renderChatList(data.chats);
+        if (!data.success) {
+            return;
+        }
+
+
+        renderChatList(
+            data.chats
+        );
+
 
         if (
             data.chats.length > 0 &&
             !currentChatId
         ) {
 
-            await openChat(data.chats[0].id);
+            await openChat(
+                data.chats[0].id
+            );
 
         }
 
@@ -413,16 +518,46 @@ async function loadChatHistory() {
 }
 
 
+async function getChatList() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chats"
+            );
+
+        const data =
+            await response.json();
+
+        return data.chats || [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
 function renderChatList(chats) {
 
     chatList.innerHTML = "";
 
+
     if (!chats || !chats.length) {
 
         chatList.innerHTML = `
+
             <div class="empty-history">
-                <div class="empty-history-icon">💬</div>
+
+                <div class="empty-history-icon">
+                    💬
+                </div>
+
                 No previous chats
+
             </div>
         `;
 
@@ -430,50 +565,67 @@ function renderChatList(chats) {
     }
 
 
-    chats.forEach(chat => {
+    chats.forEach(
+        function (chat) {
 
-        const item =
-            document.createElement("div");
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-        item.className =
-            "chat-history-item";
+            item.className =
+                "chat-history-item";
 
-        if (chat.id === currentChatId) {
 
-            item.classList.add("active");
+            if (
+                chat.id === currentChatId
+            ) {
+
+                item.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            item.innerHTML = `
+
+                <button
+                    class="chat-history-main"
+                    onclick="openChat('${escapeAttribute(chat.id)}')">
+
+                    <span class="chat-history-icon">
+                        💬
+                    </span>
+
+                    <span class="chat-history-title">
+                        ${escapeHtml(
+                            chat.title ||
+                            "New Chat"
+                        )}
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="delete-chat"
+                    onclick="deleteChat(event, '${escapeAttribute(chat.id)}')"
+                    title="Delete chat">
+
+                    ⋮
+
+                </button>
+
+            `;
+
+
+            chatList.appendChild(
+                item
+            );
 
         }
-
-
-        item.innerHTML = `
-
-            <button
-                class="chat-history-main"
-                onclick="openChat('${escapeAttribute(chat.id)}')">
-
-                <span class="chat-history-icon">
-                    💬
-                </span>
-
-                <span class="chat-history-title">
-                    ${escapeHtml(chat.title || "New Chat")}
-                </span>
-
-            </button>
-
-            <button
-                class="delete-chat"
-                onclick="deleteChat(event, '${escapeAttribute(chat.id)}')"
-                title="Delete chat">
-
-                ⋮
-
-            </button>
-        `;
-
-        chatList.appendChild(item);
-
-    });
+    );
 
 }
 
@@ -494,25 +646,34 @@ async function createNewChat() {
                 }
             );
 
+
         const data =
             await response.json();
 
+
         if (!data.success) {
 
-            alert("Could not create a new chat.");
+            alert(
+                "Could not create a new chat."
+            );
 
             return;
 
         }
 
+
         currentChatId =
             data.chat.id;
 
+
         clearChatUI();
+
 
         await loadChatHistory();
 
+
         closeMobileSidebar();
+
 
         input.focus();
 
@@ -532,7 +693,9 @@ async function createNewChat() {
    OPEN CHAT
 ============================================================ */
 
-async function openChat(chatId) {
+async function openChat(
+    chatId
+) {
 
     try {
 
@@ -541,24 +704,36 @@ async function openChat(chatId) {
                 `/api/chats/${encodeURIComponent(chatId)}`
             );
 
+
         const data =
             await response.json();
 
-        if (!data.success) return;
+
+        if (!data.success) {
+            return;
+        }
+
 
         currentChatId =
             chatId;
+
 
         renderMessages(
             data.chat.messages || []
         );
 
+
         const chats =
             await getChatList();
 
-        renderChatList(chats);
+
+        renderChatList(
+            chats
+        );
+
 
         closeMobileSidebar();
+
 
         input.focus();
 
@@ -574,34 +749,16 @@ async function openChat(chatId) {
 }
 
 
-async function getChatList() {
-
-    try {
-
-        const response =
-            await fetch("/api/chats");
-
-        const data =
-            await response.json();
-
-        return data.chats || [];
-
-    } catch {
-
-        return [];
-
-    }
-
-}
-
-
 /* ============================================================
    RENDER MESSAGES
 ============================================================ */
 
-function renderMessages(messages) {
+function renderMessages(
+    messages
+) {
 
     chatArea.innerHTML = "";
+
 
     if (!messages.length) {
 
@@ -611,17 +768,21 @@ function renderMessages(messages) {
 
     }
 
-    messages.forEach(message => {
 
-        addMessage(
-            message.role === "user"
-                ? "You"
-                : "AI",
-            message.content,
-            false
-        );
+    messages.forEach(
+        function (message) {
 
-    });
+            addMessage(
+                message.role === "user"
+                    ? "You"
+                    : "AI",
+                message.content,
+                false
+            );
+
+        }
+    );
+
 
     scrollToBottom();
 
@@ -636,20 +797,28 @@ function showWelcome() {
 
     chatArea.innerHTML = `
 
-        <div class="welcome" id="welcome">
+        <div
+            class="welcome"
+            id="welcome">
 
             <div class="welcome-icon">
                 ✦
             </div>
 
+
             <div class="welcome-badge">
+
                 <span></span>
+
                 Hani AI is ready
+
             </div>
+
 
             <h1>
                 How can I help you?
             </h1>
+
 
             <p>
                 Ask me anything. I can understand
@@ -657,38 +826,94 @@ function showWelcome() {
                 other languages.
             </p>
 
+
             <div class="suggestions">
 
-                <button onclick="useSuggestion('Explain Python in simple words')">
-                    <span class="suggestion-icon">💻</span>
-                    <span>
-                        <strong>Explain Python</strong>
-                        <small>Learn programming easily</small>
+                <button
+                    onclick="useSuggestion('Explain Python in simple words')">
+
+                    <span class="suggestion-icon">
+                        💻
                     </span>
+
+                    <span>
+
+                        <strong>
+                            Explain Python
+                        </strong>
+
+                        <small>
+                            Learn programming easily
+                        </small>
+
+                    </span>
+
                 </button>
 
-                <button onclick="useSuggestion('Teach me computer networking')">
-                    <span class="suggestion-icon">🌐</span>
-                    <span>
-                        <strong>Learn Networking</strong>
-                        <small>Understand networks step by step</small>
+
+                <button
+                    onclick="useSuggestion('Teach me computer networking')">
+
+                    <span class="suggestion-icon">
+                        🌐
                     </span>
+
+                    <span>
+
+                        <strong>
+                            Learn Networking
+                        </strong>
+
+                        <small>
+                            Understand networks step by step
+                        </small>
+
+                    </span>
+
                 </button>
 
-                <button onclick="useSuggestion('Mujhe ye topic Roman Urdu mein samjhao')">
-                    <span class="suggestion-icon">🇵🇰</span>
-                    <span>
-                        <strong>Roman Urdu</strong>
-                        <small>Easy explanation in Roman Urdu</small>
+
+                <button
+                    onclick="useSuggestion('Mujhe ye topic Roman Urdu mein samjhao')">
+
+                    <span class="suggestion-icon">
+                        🇵🇰
                     </span>
+
+                    <span>
+
+                        <strong>
+                            Roman Urdu
+                        </strong>
+
+                        <small>
+                            Easy explanation in Roman Urdu
+                        </small>
+
+                    </span>
+
                 </button>
 
-                <button onclick="useSuggestion('Help me with my project')">
-                    <span class="suggestion-icon">✨</span>
-                    <span>
-                        <strong>Project Help</strong>
-                        <small>Build and improve your project</small>
+
+                <button
+                    onclick="useSuggestion('Help me with my project')">
+
+                    <span class="suggestion-icon">
+                        ✨
                     </span>
+
+                    <span>
+
+                        <strong>
+                            Project Help
+                        </strong>
+
+                        <small>
+                            Build and improve your project
+                        </small>
+
+                    </span>
+
                 </button>
 
             </div>
@@ -710,23 +935,29 @@ function addMessage(
 ) {
 
     const wrapper =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     wrapper.className =
         sender === "You"
             ? "message user-message"
             : "message ai-message";
 
+
     const avatar =
         sender === "You"
             ? "👤"
             : "✦";
+
 
     wrapper.innerHTML = `
 
         <div class="message-avatar">
             ${avatar}
         </div>
+
 
         <div class="message-content">
 
@@ -741,7 +972,11 @@ function addMessage(
         </div>
     `;
 
-    chatArea.appendChild(wrapper);
+
+    chatArea.appendChild(
+        wrapper
+    );
+
 
     if (shouldScroll) {
 
@@ -758,980 +993,1647 @@ function addMessage(
 
 function formatMessage(text) {
 
-    const escaped =
-        escapeHtml(text || "");
+    let escaped =
+        escapeHtml(
+            text || ""
+        );
 
-    return escaped
 
-        .replace(
-            /```([\s\S]*?)```/g,
-            "<pre><code>$1</code></pre>"
+    const codeBlocks = [];
 
-```
-    )
 
-    .replace(
-        /\n/g,
-        "<br>"
+    escaped =
+        escaped.replace(
+            /```[^\n]*\n?([\s\S]*?)```/g,
+            function (
+                match,
+                code
+            ) {
+
+                const index =
+                    codeBlocks.length;
+
+
+                codeBlocks.push(
+                    `<pre><code>${code.trimEnd()}</code></pre>`
+                );
+
+
+                return (
+                    `___CODE_BLOCK_${index}___`
+                );
+
+            }
+        );
+
+
+    escaped =
+        escaped.replace(
+            /\n/g,
+            "<br>"
+        );
+
+
+    codeBlocks.forEach(
+        function (
+            block,
+            index
+        ) {
+
+            escaped =
+                escaped.replace(
+                    `___CODE_BLOCK_${index}___`,
+                    block
+                );
+
+        }
     );
-```
+
+
+    return escaped;
 
 }
 
+
 /* ============================================================
-HTML ESCAPE
+   ESCAPE HTML
 ============================================================ */
 
 function escapeHtml(text) {
 
-```
-const div =
-    document.createElement("div");
+    const div =
+        document.createElement(
+            "div"
+        );
 
-div.textContent =
-    String(text);
+    div.textContent =
+        String(text);
 
-return div.innerHTML;
-```
+    return div.innerHTML;
 
 }
+
 
 function escapeAttribute(text) {
 
-```
-return String(text)
-    .replace(/\\/g, "\\\\")
-    .replace(/'/g, "\\'");
-```
+    return String(text)
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        );
 
 }
 
+
 /* ============================================================
-SEND MESSAGE
+   SEND MESSAGE
 ============================================================ */
 
 async function sendMessage() {
 
-```
-if (isLoading) return;
-
-const message =
-    input.value.trim();
-
-if (!message) return;
+    if (isLoading) {
+        return;
+    }
 
 
-if (!currentChatId) {
+    const message =
+        input.value.trim();
+
+
+    if (!message) {
+        return;
+    }
+
+
+    /*
+       Stop microphone if recording.
+    */
+
+    if (
+        isRecording &&
+        recognition
+    ) {
+
+        recognition.stop();
+
+    }
+
+
+    if (!currentChatId) {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/chats",
+                    {
+                        method: "POST"
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+                return;
+            }
+
+
+            currentChatId =
+                data.chat.id;
+
+        } catch (error) {
+
+            return;
+
+        }
+
+    }
+
+
+    const welcome =
+        document.querySelector(
+            ".welcome"
+        );
+
+
+    if (welcome) {
+
+        welcome.remove();
+
+    }
+
+
+    addMessage(
+        "You",
+        message
+    );
+
+
+    input.value = "";
+
+    autoResize();
+
+
+    isLoading = true;
+
+    sendButton.disabled = true;
+
+    if (recognition) {
+        micButton.disabled = true;
+    }
+
+
+    showTyping();
+
 
     try {
 
         const response =
             await fetch(
-                "/api/chats",
+                "/chat",
                 {
-                    method: "POST"
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        message:
+                            message,
+
+                        chat_id:
+                            currentChatId
+
+                    })
                 }
             );
+
 
         const data =
             await response.json();
 
-        if (!data.success) return;
 
-        currentChatId =
-            data.chat.id;
+        removeTyping();
 
-    } catch {
+
+        if (!response.ok) {
+
+            addMessage(
+                "AI",
+                data.reply ||
+                "Something went wrong."
+            );
+
+        } else {
+
+            addMessage(
+                "AI",
+                data.reply
+            );
+
+
+            if (data.chat_id) {
+
+                currentChatId =
+                    data.chat_id;
+
+            }
+
+
+            /*
+               Speak AI response.
+            */
+
+            if (data.reply) {
+
+                speak(
+                    data.reply
+                );
+
+            }
+
+
+            await loadChatHistory();
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        removeTyping();
+
+
+        addMessage(
+            "AI",
+            "⚠️ I couldn't connect to the server. Please try again."
+        );
+
+    }
+
+
+    isLoading = false;
+
+    sendButton.disabled = false;
+
+    if (recognition) {
+        micButton.disabled = false;
+    }
+
+
+    input.focus();
+
+}
+
+
+/* ============================================================
+   TYPING
+============================================================ */
+
+function showTyping() {
+
+    const typing =
+        document.createElement(
+            "div"
+        );
+
+
+    typing.id =
+        "typingIndicator";
+
+
+    typing.className =
+        "message ai-message";
+
+
+    typing.innerHTML = `
+
+        <div class="message-avatar">
+            ✦
+        </div>
+
+        <div class="message-content">
+
+            <div class="message-name">
+                AI
+            </div>
+
+            <div class="typing">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+        </div>
+    `;
+
+
+    chatArea.appendChild(
+        typing
+    );
+
+
+    scrollToBottom();
+
+}
+
+
+function removeTyping() {
+
+    const typing =
+        document.getElementById(
+            "typingIndicator"
+        );
+
+
+    if (typing) {
+
+        typing.remove();
+
+    }
+
+}
+
+
+/* ============================================================
+   VOICE INPUT
+============================================================ */
+
+function setupVoiceRecognition() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        recognition = null;
+
+        micButton.disabled = true;
+
+        micButton.title =
+            "Voice input is not supported in this browser.";
 
         return;
 
     }
 
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        true;
+
+
+    recognition.maxAlternatives =
+        1;
+
+
+    recognition.onstart =
+        function () {
+
+            isRecording = true;
+
+            micButton.classList.add(
+                "recording"
+            );
+
+            micButton.setAttribute(
+                "aria-label",
+                "Stop recording"
+            );
+
+            micButton.title =
+                "Stop recording";
+
+        };
+
+
+    recognition.onresult =
+        function (event) {
+
+            let transcript = "";
+
+
+            for (
+                let i = 0;
+                i < event.results.length;
+                i++
+            ) {
+
+                transcript +=
+                    event.results[i][0]
+                        .transcript;
+
+            }
+
+
+            input.value =
+                transcript.trim();
+
+
+            autoResize();
+
+        };
+
+
+    recognition.onend =
+        function () {
+
+            isRecording = false;
+
+            micButton.classList.remove(
+                "recording"
+            );
+
+            micButton.setAttribute(
+                "aria-label",
+                "Voice input"
+            );
+
+            micButton.title =
+                "Voice input";
+
+        };
+
+
+    recognition.onerror =
+        function (event) {
+
+            console.warn(
+                "Speech recognition:",
+                event.error
+            );
+
+
+            isRecording = false;
+
+            micButton.classList.remove(
+                "recording"
+            );
+
+
+            if (
+                event.error ===
+                "not-allowed"
+            ) {
+
+                alert(
+                    "Microphone permission allow karein."
+                );
+
+            }
+
+        };
+
 }
 
 
-const welcome =
-    document.querySelector(".welcome");
+/* ============================================================
+   VOICE INPUT LANGUAGE
+============================================================ */
 
-if (welcome) {
+function detectSpeechInputLanguage() {
 
-    welcome.remove();
-
-}
-
-
-addMessage(
-    "You",
-    message
-);
-
-input.value = "";
-
-autoResize();
-
-isLoading = true;
-
-sendButton.disabled = true;
-micButton.disabled = true;
-
-showTyping();
+    const text =
+        input.value
+            .trim()
+            .toLowerCase();
 
 
-try {
+    /*
+       Urdu script
+    */
 
-    const response =
-        await fetch(
-            "/chat",
-            {
-                method: "POST",
+    if (
+        /[\u0600-\u06FF]/.test(text)
+    ) {
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
+        return "ur-PK";
 
-                body: JSON.stringify({
-                    message: message,
-                    chat_id:
-                        currentChatId
-                })
+    }
+
+
+    /*
+       Roman Urdu
+    */
+
+    const romanUrduWords = [
+
+        "mujhe",
+        "mujhy",
+        "aap",
+        "apko",
+        "aapko",
+        "kya",
+        "hai",
+        "hain",
+        "kaise",
+        "kyun",
+        "kyunke",
+        "mera",
+        "meri",
+        "mere",
+        "batao",
+        "samjhao",
+        "karna",
+        "karo",
+        "krna",
+        "acha",
+        "theek",
+        "nahi",
+        "nahin",
+        "chahiye"
+
+    ];
+
+
+    const words =
+        text.split(/\s+/);
+
+
+    const romanUrduDetected =
+        romanUrduWords.some(
+            function (word) {
+
+                return words.includes(
+                    word
+                );
+
             }
         );
 
 
-    const data =
-        await response.json();
+    if (romanUrduDetected) {
 
-    removeTyping();
+        return "ur-PK";
+
+    }
 
 
-    if (!response.ok) {
+    return "en-US";
 
-        addMessage(
-            "AI",
-            data.reply ||
-            "Something went wrong."
+}
+
+
+/* ============================================================
+   START / STOP VOICE
+============================================================ */
+
+function toggleVoiceInput() {
+
+    if (!recognition) {
+
+        alert(
+            "Is browser mein voice input supported nahi hai."
         );
 
-    } else {
+        return;
 
-        addMessage(
-            "AI",
-            data.reply
+    }
+
+
+    if (isRecording) {
+
+        recognition.stop();
+
+        return;
+
+    }
+
+
+    try {
+
+        recognition.lang =
+            detectSpeechInputLanguage();
+
+
+        recognition.start();
+
+    } catch (error) {
+
+        console.warn(
+            "Voice start error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   SPEECH SYNTHESIS
+============================================================ */
+
+function setupSpeechSynthesis() {
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        return;
+
+    }
+
+
+    refreshVoices();
+
+
+    /*
+       Chrome/Edge sometimes load voices
+       after the page has loaded.
+    */
+
+    window.speechSynthesis.onvoiceschanged =
+        function () {
+
+            refreshVoices();
+
+        };
+
+}
+
+
+function refreshVoices() {
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        availableVoices = [];
+
+        return;
+
+    }
+
+
+    availableVoices =
+        window.speechSynthesis
+            .getVoices();
+
+}
+
+
+/* ============================================================
+   LANGUAGE DETECTION FOR OUTPUT
+============================================================ */
+
+function detectVoiceLanguage(
+    text
+) {
+
+    if (!text) {
+
+        return "en-US";
+
+    }
+
+
+    /*
+       Urdu-specific characters
+    */
+
+    if (
+        /[پٹڈڑںھہژچگے]/.test(text)
+    ) {
+
+        return "ur-PK";
+
+    }
+
+
+    /*
+       Hindi
+    */
+
+    if (
+        /[\u0900-\u097F]/.test(text)
+    ) {
+
+        return "hi-IN";
+
+    }
+
+
+    /*
+       Arabic
+    */
+
+    if (
+        /[\u0600-\u06FF]/.test(text)
+    ) {
+
+        return "ar-SA";
+
+    }
+
+
+    /*
+       Bengali
+    */
+
+    if (
+        /[\u0980-\u09FF]/.test(text)
+    ) {
+
+        return "bn-IN";
+
+    }
+
+
+    /*
+       Punjabi
+    */
+
+    if (
+        /[\u0A00-\u0A7F]/.test(text)
+    ) {
+
+        return "pa-IN";
+
+    }
+
+
+    /*
+       Gujarati
+    */
+
+    if (
+        /[\u0A80-\u0AFF]/.test(text)
+    ) {
+
+        return "gu-IN";
+
+    }
+
+
+    /*
+       Tamil
+    */
+
+    if (
+        /[\u0B80-\u0BFF]/.test(text)
+    ) {
+
+        return "ta-IN";
+
+    }
+
+
+    /*
+       Telugu
+    */
+
+    if (
+        /[\u0C00-\u0C7F]/.test(text)
+    ) {
+
+        return "te-IN";
+
+    }
+
+
+    /*
+       Kannada
+    */
+
+    if (
+        /[\u0C80-\u0CFF]/.test(text)
+    ) {
+
+        return "kn-IN";
+
+    }
+
+
+    /*
+       Malayalam
+    */
+
+    if (
+        /[\u0D00-\u0D7F]/.test(text)
+    ) {
+
+        return "ml-IN";
+
+    }
+
+
+    /*
+       Thai
+    */
+
+    if (
+        /[\u0E00-\u0E7F]/.test(text)
+    ) {
+
+        return "th-TH";
+
+    }
+
+
+    /*
+       Chinese
+    */
+
+    if (
+        /[\u4E00-\u9FFF]/.test(text)
+    ) {
+
+        return "zh-CN";
+
+    }
+
+
+    /*
+       Japanese
+    */
+
+    if (
+        /[\u3040-\u30FF]/.test(text)
+    ) {
+
+        return "ja-JP";
+
+    }
+
+
+    /*
+       Korean
+    */
+
+    if (
+        /[\uAC00-\uD7AF]/.test(text)
+    ) {
+
+        return "ko-KR";
+
+    }
+
+
+    /*
+       Russian
+    */
+
+    if (
+        /[\u0400-\u04FF]/.test(text)
+    ) {
+
+        return "ru-RU";
+
+    }
+
+
+    /*
+       Greek
+    */
+
+    if (
+        /[\u0370-\u03FF]/.test(text)
+    ) {
+
+        return "el-GR";
+
+    }
+
+
+    /*
+       Hebrew
+    */
+
+    if (
+        /[\u0590-\u05FF]/.test(text)
+    ) {
+
+        return "he-IL";
+
+    }
+
+
+    /*
+       Roman Urdu
+    */
+
+    const romanUrduWords = [
+
+        "mujhe",
+        "mujhy",
+        "aap",
+        "apko",
+        "aapko",
+        "kya",
+        "hai",
+        "hain",
+        "kaise",
+        "kyun",
+        "kyunke",
+        "mera",
+        "meri",
+        "mere",
+        "batao",
+        "samjhao",
+        "karna",
+        "karo",
+        "krna",
+        "acha",
+        "theek",
+        "nahi",
+        "nahin",
+        "chahiye"
+
+    ];
+
+
+    const lowerText =
+        text.toLowerCase();
+
+
+    const words =
+        lowerText.split(/\s+/);
+
+
+    if (
+        romanUrduWords.some(
+            word =>
+                words.includes(word)
+        )
+    ) {
+
+        return "ur-PK";
+
+    }
+
+
+    /*
+       Default
+    */
+
+    return "en-US";
+
+}
+
+
+/* ============================================================
+   FIND BEST INSTALLED VOICE
+============================================================ */
+
+function findBestVoice(
+    language
+) {
+
+    refreshVoices();
+
+
+    if (!availableVoices.length) {
+
+        return null;
+
+    }
+
+
+    const target =
+        language.toLowerCase();
+
+
+    const prefix =
+        target.split("-")[0];
+
+
+    /*
+       Exact language match
+    */
+
+    let matches =
+        availableVoices.filter(
+            function (voice) {
+
+                return (
+                    voice.lang &&
+                    voice.lang.toLowerCase() ===
+                    target
+                );
+
+            }
         );
 
 
-        if (data.chat_id) {
+    if (matches.length) {
 
-            currentChatId =
-                data.chat_id;
+        /*
+           Prefer voices whose name
+           clearly identifies the language.
+        */
+
+        const preferred =
+            matches.find(
+                function (voice) {
+
+                    const name =
+                        voice.name.toLowerCase();
+
+                    return (
+                        name.includes(
+                            prefix
+                        ) ||
+                        name.includes(
+                            languageName(prefix)
+                        )
+                    );
+
+                }
+            );
+
+
+        return preferred ||
+               matches[0];
+
+    }
+
+
+    /*
+       Same language family
+    */
+
+    matches =
+        availableVoices.filter(
+            function (voice) {
+
+                return (
+                    voice.lang &&
+                    voice.lang
+                        .toLowerCase()
+                        .startsWith(prefix)
+                );
+
+            }
+        );
+
+
+    if (matches.length) {
+
+        return matches[0];
+
+    }
+
+
+    /*
+       Search by voice name
+    */
+
+    const targetName =
+        languageName(prefix);
+
+
+    const named =
+        availableVoices.find(
+            function (voice) {
+
+                return (
+                    voice.name &&
+                    voice.name
+                        .toLowerCase()
+                        .includes(targetName)
+                );
+
+            }
+        );
+
+
+    return named || null;
+
+}
+
+
+/* ============================================================
+   LANGUAGE NAME
+============================================================ */
+
+function languageName(
+    code
+) {
+
+    const names = {
+
+        ur: "urdu",
+        en: "english",
+        hi: "hindi",
+        ar: "arabic",
+        bn: "bengali",
+        pa: "punjabi",
+        gu: "gujarati",
+        ta: "tamil",
+        te: "telugu",
+        kn: "kannada",
+        ml: "malayalam",
+        th: "thai",
+        zh: "chinese",
+        ja: "japanese",
+        ko: "korean",
+        ru: "russian",
+        fr: "french",
+        de: "german",
+        es: "spanish",
+        it: "italian",
+        pt: "portuguese",
+        tr: "turkish",
+        nl: "dutch",
+        pl: "polish",
+        he: "hebrew",
+        el: "greek"
+
+    };
+
+
+    return names[code] || code;
+
+}
+
+
+/* ============================================================
+   CLEAN TEXT BEFORE SPEAKING
+============================================================ */
+
+function cleanTextForSpeech(
+    text
+) {
+
+    let clean =
+        String(text || "");
+
+
+    /*
+       Remove code blocks
+    */
+
+    clean =
+        clean.replace(
+            /```[\s\S]*?```/g,
+            " "
+        );
+
+
+    /*
+       Remove inline code
+    */
+
+    clean =
+        clean.replace(
+            /`([^`]+)`/g,
+            "$1"
+        );
+
+
+    /*
+       Convert markdown links
+    */
+
+    clean =
+        clean.replace(
+            /\[([^\]]+)\]\([^)]+\)/g,
+            "$1"
+        );
+
+
+    /*
+       Remove URLs
+    */
+
+    clean =
+        clean.replace(
+            /https?:\/\/\S+/gi,
+            " "
+        );
+
+
+    /*
+       Remove markdown characters
+    */
+
+    clean =
+        clean.replace(
+            /[*_#~>|]/g,
+            " "
+        );
+
+
+    /*
+       Remove excessive spaces
+    */
+
+    clean =
+        clean.replace(
+            /\s+/g,
+            " "
+        );
+
+
+    return clean.trim();
+
+}
+
+
+/* ============================================================
+   SPLIT LONG RESPONSE
+============================================================ */
+
+function splitSpeechText(
+    text,
+    maxLength = 220
+) {
+
+    const sentences =
+        text.match(
+            /[^.!?۔؟]+[.!?۔؟]?/g
+        ) || [text];
+
+
+    const chunks = [];
+
+    let current = "";
+
+
+    sentences.forEach(
+        function (sentence) {
+
+            const cleanSentence =
+                sentence.trim();
+
+
+            const combined =
+                (
+                    current +
+                    " " +
+                    cleanSentence
+                ).trim();
+
+
+            if (
+                combined.length <=
+                maxLength
+            ) {
+
+                current =
+                    combined;
+
+            } else {
+
+                if (current) {
+
+                    chunks.push(
+                        current
+                    );
+
+                }
+
+
+                /*
+                   Very long sentence
+                */
+
+                if (
+                    cleanSentence.length >
+                    maxLength
+                ) {
+
+                    const words =
+                        cleanSentence.split(
+                            " "
+                        );
+
+                    let part = "";
+
+
+                    words.forEach(
+                        function (word) {
+
+                            const test =
+                                (
+                                    part +
+                                    " " +
+                                    word
+                                ).trim();
+
+
+                            if (
+                                test.length <=
+                                maxLength
+                            ) {
+
+                                part =
+                                    test;
+
+                            } else {
+
+                                if (part) {
+
+                                    chunks.push(
+                                        part
+                                    );
+
+                                }
+
+                                part =
+                                    word;
+
+                            }
+
+                        }
+                    );
+
+
+                    current =
+                        part;
+
+                } else {
+
+                    current =
+                        cleanSentence;
+
+                }
+
+            }
+
+        }
+    );
+
+
+    if (current) {
+
+        chunks.push(
+            current
+        );
+
+    }
+
+
+    return chunks;
+
+}
+
+
+/* ============================================================
+   SPEAK
+============================================================ */
+
+function speak(
+    text
+) {
+
+    if (
+        !("speechSynthesis" in window)
+    ) {
+
+        return;
+
+    }
+
+
+    const cleanText =
+        cleanTextForSpeech(
+            text
+        );
+
+
+    if (!cleanText) {
+
+        return;
+
+    }
+
+
+    /*
+       Stop previous response
+    */
+
+    window.speechSynthesis.cancel();
+
+
+    /*
+       New speech session
+    */
+
+    const generation =
+        ++speechGeneration;
+
+
+    const language =
+        detectVoiceLanguage(
+            cleanText
+        );
+
+
+    const chunks =
+        splitSpeechText(
+            cleanText
+        );
+
+
+    refreshVoices();
+
+
+    let voice =
+        findBestVoice(
+            language
+        );
+
+
+    /*
+       Browser voices sometimes become
+       available a little later.
+    */
+
+    if (
+        !voice &&
+        availableVoices.length === 0
+    ) {
+
+        setTimeout(
+            function () {
+
+                if (
+                    generation ===
+                    speechGeneration
+                ) {
+
+                    speak(text);
+
+                }
+
+            },
+            500
+        );
+
+        return;
+
+    }
+
+
+    let index = 0;
+
+
+    function speakNext() {
+
+        /*
+           Stop if a newer response
+           started speaking.
+        */
+
+        if (
+            generation !==
+            speechGeneration
+        ) {
+
+            return;
 
         }
 
 
         if (
-            "speechSynthesis" in window &&
-            data.reply
+            index >= chunks.length
         ) {
 
-            speak(data.reply);
+            return;
 
         }
 
 
-        await loadChatHistory();
+        const chunk =
+            chunks[index++];
 
-    }
 
-} catch (error) {
+        const utterance =
+            new SpeechSynthesisUtterance(
+                chunk
+            );
 
-    console.error(error);
 
-    removeTyping();
+        utterance.lang =
+            language;
 
-    addMessage(
-        "AI",
-        "⚠️ I couldn't connect to the server. Please try again."
-    );
 
-}
+        if (voice) {
 
+            utterance.voice =
+                voice;
 
-isLoading = false;
+            utterance.lang =
+                voice.lang ||
+                language;
 
-sendButton.disabled = false;
-micButton.disabled = false;
+        }
 
-input.focus();
-```
 
-}
+        /*
+           Language-specific speed.
+        */
 
-/* ============================================================
-TYPING
-============================================================ */
+        if (
+            language === "ur-PK"
+        ) {
 
-function showTyping() {
+            utterance.rate =
+                0.86;
 
-```
-const typing =
-    document.createElement("div");
+        } else if (
+            language === "hi-IN"
+        ) {
 
-typing.id =
-    "typingIndicator";
+            utterance.rate =
+                0.90;
 
-typing.className =
-    "message ai-message";
+        } else if (
+            language === "ar-SA"
+        ) {
 
-typing.innerHTML = `
+            utterance.rate =
+                0.90;
 
-    <div class="message-avatar">
-        ✦
-    </div>
+        } else {
 
-    <div class="message-content">
+            utterance.rate =
+                0.94;
 
-        <div class="message-name">
-            AI
-        </div>
+        }
 
-        <div class="typing">
 
-            <span></span>
-            <span></span>
-            <span></span>
+        utterance.pitch =
+            1;
 
-        </div>
+        utterance.volume =
+            1;
 
-    </div>
-`;
 
-chatArea.appendChild(typing);
+        utterance.onend =
+            function () {
 
-scrollToBottom();
-```
+                speakNext();
 
-}
+            };
 
-function removeTyping() {
 
-```
-const typing =
-    document.getElementById(
-        "typingIndicator"
-    );
+        utterance.onerror =
+            function (event) {
 
-if (typing) {
+                console.warn(
+                    "Speech error:",
+                    event.error
+                );
 
-    typing.remove();
 
-}
-```
+                /*
+                   Don't stop the whole
+                   response if one chunk fails.
+                */
 
-}
+                speakNext();
 
-/* ============================================================
-VOICE RECOGNITION
-============================================================ */
+            };
 
-function setupVoiceRecognition() {
 
-```
-const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-
-if (!SpeechRecognition) {
-
-    micButton.disabled = true;
-
-    micButton.title =
-        "Voice input is not supported by this browser.";
-
-    micButton.style.opacity =
-        "0.45";
-
-    return;
-
-}
-
-
-recognition =
-    new SpeechRecognition();
-
-recognition.continuous = false;
-
-recognition.interimResults = true;
-
-recognition.maxAlternatives = 1;
-
-
-recognition.onstart = () => {
-
-    isRecording = true;
-
-    micButton.classList.add(
-        "recording"
-    );
-
-    micButton.setAttribute(
-        "aria-label",
-        "Stop recording"
-    );
-
-    micButton.title =
-        "Stop recording";
-
-};
-
-
-recognition.onresult = (event) => {
-
-    let transcript = "";
-
-    for (
-        let i = event.resultIndex;
-        i < event.results.length;
-        i++
-    ) {
-
-        transcript +=
-            event.results[i][0].transcript;
-
-    }
-
-    input.value =
-        transcript;
-
-    autoResize();
-
-};
-
-
-recognition.onend = () => {
-
-    isRecording = false;
-
-    micButton.classList.remove(
-        "recording"
-    );
-
-    micButton.setAttribute(
-        "aria-label",
-        "Voice input"
-    );
-
-    micButton.title =
-        "Voice input";
-
-};
-
-
-recognition.onerror = (event) => {
-
-    console.error(
-        "Voice recognition error:",
-        event.error
-    );
-
-    isRecording = false;
-
-    micButton.classList.remove(
-        "recording"
-    );
-
-    if (event.error === "not-allowed") {
-
-        alert(
-            "Microphone permission allow karein taake voice input use ho sake."
+        window.speechSynthesis.speak(
+            utterance
         );
 
     }
 
-};
-```
+
+    speakNext();
 
 }
+
 
 /* ============================================================
-TOGGLE VOICE
+   STOP SPEECH
 ============================================================ */
 
-function toggleVoiceInput() {
+function stopSpeaking() {
 
-```
-if (!recognition) {
+    speechGeneration++;
 
-    alert(
-        "Is browser mein voice input supported nahi hai."
-    );
 
-    return;
-
-}
-
-
-if (isRecording) {
-
-    recognition.stop();
-
-    return;
-
-}
-
-
-try {
-
-    recognition.lang =
-        detectSpeechLanguage();
-
-    recognition.start();
-
-} catch (error) {
-
-    console.error(
-        "Voice start error:",
-        error
-    );
-
-}
-```
-
-}
-
-/* ============================================================
-SPEECH INPUT LANGUAGE
-============================================================ */
-
-function detectSpeechLanguage() {
-
-```
-const text =
-    input.value.trim().toLowerCase();
-
-
-if (
-    /[\u0600-\u06FF]/.test(text)
-) {
-
-    return "ur-PK";
-
-}
-
-
-const romanUrduWords = [
-    "kya",
-    "hai",
-    "hain",
-    "mujhe",
-    "aap",
-    "kaise",
-    "kyun",
-    "mera",
-    "meri",
-    "mere",
-    "batao",
-    "samjhao",
-    "chahiye",
-    "mujhy",
-    "apko",
-    "aapko",
-    "karo",
-    "karna",
-    "krna",
-    "kyunke",
-    "acha",
-    "theek",
-    "nahi",
-    "nahin"
-];
-
-
-const isRomanUrdu =
-    romanUrduWords.some(
-        word =>
-            text.split(/\s+/).includes(word)
-    );
-
-
-if (isRomanUrdu) {
-
-    return "ur-PK";
-
-}
-
-
-return "en-US";
-```
-
-}
-
-/* ============================================================
-LOAD BROWSER VOICES
-============================================================ */
-
-function loadSpeechVoices() {
-
-```
-if (!("speechSynthesis" in window)) {
-    return;
-}
-
-
-availableVoices =
-    window.speechSynthesis.getVoices();
-
-
-if (
-    !availableVoices.length &&
-    "onvoiceschanged" in window.speechSynthesis
-) {
-
-    window.speechSynthesis.onvoiceschanged =
-        () => {
-
-            availableVoices =
-                window.speechSynthesis.getVoices();
-
-        };
-
-}
-```
-
-}
-
-/* ============================================================
-FIND BEST VOICE
-============================================================ */
-
-function getBestVoice(language) {
-
-```
-if (!availableVoices.length) {
-
-    availableVoices =
-        window.speechSynthesis.getVoices();
-
-}
-
-
-const target =
-    language.toLowerCase();
-
-
-let voice =
-    availableVoices.find(
-        v =>
-            v.lang &&
-            v.lang.toLowerCase() === target
-    );
-
-
-if (voice) return voice;
-
-
-if (target.startsWith("ur")) {
-
-    voice =
-        availableVoices.find(
-            v =>
-                /urdu/i.test(v.name) ||
-                /pakistan/i.test(v.name)
-        );
-
-    if (voice) return voice;
-
-}
-
-
-const prefix =
-    target.split("-")[0];
-
-
-voice =
-    availableVoices.find(
-        v =>
-            v.lang &&
-            v.lang
-                .toLowerCase()
-                .startsWith(prefix)
-    );
-
-
-return voice || null;
-```
-
-}
-
-/* ============================================================
-DETECT OUTPUT LANGUAGE
-============================================================ */
-
-function detectVoiceLanguage(text) {
-
-```
-if (!text) return "en-US";
-
-
-if (
-    /[\u0600-\u06FF]/.test(text)
-) {
-
-    return "ur-PK";
-
-}
-
-
-if (
-    /[\u0900-\u097F]/.test(text)
-) {
-
-    return "hi-IN";
-
-}
-
-
-return "en-US";
-```
-
-}
-
-/* ============================================================
-SPEAK AI RESPONSE
-============================================================ */
-
-function speak(text) {
-
-```
-if (
-    !("speechSynthesis" in window)
-) {
-
-    return;
-
-}
-
-
-window.speechSynthesis.cancel();
-
-
-const cleanText =
-    removeCodeForSpeech(text);
-
-
-if (!cleanText.trim()) return;
-
-
-const language =
-    detectVoiceLanguage(cleanText);
-
-
-const utterance =
-    new SpeechSynthesisUtterance(
-        cleanText
-    );
-
-
-const voice =
-    getBestVoice(language);
-
-
-if (voice) {
-
-    utterance.voice =
-        voice;
-
-    utterance.lang =
-        voice.lang;
-
-} else {
-
-    utterance.lang =
-        language;
-
-}
-
-
-utterance.rate =
-    language === "ur-PK"
-        ? 0.88
-        : 1;
-
-utterance.pitch =
-    1;
-
-utterance.volume =
-    1;
-
-
-window.speechSynthesis.speak(
-    utterance
-);
-```
-
-}
-
-/* ============================================================
-REMOVE CODE BEFORE SPEECH
-============================================================ */
-
-function removeCodeForSpeech(text) {
-
-````
-return String(text)
-    .replace(
-        /```[\s\S]*?```/g,
-        " Code example omitted. "
-    )
-    .replace(
-        /`([^`]+)`/g,
-        "$1"
-    )
-    .replace(
-        /https?:\/\/\S+/g,
-        " link "
-    );
-````
-
-}
-
-/* ============================================================
-DELETE CHAT
-============================================================ */
-
-async function deleteChat(
-event,
-chatId
-) {
-
-```
-event.stopPropagation();
-
-
-const confirmed =
-    confirm(
-        "Delete this chat?"
-    );
-
-
-if (!confirmed) return;
-
-
-try {
-
-    const response =
-        await fetch(
-            `/api/chats/${encodeURIComponent(chatId)}`,
-            {
-                method: "DELETE"
-            }
-        );
-
-    const data =
-        await response.json();
-
-
-    if (!data.success) return;
-
-
-    if (
-        currentChatId === chatId
-    ) {
-
-        currentChatId = null;
-
-        clearChatUI();
-
-    }
-
-
-    await loadChatHistory();
-
-} catch (error) {
-
-    console.error(
-        "Delete chat error:",
-        error
-    );
-
-}
-```
-
-}
-
-/* ============================================================
-CLEAR ALL
-============================================================ */
-
-async function clearAllHistory() {
-
-```
-const confirmed =
-    confirm(
-        "Delete all your chat history?"
-    );
-
-
-if (!confirmed) return;
-
-
-try {
-
-    const response =
-        await fetch(
-            "/api/chats",
-            {
-                method: "DELETE"
-            }
-        );
-
-    const data =
-        await response.json();
-
-
-    if (data.success) {
-
-        currentChatId = null;
-
-        clearChatUI();
-
-        await loadChatHistory();
-
-    }
-
-} catch (error) {
-
-    console.error(
-        "Clear history error:",
-        error
-    );
-
-}
-```
-
-}
-
-/* ============================================================
-CLEAR UI
-============================================================ */
-
-function clearChatUI() {
-
-```
-showWelcome();
-```
-
-}
-
-/* ============================================================
-SUGGESTIONS
-============================================================ */
-
-function useSuggestion(text) {
-
-```
-input.value =
-    text;
-
-autoResize();
-
-input.focus();
-```
-
-}
-
-/* ============================================================
-ENTER TO SEND
-============================================================ */
-
-input.addEventListener(
-"keydown",
-event => {
-
-```
-    if (
-        event.key === "Enter" &&
-        !event.shiftKey
-    ) {
-
-        event.preventDefault();
-
-        sendMessage();
-
-    }
-
-}
-```
-
-);
-
-/* ============================================================
-AUTO RESIZE
-============================================================ */
-
-input.addEventListener(
-"input",
-autoResize
-);
-
-function autoResize() {
-
-```
-input.style.height =
-    "auto";
-
-input.style.height =
-    Math.min(
-        input.scrollHeight,
-        150
-    ) + "px";
-```
-
-}
-
-/* ============================================================
-SCROLL
-============================================================ */
-
-function scrollToBottom() {
-
-```
-chatArea.scrollTop =
-    chatArea.scrollHeight;
-```
-
-}
-
-/* ============================================================
-MOBILE SIDEBAR
-============================================================ */
-
-function closeMobileSidebar() {
-
-```
-if (
-    window.innerWidth <= 800
-) {
-
-    sidebar.classList.remove(
-        "open"
-    );
-
-}
-```
-
-}
-
-/* ============================================================
-STOP SPEECH WHEN LEAVING
-============================================================ */
-
-window.addEventListener(
-"beforeunload",
-() => {
-
-```
     if (
         "speechSynthesis" in window
     ) {
@@ -1741,8 +2643,255 @@ window.addEventListener(
     }
 
 }
-```
 
+
+/* ============================================================
+   DELETE CHAT
+============================================================ */
+
+async function deleteChat(
+    event,
+    chatId
+) {
+
+    event.stopPropagation();
+
+
+    const confirmed =
+        confirm(
+            "Delete this chat?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/chats/${encodeURIComponent(chatId)}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+            return;
+        }
+
+
+        if (
+            currentChatId === chatId
+        ) {
+
+            currentChatId =
+                null;
+
+            stopSpeaking();
+
+            clearChatUI();
+
+        }
+
+
+        await loadChatHistory();
+
+    } catch (error) {
+
+        console.error(
+            "Delete chat error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   CLEAR ALL HISTORY
+============================================================ */
+
+async function clearAllHistory() {
+
+    const confirmed =
+        confirm(
+            "Delete all your chat history?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chats",
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            currentChatId =
+                null;
+
+            stopSpeaking();
+
+            clearChatUI();
+
+            await loadChatHistory();
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Clear history error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   CLEAR UI
+============================================================ */
+
+function clearChatUI() {
+
+    showWelcome();
+
+}
+
+
+/* ============================================================
+   SUGGESTIONS
+============================================================ */
+
+function useSuggestion(
+    text
+) {
+
+    input.value =
+        text;
+
+    autoResize();
+
+    input.focus();
+
+}
+
+
+/* ============================================================
+   ENTER TO SEND
+============================================================ */
+
+input.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   AUTO RESIZE
+============================================================ */
+
+input.addEventListener(
+    "input",
+    autoResize
+);
+
+
+function autoResize() {
+
+    input.style.height =
+        "auto";
+
+
+    input.style.height =
+        Math.min(
+            input.scrollHeight,
+            150
+        ) + "px";
+
+}
+
+
+/* ============================================================
+   SCROLL
+============================================================ */
+
+function scrollToBottom() {
+
+    chatArea.scrollTop =
+        chatArea.scrollHeight;
+
+}
+
+
+/* ============================================================
+   MOBILE SIDEBAR
+============================================================ */
+
+function closeMobileSidebar() {
+
+    if (
+        window.innerWidth <= 800
+    ) {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   STOP SPEECH BEFORE PAGE CLOSE
+============================================================ */
+
+window.addEventListener(
+    "beforeunload",
+    function () {
+
+        stopSpeaking();
+
+    }
 );
 
 </script>
