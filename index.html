@@ -107,7 +107,7 @@
                 onclick="toggleTheme()"
                 title="Toggle theme">
 
-                ☀
+                ☾
 
             </button>
 
@@ -244,7 +244,17 @@
 
             <div class="input-box">
 
-                <!-- MICROPHONE -->
+                <!-- TEXT INPUT -->
+
+                <textarea
+                    id="messageInput"
+                    placeholder="Message My AI..."
+                    rows="1"
+                    autocomplete="off"
+                    aria-label="Message"></textarea>
+
+
+                <!-- MICROPHONE - RIGHT SIDE -->
 
                 <button
                     id="micButton"
@@ -285,17 +295,6 @@
                     <span class="mic-pulse"></span>
 
                 </button>
-
-
-                <!-- TEXT INPUT -->
-
-                <textarea
-                    id="messageInput"
-                    placeholder="Message My AI..."
-                    rows="1"
-                    autocomplete="off"
-                    aria-label="Message">
-                </textarea>
 
 
                 <!-- SEND -->
@@ -339,10 +338,6 @@ let recognition = null;
 
 let isRecording = false;
 
-let availableVoices = [];
-
-let speechGeneration = 0;
-
 
 /* ============================================================
    ELEMENTS
@@ -382,8 +377,6 @@ document.addEventListener(
 
         setupVoiceRecognition();
 
-        setupSpeechSynthesis();
-
         await loadChatHistory();
 
         autoResize();
@@ -410,7 +403,7 @@ function toggleTheme() {
         );
 
     localStorage.setItem(
-        "hani-theme",
+        "myai-theme",
         isDark ? "dark" : "light"
     );
 
@@ -422,7 +415,7 @@ function loadTheme() {
 
     const savedTheme =
         localStorage.getItem(
-            "hani-theme"
+            "myai-theme"
         );
 
     if (savedTheme !== "light") {
@@ -471,23 +464,18 @@ async function loadChatHistory() {
     try {
 
         const response =
-            await fetch(
-                "/api/chats"
-            );
+            await fetch("/api/chats");
 
         const data =
             await response.json();
-
 
         if (!data.success) {
             return;
         }
 
-
         renderChatList(
             data.chats
         );
-
 
         if (
             data.chats.length > 0 &&
@@ -517,9 +505,7 @@ async function getChatList() {
     try {
 
         const response =
-            await fetch(
-                "/api/chats"
-            );
+            await fetch("/api/chats");
 
         const data =
             await response.json();
@@ -539,7 +525,6 @@ function renderChatList(chats) {
 
     chatList.innerHTML = "";
 
-
     if (!chats || !chats.length) {
 
         chatList.innerHTML = `
@@ -553,6 +538,7 @@ function renderChatList(chats) {
                 No previous chats
 
             </div>
+
         `;
 
         return;
@@ -563,9 +549,7 @@ function renderChatList(chats) {
         function (chat) {
 
             const item =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             item.className =
                 "chat-history-item";
@@ -640,10 +624,8 @@ async function createNewChat() {
                 }
             );
 
-
         const data =
             await response.json();
-
 
         if (!data.success) {
 
@@ -655,19 +637,14 @@ async function createNewChat() {
 
         }
 
-
         currentChatId =
             data.chat.id;
 
-
         clearChatUI();
-
 
         await loadChatHistory();
 
-
         closeMobileSidebar();
-
 
         input.focus();
 
@@ -687,9 +664,7 @@ async function createNewChat() {
    OPEN CHAT
 ============================================================ */
 
-async function openChat(
-    chatId
-) {
+async function openChat(chatId) {
 
     try {
 
@@ -698,36 +673,28 @@ async function openChat(
                 `/api/chats/${encodeURIComponent(chatId)}`
             );
 
-
         const data =
             await response.json();
-
 
         if (!data.success) {
             return;
         }
 
-
         currentChatId =
             chatId;
-
 
         renderMessages(
             data.chat.messages || []
         );
 
-
         const chats =
             await getChatList();
-
 
         renderChatList(
             chats
         );
 
-
         closeMobileSidebar();
-
 
         input.focus();
 
@@ -747,19 +714,15 @@ async function openChat(
    RENDER MESSAGES
 ============================================================ */
 
-function renderMessages(
-    messages
-) {
+function renderMessages(messages) {
 
     chatArea.innerHTML = "";
-
 
     if (!messages.length) {
 
         showWelcome();
 
         return;
-
     }
 
 
@@ -776,7 +739,6 @@ function renderMessages(
 
         }
     );
-
 
     scrollToBottom();
 
@@ -799,7 +761,6 @@ function showWelcome() {
                 ✦
             </div>
 
-
             <div class="welcome-badge">
 
                 <span></span>
@@ -808,18 +769,15 @@ function showWelcome() {
 
             </div>
 
-
             <h1>
                 How can I help you?
             </h1>
-
 
             <p>
                 Ask me anything. I can understand
                 English, Urdu, Roman Urdu and many
                 other languages.
             </p>
-
 
             <div class="suggestions">
 
@@ -831,7 +789,6 @@ function showWelcome() {
                     </span>
 
                     <span>
-
                         <strong>
                             Explain Python
                         </strong>
@@ -839,7 +796,6 @@ function showWelcome() {
                         <small>
                             Learn programming easily
                         </small>
-
                     </span>
 
                 </button>
@@ -853,7 +809,6 @@ function showWelcome() {
                     </span>
 
                     <span>
-
                         <strong>
                             Learn Networking
                         </strong>
@@ -861,7 +816,6 @@ function showWelcome() {
                         <small>
                             Understand networks step by step
                         </small>
-
                     </span>
 
                 </button>
@@ -875,7 +829,6 @@ function showWelcome() {
                     </span>
 
                     <span>
-
                         <strong>
                             Roman Urdu
                         </strong>
@@ -883,7 +836,6 @@ function showWelcome() {
                         <small>
                             Easy explanation in Roman Urdu
                         </small>
-
                     </span>
 
                 </button>
@@ -897,7 +849,6 @@ function showWelcome() {
                     </span>
 
                     <span>
-
                         <strong>
                             Project Help
                         </strong>
@@ -905,7 +856,6 @@ function showWelcome() {
                         <small>
                             Build and improve your project
                         </small>
-
                     </span>
 
                 </button>
@@ -913,6 +863,7 @@ function showWelcome() {
             </div>
 
         </div>
+
     `;
 
 }
@@ -929,9 +880,7 @@ function addMessage(
 ) {
 
     const wrapper =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     wrapper.className =
@@ -941,8 +890,8 @@ function addMessage(
 
 
     /*
-       AI ke liye ✦ icon show hoga.
-       You ke liye koi icon nahi hoga.
+       AI ke liye ✦ icon.
+       User ke liye koi avatar nahi.
     */
 
     wrapper.innerHTML = `
@@ -968,6 +917,7 @@ function addMessage(
             </div>
 
         </div>
+
     `;
 
 
@@ -996,7 +946,6 @@ function formatMessage(text) {
             text || ""
         );
 
-
     const codeBlocks = [];
 
 
@@ -1011,15 +960,11 @@ function formatMessage(text) {
                 const index =
                     codeBlocks.length;
 
-
                 codeBlocks.push(
                     `<pre><code>${code.trimEnd()}</code></pre>`
                 );
 
-
-                return (
-                    `___CODE_BLOCK_${index}___`
-                );
+                return `___CODE_BLOCK_${index}___`;
 
             }
         );
@@ -1060,9 +1005,7 @@ function formatMessage(text) {
 function escapeHtml(text) {
 
     const div =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     div.textContent =
         String(text);
@@ -1129,20 +1072,22 @@ async function sendMessage() {
                     }
                 );
 
-
             const data =
                 await response.json();
-
 
             if (!data.success) {
                 return;
             }
 
-
             currentChatId =
                 data.chat.id;
 
         } catch (error) {
+
+            console.error(
+                "Create chat error:",
+                error
+            );
 
             return;
 
@@ -1224,8 +1169,8 @@ async function sendMessage() {
 
             addMessage(
                 "AI",
-                data.reply ||
                 data.error ||
+                data.reply ||
                 "Something went wrong."
             );
 
@@ -1233,7 +1178,8 @@ async function sendMessage() {
 
             addMessage(
                 "AI",
-                data.reply
+                data.reply ||
+                "Sorry, I couldn't generate a response."
             );
 
 
@@ -1245,15 +1191,6 @@ async function sendMessage() {
             }
 
 
-            if (data.reply) {
-
-                speak(
-                    data.reply
-                );
-
-            }
-
-
             await loadChatHistory();
 
         }
@@ -1261,6 +1198,7 @@ async function sendMessage() {
     } catch (error) {
 
         console.error(
+            "Chat error:",
             error
         );
 
@@ -1297,9 +1235,7 @@ async function sendMessage() {
 function showTyping() {
 
     const typing =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     typing.id =
@@ -1331,6 +1267,7 @@ function showTyping() {
             </div>
 
         </div>
+
     `;
 
 
@@ -1363,6 +1300,8 @@ function removeTyping() {
 
 /* ============================================================
    VOICE INPUT
+   NOTE:
+   Voice OUTPUT / SPEECH SYNTHESIS REMOVED
 ============================================================ */
 
 function setupVoiceRecognition() {
@@ -1628,853 +1567,6 @@ function toggleVoiceInput() {
 
 
 /* ============================================================
-   SPEECH SYNTHESIS
-============================================================ */
-
-function setupSpeechSynthesis() {
-
-    if (
-        !("speechSynthesis" in window)
-    ) {
-
-        return;
-
-    }
-
-
-    refreshVoices();
-
-
-    window.speechSynthesis.onvoiceschanged =
-        function () {
-
-            refreshVoices();
-
-        };
-
-}
-
-
-function refreshVoices() {
-
-    if (
-        !("speechSynthesis" in window)
-    ) {
-
-        availableVoices = [];
-
-        return;
-
-    }
-
-
-    availableVoices =
-        window.speechSynthesis
-            .getVoices();
-
-}
-
-
-/* ============================================================
-   LANGUAGE DETECTION FOR OUTPUT
-============================================================ */
-
-function detectVoiceLanguage(
-    text
-) {
-
-    if (!text) {
-
-        return "en-US";
-
-    }
-
-
-    if (
-        /[پٹڈڑںھہژچگے]/.test(text)
-    ) {
-
-        return "ur-PK";
-
-    }
-
-
-    if (
-        /[\u0900-\u097F]/.test(text)
-    ) {
-
-        return "hi-IN";
-
-    }
-
-
-    if (
-        /[\u0600-\u06FF]/.test(text)
-    ) {
-
-        return "ar-SA";
-
-    }
-
-
-    if (
-        /[\u0980-\u09FF]/.test(text)
-    ) {
-
-        return "bn-IN";
-
-    }
-
-
-    if (
-        /[\u0A00-\u0A7F]/.test(text)
-    ) {
-
-        return "pa-IN";
-
-    }
-
-
-    if (
-        /[\u0A80-\u0AFF]/.test(text)
-    ) {
-
-        return "gu-IN";
-
-    }
-
-
-    if (
-        /[\u0B80-\u0BFF]/.test(text)
-    ) {
-
-        return "ta-IN";
-
-    }
-
-
-    if (
-        /[\u0C00-\u0C7F]/.test(text)
-    ) {
-
-        return "te-IN";
-
-    }
-
-
-    if (
-        /[\u0C80-\u0CFF]/.test(text)
-    ) {
-
-        return "kn-IN";
-
-    }
-
-
-    if (
-        /[\u0D00-\u0D7F]/.test(text)
-    ) {
-
-        return "ml-IN";
-
-    }
-
-
-    if (
-        /[\u0E00-\u0E7F]/.test(text)
-    ) {
-
-        return "th-TH";
-
-    }
-
-
-    if (
-        /[\u4E00-\u9FFF]/.test(text)
-    ) {
-
-        return "zh-CN";
-
-    }
-
-
-    if (
-        /[\u3040-\u30FF]/.test(text)
-    ) {
-
-        return "ja-JP";
-
-    }
-
-
-    if (
-        /[\uAC00-\uD7AF]/.test(text)
-    ) {
-
-        return "ko-KR";
-
-    }
-
-
-    if (
-        /[\u0400-\u04FF]/.test(text)
-    ) {
-
-        return "ru-RU";
-
-    }
-
-
-    if (
-        /[\u0370-\u03FF]/.test(text)
-    ) {
-
-        return "el-GR";
-
-    }
-
-
-    if (
-        /[\u0590-\u05FF]/.test(text)
-    ) {
-
-        return "he-IL";
-
-    }
-
-
-    const romanUrduWords = [
-
-        "mujhe",
-        "mujhy",
-        "aap",
-        "apko",
-        "aapko",
-        "kya",
-        "hai",
-        "hain",
-        "kaise",
-        "kyun",
-        "kyunke",
-        "mera",
-        "meri",
-        "mere",
-        "batao",
-        "samjhao",
-        "karna",
-        "karo",
-        "krna",
-        "acha",
-        "theek",
-        "nahi",
-        "nahin",
-        "chahiye"
-
-    ];
-
-
-    const lowerText =
-        text.toLowerCase();
-
-
-    const words =
-        lowerText.split(/\s+/);
-
-
-    if (
-        romanUrduWords.some(
-            word =>
-                words.includes(word)
-        )
-    ) {
-
-        return "ur-PK";
-
-    }
-
-
-    return "en-US";
-
-}
-
-
-/* ============================================================
-   FIND BEST INSTALLED VOICE
-============================================================ */
-
-function findBestVoice(
-    language
-) {
-
-    refreshVoices();
-
-
-    if (!availableVoices.length) {
-
-        return null;
-
-    }
-
-
-    const target =
-        language.toLowerCase();
-
-
-    const prefix =
-        target.split("-")[0];
-
-
-    let matches =
-        availableVoices.filter(
-            function (voice) {
-
-                return (
-                    voice.lang &&
-                    voice.lang.toLowerCase() ===
-                    target
-                );
-
-            }
-        );
-
-
-    if (matches.length) {
-
-        const preferred =
-            matches.find(
-                function (voice) {
-
-                    const name =
-                        voice.name.toLowerCase();
-
-                    return (
-                        name.includes(
-                            prefix
-                        ) ||
-                        name.includes(
-                            languageName(prefix)
-                        )
-                    );
-
-                }
-            );
-
-
-        return preferred ||
-               matches[0];
-
-    }
-
-
-    matches =
-        availableVoices.filter(
-            function (voice) {
-
-                return (
-                    voice.lang &&
-                    voice.lang
-                        .toLowerCase()
-                        .startsWith(prefix)
-                );
-
-            }
-        );
-
-
-    if (matches.length) {
-
-        return matches[0];
-
-    }
-
-
-    const targetName =
-        languageName(prefix);
-
-
-    const named =
-        availableVoices.find(
-            function (voice) {
-
-                return (
-                    voice.name &&
-                    voice.name
-                        .toLowerCase()
-                        .includes(targetName)
-                );
-
-            }
-        );
-
-
-    return named || null;
-
-}
-
-
-/* ============================================================
-   LANGUAGE NAME
-============================================================ */
-
-function languageName(
-    code
-) {
-
-    const names = {
-
-        ur: "urdu",
-        en: "english",
-        hi: "hindi",
-        ar: "arabic",
-        bn: "bengali",
-        pa: "punjabi",
-        gu: "gujarati",
-        ta: "tamil",
-        te: "telugu",
-        kn: "kannada",
-        ml: "malayalam",
-        th: "thai",
-        zh: "chinese",
-        ja: "japanese",
-        ko: "korean",
-        ru: "russian",
-        fr: "french",
-        de: "german",
-        es: "spanish",
-        it: "italian",
-        pt: "portuguese",
-        tr: "turkish",
-        nl: "dutch",
-        pl: "polish",
-        he: "hebrew",
-        el: "greek"
-
-    };
-
-
-    return names[code] || code;
-
-}
-
-
-/* ============================================================
-   CLEAN TEXT BEFORE SPEAKING
-============================================================ */
-
-function cleanTextForSpeech(
-    text
-) {
-
-    let clean =
-        String(text || "");
-
-
-    clean =
-        clean.replace(
-            /```[\s\S]*?```/g,
-            " "
-        );
-
-
-    clean =
-        clean.replace(
-            /`([^`]+)`/g,
-            "$1"
-        );
-
-
-    clean =
-        clean.replace(
-            /\[([^\]]+)\]\([^)]+\)/g,
-            "$1"
-        );
-
-
-    clean =
-        clean.replace(
-            /https?:\/\/\S+/gi,
-            " "
-        );
-
-
-    clean =
-        clean.replace(
-            /[*_#~>|]/g,
-            " "
-        );
-
-
-    clean =
-        clean.replace(
-            /\s+/g,
-            " "
-        );
-
-
-    return clean.trim();
-
-}
-
-
-/* ============================================================
-   SPLIT LONG RESPONSE
-============================================================ */
-
-function splitSpeechText(
-    text,
-    maxLength = 220
-) {
-
-    const sentences =
-        text.match(
-            /[^.!?۔؟]+[.!?۔؟]?/g
-        ) || [text];
-
-
-    const chunks = [];
-
-    let current = "";
-
-
-    sentences.forEach(
-        function (sentence) {
-
-            const cleanSentence =
-                sentence.trim();
-
-
-            const combined =
-                (
-                    current +
-                    " " +
-                    cleanSentence
-                ).trim();
-
-
-            if (
-                combined.length <=
-                maxLength
-            ) {
-
-                current =
-                    combined;
-
-            } else {
-
-                if (current) {
-
-                    chunks.push(
-                        current
-                    );
-
-                }
-
-
-                if (
-                    cleanSentence.length >
-                    maxLength
-                ) {
-
-                    const words =
-                        cleanSentence.split(
-                            " "
-                        );
-
-                    let part = "";
-
-
-                    words.forEach(
-                        function (word) {
-
-                            const test =
-                                (
-                                    part +
-                                    " " +
-                                    word
-                                ).trim();
-
-
-                            if (
-                                test.length <=
-                                maxLength
-                            ) {
-
-                                part =
-                                    test;
-
-                            } else {
-
-                                if (part) {
-
-                                    chunks.push(
-                                        part
-                                    );
-
-                                }
-
-                                part =
-                                    word;
-
-                            }
-
-                        }
-                    );
-
-
-                    current =
-                        part;
-
-                } else {
-
-                    current =
-                        cleanSentence;
-
-                }
-
-            }
-
-        }
-    );
-
-
-    if (current) {
-
-        chunks.push(
-            current
-        );
-
-    }
-
-
-    return chunks;
-
-}
-
-
-/* ============================================================
-   SPEAK
-============================================================ */
-
-function speak(
-    text
-) {
-
-    if (
-        !("speechSynthesis" in window)
-    ) {
-
-        return;
-
-    }
-
-
-    const cleanText =
-        cleanTextForSpeech(
-            text
-        );
-
-
-    if (!cleanText) {
-
-        return;
-
-    }
-
-
-    window.speechSynthesis.cancel();
-
-
-    const generation =
-        ++speechGeneration;
-
-
-    const language =
-        detectVoiceLanguage(
-            cleanText
-        );
-
-
-    const chunks =
-        splitSpeechText(
-            cleanText
-        );
-
-
-    refreshVoices();
-
-
-    let voice =
-        findBestVoice(
-            language
-        );
-
-
-    if (
-        !voice &&
-        availableVoices.length === 0
-    ) {
-
-        setTimeout(
-            function () {
-
-                if (
-                    generation ===
-                    speechGeneration
-                ) {
-
-                    speak(text);
-
-                }
-
-            },
-            500
-        );
-
-        return;
-
-    }
-
-
-    let index = 0;
-
-
-    function speakNext() {
-
-        if (
-            generation !==
-            speechGeneration
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            index >= chunks.length
-        ) {
-
-            return;
-
-        }
-
-
-        const chunk =
-            chunks[index++];
-
-
-        const utterance =
-            new SpeechSynthesisUtterance(
-                chunk
-            );
-
-
-        utterance.lang =
-            language;
-
-
-        if (voice) {
-
-            utterance.voice =
-                voice;
-
-            utterance.lang =
-                voice.lang ||
-                language;
-
-        }
-
-
-        if (
-            language === "ur-PK"
-        ) {
-
-            utterance.rate =
-                0.86;
-
-        } else if (
-            language === "hi-IN"
-        ) {
-
-            utterance.rate =
-                0.90;
-
-        } else if (
-            language === "ar-SA"
-        ) {
-
-            utterance.rate =
-                0.90;
-
-        } else {
-
-            utterance.rate =
-                0.94;
-
-        }
-
-
-        utterance.pitch =
-            1;
-
-        utterance.volume =
-            1;
-
-
-        utterance.onend =
-            function () {
-
-                speakNext();
-
-            };
-
-
-        utterance.onerror =
-            function (event) {
-
-                console.warn(
-                    "Speech error:",
-                    event.error
-                );
-
-                speakNext();
-
-            };
-
-
-        window.speechSynthesis.speak(
-            utterance
-        );
-
-    }
-
-
-    speakNext();
-
-}
-
-
-/* ============================================================
-   STOP SPEECH
-============================================================ */
-
-function stopSpeaking() {
-
-    speechGeneration++;
-
-
-    if (
-        "speechSynthesis" in window
-    ) {
-
-        window.speechSynthesis.cancel();
-
-    }
-
-}
-
-
-/* ============================================================
    DELETE CHAT
 ============================================================ */
 
@@ -2523,8 +1615,6 @@ async function deleteChat(
 
             currentChatId =
                 null;
-
-            stopSpeaking();
 
             clearChatUI();
 
@@ -2582,8 +1672,6 @@ async function clearAllHistory() {
             currentChatId =
                 null;
 
-            stopSpeaking();
-
             clearChatUI();
 
             await loadChatHistory();
@@ -2617,9 +1705,7 @@ function clearChatUI() {
    SUGGESTIONS
 ============================================================ */
 
-function useSuggestion(
-    text
-) {
+function useSuggestion(text) {
 
     input.value =
         text;
@@ -2708,20 +1794,6 @@ function closeMobileSidebar() {
     }
 
 }
-
-
-/* ============================================================
-   STOP SPEECH BEFORE PAGE CLOSE
-============================================================ */
-
-window.addEventListener(
-    "beforeunload",
-    function () {
-
-        stopSpeaking();
-
-    }
-);
 
 </script>
 
