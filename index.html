@@ -202,14 +202,47 @@
 
             <div class="input-box">
 
-                <button
-                    class="voice-button"
-                    id="voiceButton"
-                    onclick="startVoiceInput()"
-                    title="Voice input"
-                >
-                    🎤
-                </button>
+             <button
+    id="micButton"
+    class="mic-button"
+    type="button"
+    onclick="toggleVoiceInput()"
+    aria-label="Voice input"
+    title="Voice input"
+>
+    <svg
+        class="mic-svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <rect
+            x="9"
+            y="3"
+            width="6"
+            height="11"
+            rx="3"
+            class="mic-stroke"
+        />
+
+        <path
+            d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
+            class="mic-stroke"
+        />
+
+        <path
+            d="M12 18V21"
+            class="mic-stroke"
+        />
+
+        <path
+            d="M8.5 21H15.5"
+            class="mic-stroke"
+        />
+    </svg>
+
+    <span class="mic-pulse"></span>
+</button>
 
 
                 <textarea
