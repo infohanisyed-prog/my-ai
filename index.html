@@ -24,7 +24,7 @@
 
             <div class="brand">
                 <span class="brand-icon">✦</span>
-                <span>Hani AI</span>
+                <span>My AI</span>
             </div>
 
             <button
@@ -410,7 +410,7 @@ function toggleTheme() {
         );
 
     localStorage.setItem(
-        "ai-theme",
+        "hani-theme",
         isDark ? "dark" : "light"
     );
 
@@ -422,13 +422,8 @@ function loadTheme() {
 
     const savedTheme =
         localStorage.getItem(
-            "ai-theme"
+            "hani-theme"
         );
-
-
-    /*
-       Dark blue is default.
-    */
 
     if (savedTheme !== "light") {
 
@@ -437,7 +432,6 @@ function loadTheme() {
         );
 
     }
-
 
     updateThemeIcon();
 }
@@ -946,18 +940,22 @@ function addMessage(
             : "message ai-message";
 
 
-    const avatar =
-        sender === "You"
-            ? ""
-            : "✦";
-
+    /*
+       AI ke liye ✦ icon show hoga.
+       You ke liye koi icon nahi hoga.
+    */
 
     wrapper.innerHTML = `
 
-        <div class="message-avatar">
-            ${avatar}
-        </div>
-
+        ${
+            sender === "AI"
+                ? `
+                    <div class="message-avatar">
+                        ✦
+                    </div>
+                  `
+                : ""
+        }
 
         <div class="message-content">
 
@@ -1109,10 +1107,6 @@ async function sendMessage() {
     }
 
 
-    /*
-       Stop microphone if recording.
-    */
-
     if (
         isRecording &&
         recognition
@@ -1231,6 +1225,7 @@ async function sendMessage() {
             addMessage(
                 "AI",
                 data.reply ||
+                data.error ||
                 "Something went wrong."
             );
 
@@ -1249,10 +1244,6 @@ async function sendMessage() {
 
             }
 
-
-            /*
-               Speak AI response.
-            */
 
             if (data.reply) {
 
@@ -1523,10 +1514,6 @@ function detectSpeechInputLanguage() {
             .toLowerCase();
 
 
-    /*
-       Urdu script
-    */
-
     if (
         /[\u0600-\u06FF]/.test(text)
     ) {
@@ -1535,10 +1522,6 @@ function detectSpeechInputLanguage() {
 
     }
 
-
-    /*
-       Roman Urdu
-    */
 
     const romanUrduWords = [
 
@@ -1662,11 +1645,6 @@ function setupSpeechSynthesis() {
     refreshVoices();
 
 
-    /*
-       Chrome/Edge sometimes load voices
-       after the page has loaded.
-    */
-
     window.speechSynthesis.onvoiceschanged =
         function () {
 
@@ -1712,10 +1690,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Urdu-specific characters
-    */
-
     if (
         /[پٹڈڑںھہژچگے]/.test(text)
     ) {
@@ -1724,10 +1698,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Hindi
-    */
 
     if (
         /[\u0900-\u097F]/.test(text)
@@ -1738,10 +1708,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Arabic
-    */
-
     if (
         /[\u0600-\u06FF]/.test(text)
     ) {
@@ -1750,10 +1716,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Bengali
-    */
 
     if (
         /[\u0980-\u09FF]/.test(text)
@@ -1764,10 +1726,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Punjabi
-    */
-
     if (
         /[\u0A00-\u0A7F]/.test(text)
     ) {
@@ -1776,10 +1734,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Gujarati
-    */
 
     if (
         /[\u0A80-\u0AFF]/.test(text)
@@ -1790,10 +1744,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Tamil
-    */
-
     if (
         /[\u0B80-\u0BFF]/.test(text)
     ) {
@@ -1802,10 +1752,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Telugu
-    */
 
     if (
         /[\u0C00-\u0C7F]/.test(text)
@@ -1816,10 +1762,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Kannada
-    */
-
     if (
         /[\u0C80-\u0CFF]/.test(text)
     ) {
@@ -1828,10 +1770,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Malayalam
-    */
 
     if (
         /[\u0D00-\u0D7F]/.test(text)
@@ -1842,10 +1780,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Thai
-    */
-
     if (
         /[\u0E00-\u0E7F]/.test(text)
     ) {
@@ -1854,10 +1788,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Chinese
-    */
 
     if (
         /[\u4E00-\u9FFF]/.test(text)
@@ -1868,10 +1798,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Japanese
-    */
-
     if (
         /[\u3040-\u30FF]/.test(text)
     ) {
@@ -1880,10 +1806,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Korean
-    */
 
     if (
         /[\uAC00-\uD7AF]/.test(text)
@@ -1894,10 +1816,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Russian
-    */
-
     if (
         /[\u0400-\u04FF]/.test(text)
     ) {
@@ -1906,10 +1824,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Greek
-    */
 
     if (
         /[\u0370-\u03FF]/.test(text)
@@ -1920,10 +1834,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Hebrew
-    */
-
     if (
         /[\u0590-\u05FF]/.test(text)
     ) {
@@ -1932,10 +1842,6 @@ function detectVoiceLanguage(
 
     }
 
-
-    /*
-       Roman Urdu
-    */
 
     const romanUrduWords = [
 
@@ -1987,10 +1893,6 @@ function detectVoiceLanguage(
     }
 
 
-    /*
-       Default
-    */
-
     return "en-US";
 
 }
@@ -2022,10 +1924,6 @@ function findBestVoice(
         target.split("-")[0];
 
 
-    /*
-       Exact language match
-    */
-
     let matches =
         availableVoices.filter(
             function (voice) {
@@ -2041,11 +1939,6 @@ function findBestVoice(
 
 
     if (matches.length) {
-
-        /*
-           Prefer voices whose name
-           clearly identifies the language.
-        */
 
         const preferred =
             matches.find(
@@ -2073,10 +1966,6 @@ function findBestVoice(
     }
 
 
-    /*
-       Same language family
-    */
-
     matches =
         availableVoices.filter(
             function (voice) {
@@ -2098,10 +1987,6 @@ function findBestVoice(
 
     }
 
-
-    /*
-       Search by voice name
-    */
 
     const targetName =
         languageName(prefix);
@@ -2184,20 +2069,12 @@ function cleanTextForSpeech(
         String(text || "");
 
 
-    /*
-       Remove code blocks
-    */
-
     clean =
         clean.replace(
             /```[\s\S]*?```/g,
             " "
         );
 
-
-    /*
-       Remove inline code
-    */
 
     clean =
         clean.replace(
@@ -2206,20 +2083,12 @@ function cleanTextForSpeech(
         );
 
 
-    /*
-       Convert markdown links
-    */
-
     clean =
         clean.replace(
             /\[([^\]]+)\]\([^)]+\)/g,
             "$1"
         );
 
-
-    /*
-       Remove URLs
-    */
 
     clean =
         clean.replace(
@@ -2228,20 +2097,12 @@ function cleanTextForSpeech(
         );
 
 
-    /*
-       Remove markdown characters
-    */
-
     clean =
         clean.replace(
             /[*_#~>|]/g,
             " "
         );
 
-
-    /*
-       Remove excessive spaces
-    */
 
     clean =
         clean.replace(
@@ -2308,10 +2169,6 @@ function splitSpeechText(
 
                 }
 
-
-                /*
-                   Very long sentence
-                */
 
                 if (
                     cleanSentence.length >
@@ -2424,16 +2281,8 @@ function speak(
     }
 
 
-    /*
-       Stop previous response
-    */
-
     window.speechSynthesis.cancel();
 
-
-    /*
-       New speech session
-    */
 
     const generation =
         ++speechGeneration;
@@ -2459,11 +2308,6 @@ function speak(
             language
         );
 
-
-    /*
-       Browser voices sometimes become
-       available a little later.
-    */
 
     if (
         !voice &&
@@ -2495,11 +2339,6 @@ function speak(
 
 
     function speakNext() {
-
-        /*
-           Stop if a newer response
-           started speaking.
-        */
 
         if (
             generation !==
@@ -2545,10 +2384,6 @@ function speak(
 
         }
 
-
-        /*
-           Language-specific speed.
-        */
 
         if (
             language === "ur-PK"
@@ -2601,12 +2436,6 @@ function speak(
                     "Speech error:",
                     event.error
                 );
-
-
-                /*
-                   Don't stop the whole
-                   response if one chunk fails.
-                */
 
                 speakNext();
 
