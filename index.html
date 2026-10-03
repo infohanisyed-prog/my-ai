@@ -200,26 +200,43 @@ async function sendMessage() {
     }
 }
 
-function clearChat() {
-    if (busy) return;
+async function clearChat() {
 
-    window.speechSynthesis?.cancel();
-    history = [];
+    try {
 
+        await fetch("/clear", {
+            method: "POST"
+        });
+
+    } catch (error) {
+
+        console.log("Could not clear server history.");
+
+    }
+
+    // Clear visible chat
     chatArea.innerHTML = `
-        <section class="welcome" id="welcome">
-            <div class="welcome-icon">✦</div>
-            <h2>How can I help you?</h2>
-            <p>Ask me anything. I'm here to help with explanations, ideas, coding and more.</p>
-            <div class="suggestions">
-                <button data-prompt="Explain Python in simple words">Explain Python simply</button>
-                <button data-prompt="Help me write a professional email">Write an email</button>
-                <button data-prompt="Give me a study plan for today">Make a study plan</button>
+
+        <div class="welcome">
+
+            <div class="welcome-icon">
+                ✨
             </div>
-        </section>
+
+            <h2>How can I help you?</h2>
+
+            <p>
+                I'm Hani's AI assistant.
+                Ask me anything and let's get started.
+            </p>
+
+        </div>
+
     `;
 
-    attachSuggestions();
+    // Stop voice
+    window.speechSynthesis.cancel();
+
     input.focus();
 }
 
