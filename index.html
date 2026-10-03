@@ -1,282 +1,1570 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0b0f19">
-    <title>MY AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Hani AI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
 </head>
 
 <body>
+
 <div class="app">
 
-    <header class="header">
-        <div class="brand">
-            <div class="logo">✦</div>
-            <div>
-                <h1>MY AI</h1>
-                <div class="online"><span></span> Online</div>
+    <!-- ============================================= -->
+    <!-- SIDEBAR -->
+    <!-- ============================================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="brand">
+                <span class="brand-icon">✦</span>
+                <span>Hani AI</span>
             </div>
+
+            <button
+                class="close-sidebar"
+                onclick="toggleSidebar()"
+            >
+                ×
+            </button>
+
         </div>
 
-        <div class="header-actions">
-            <button class="icon-btn" id="themeButton" title="Change theme">☼</button>
-            <button class="new-chat" id="newChat">＋ New chat</button>
+
+        <button
+            class="new-chat-button"
+            onclick="createNewChat()"
+        >
+            <span>＋</span>
+            <span>New Chat</span>
+        </button>
+
+
+        <div class="history-title">
+            Chat History
         </div>
-    </header>
 
-    <main class="chat-area" id="chatArea">
-        <section class="welcome" id="welcome">
-            <div class="welcome-icon">✦</div>
-            <h2>How can I help you?</h2>
-            <p>Ask me anything. I'm here to help with explanations, ideas, coding and more.</p>
 
-            <div class="suggestions">
-                <button data-prompt="Explain Python in simple words">Explain Python simply</button>
-                <button data-prompt="Help me write a professional email">Write an email</button>
-                <button data-prompt="Give me a study plan for today">Make a study plan</button>
+        <div
+            class="chat-list"
+            id="chatList"
+        >
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <button
+                class="clear-history"
+                onclick="clearAllHistory()"
+            >
+                🗑️
+                <span>Clear History</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ============================================= -->
+    <!-- MAIN AREA -->
+    <!-- ============================================= -->
+
+    <main class="main">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <button
+                class="menu-button"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+
+            <div class="topbar-title">
+
+                <div class="topbar-logo">
+                    ✦
+                </div>
+
+                <div>
+
+                    <strong>
+                        Hani AI
+                    </strong>
+
+                    <span>
+                        AI Assistant
+                    </span>
+
+                </div>
+
             </div>
+
+
+            <button
+                class="theme-button"
+                onclick="toggleTheme()"
+                title="Toggle theme"
+            >
+                ◐
+            </button>
+
+        </header>
+
+
+        <!-- ========================================= -->
+        <!-- CHAT -->
+        <!-- ========================================= -->
+
+        <section
+            class="chat-area"
+            id="chatArea"
+        >
+
+            <div
+                class="welcome"
+                id="welcome"
+            >
+
+                <div class="welcome-icon">
+                    ✦
+                </div>
+
+                <h1>
+                    How can I help you?
+                </h1>
+
+                <p>
+                    Ask me anything. I can understand
+                    multiple languages and remember
+                    your conversation.
+                </p>
+
+
+                <div class="suggestions">
+
+                    <button
+                        onclick="useSuggestion('Explain Python in simple words')"
+                    >
+                        💻 Explain Python
+                    </button>
+
+                    <button
+                        onclick="useSuggestion('Teach me computer networking')"
+                    >
+                        🌐 Learn Networking
+                    </button>
+
+                    <button
+                        onclick="useSuggestion('Explain this in Roman Urdu')"
+                    >
+                        🇵🇰 Roman Urdu
+                    </button>
+
+                    <button
+                        onclick="useSuggestion('Help me with my project')"
+                    >
+                        ✨ Project Help
+                    </button>
+
+                </div>
+
+            </div>
+
         </section>
+
+
+        <!-- ========================================= -->
+        <!-- INPUT -->
+        <!-- ========================================= -->
+
+        <div class="input-section">
+
+            <div class="input-box">
+
+                <button
+                    class="voice-button"
+                    id="voiceButton"
+                    onclick="startVoiceInput()"
+                    title="Voice input"
+                >
+                    🎤
+                </button>
+
+
+                <textarea
+                    id="messageInput"
+                    placeholder="Message Hani AI..."
+                    rows="1"
+                    autocomplete="off"
+                ></textarea>
+
+
+                <button
+                    class="send-button"
+                    id="sendButton"
+                    onclick="sendMessage()"
+                    title="Send"
+                >
+                    ↑
+                </button>
+
+            </div>
+
+
+            <div class="input-hint">
+
+                Hani AI can make mistakes.
+                Check important information.
+
+            </div>
+
+        </div>
+
     </main>
 
-    <footer class="footer">
-        <div class="input-wrapper">
-            <button class="plus-btn" title="More options">＋</button>
-            <input
-                type="text"
-                id="messageInput"
-                placeholder="Message Hani AI..."
-                autocomplete="off"
-                maxlength="8000"
-            >
-            <button id="sendButton" class="send-button" title="Send">↑</button>
-        </div>
-
-        <div class="footer-row">
-            <span>Hani AI can make mistakes. Check important information.</span>
-            <button class="stop-button" id="stopVoice">🔇 Stop voice</button>
-        </div>
-    </footer>
 </div>
 
+
+<!-- ============================================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================================= -->
+
 <script>
-const input = document.getElementById("messageInput");
-const sendButton = document.getElementById("sendButton");
-const chatArea = document.getElementById("chatArea");
-const newChatButton = document.getElementById("newChat");
-const stopVoiceButton = document.getElementById("stopVoice");
-const themeButton = document.getElementById("themeButton");
 
-let history = [];
-let busy = false;
+let currentChatId = null;
+let isLoading = false;
+let recognition = null;
 
-function scrollBottom() {
-    chatArea.scrollTo({ top: chatArea.scrollHeight, behavior: "smooth" });
-}
 
-function removeWelcome() {
-    const welcome = document.getElementById("welcome");
-    if (welcome) welcome.remove();
-}
+/* ==================================================
+   ELEMENTS
+================================================== */
 
-function addMessage(sender, message) {
-    const row = document.createElement("div");
-    row.className = `message-row ${sender === "You" ? "user-row" : "ai-row"}`;
+const chatArea =
+    document.getElementById("chatArea");
 
-    const avatar = document.createElement("div");
-    avatar.className = `avatar ${sender === "You" ? "user-avatar" : "ai-avatar"}`;
-    avatar.textContent = sender === "You" ? "You" : "✦";
+const chatList =
+    document.getElementById("chatList");
 
-    const body = document.createElement("div");
-    body.className = "message-body";
+const input =
+    document.getElementById("messageInput");
 
-    const name = document.createElement("div");
-    name.className = "sender-name";
-    name.textContent = sender === "You" ? "You" : "Hani AI";
+const sendButton =
+    document.getElementById("sendButton");
 
-    const text = document.createElement("div");
-    text.className = "message-text";
-    text.textContent = message;
+const voiceButton =
+    document.getElementById("voiceButton");
 
-    body.appendChild(name);
-    body.appendChild(text);
+const sidebar =
+    document.getElementById("sidebar");
 
-    if (sender !== "You") {
-        const actions = document.createElement("div");
-        actions.className = "message-actions";
 
-        const copy = document.createElement("button");
-        copy.textContent = "Copy";
-        copy.onclick = async () => {
-            try {
-                await navigator.clipboard.writeText(message);
-                copy.textContent = "Copied ✓";
-                setTimeout(() => copy.textContent = "Copy", 1200);
-            } catch {
-                copy.textContent = "Copy failed";
-                setTimeout(() => copy.textContent = "Copy", 1200);
-            }
-        };
+/* ==================================================
+   INITIALIZE
+================================================== */
 
-        const speakBtn = document.createElement("button");
-        speakBtn.textContent = "🔊 Read";
-        speakBtn.onclick = () => speak(message);
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
-        actions.append(copy, speakBtn);
-        body.appendChild(actions);
+        await loadChatHistory();
+
+        setupVoiceRecognition();
+
+        autoResize();
+
     }
+);
 
-    row.append(avatar, body);
-    chatArea.appendChild(row);
-    scrollBottom();
+
+/* ==================================================
+   SIDEBAR
+================================================== */
+
+function toggleSidebar() {
+
+    sidebar.classList.toggle("open");
+
 }
 
-function showTyping() {
-    const row = document.createElement("div");
-    row.id = "typing";
-    row.className = "message-row ai-row";
 
-    row.innerHTML = `
-        <div class="avatar ai-avatar">✦</div>
-        <div class="typing-bubble">
-            <span></span><span></span><span></span>
-        </div>
-    `;
+/* ==================================================
+   LOAD CHAT HISTORY
+================================================== */
 
-    chatArea.appendChild(row);
-    scrollBottom();
-}
-
-function removeTyping() {
-    document.getElementById("typing")?.remove();
-}
-
-async function sendMessage() {
-    const message = input.value.trim();
-    if (!message || busy) return;
-
-    removeWelcome();
-    addMessage("You", message);
-    input.value = "";
-    busy = true;
-    sendButton.disabled = true;
-    sendButton.innerHTML = "…";
-    showTyping();
+async function loadChatHistory() {
 
     try {
-        const response = await fetch("/chat", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                message: message,
-                history: history
-            })
-        });
 
-        const data = await response.json();
-        removeTyping();
+        const response =
+            await fetch("/api/chats");
 
-        if (!response.ok) {
-            throw new Error(data.reply || "Server error");
+        const data =
+            await response.json();
+
+        if (!data.success) {
+            return;
         }
 
-        const reply = data.reply || "I couldn't generate a response.";
-        addMessage("AI", reply);
+        renderChatList(data.chats);
 
-        history.push({role: "user", content: message});
-        history.push({role: "assistant", content: reply});
+        if (data.chats.length > 0) {
 
-        speak(reply);
+            await openChat(
+                data.chats[0].id
+            );
+
+        }
+
     } catch (error) {
-        removeTyping();
-        addMessage("AI", "⚠️ I couldn't connect to the server. Please try again.");
-        console.error(error);
-    } finally {
-        busy = false;
-        sendButton.disabled = false;
-        sendButton.innerHTML = "↑";
-        input.focus();
+
+        console.error(
+            "History error:",
+            error
+        );
+
     }
+
 }
 
-async function clearChat() {
+
+/* ==================================================
+   RENDER CHAT LIST
+================================================== */
+
+function renderChatList(chats) {
+
+    chatList.innerHTML = "";
+
+    if (!chats.length) {
+
+        chatList.innerHTML = `
+            <div class="empty-history">
+                No previous chats
+            </div>
+        `;
+
+        return;
+    }
+
+
+    chats.forEach(chat => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "chat-history-item";
+
+
+        if (chat.id === currentChatId) {
+
+            item.classList.add("active");
+
+        }
+
+
+        item.innerHTML = `
+
+            <button
+                class="chat-history-main"
+                onclick="openChat('${chat.id}')"
+            >
+
+                <span class="chat-history-icon">
+                    💬
+                </span>
+
+                <span class="chat-history-title">
+                    ${escapeHtml(chat.title)}
+                </span>
+
+            </button>
+
+
+            <button
+                class="delete-chat"
+                onclick="deleteChat(event, '${chat.id}')"
+                title="Delete chat"
+            >
+                ⋮
+            </button>
+
+        `;
+
+
+        chatList.appendChild(item);
+
+    });
+
+}
+
+
+/* ==================================================
+   CREATE NEW CHAT
+================================================== */
+
+async function createNewChat() {
 
     try {
 
-        await fetch("/clear", {
-            method: "POST"
-        });
+        const response =
+            await fetch(
+                "/api/chats",
+                {
+                    method: "POST"
+                }
+            );
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            alert(
+                "Could not create a new chat."
+            );
+
+            return;
+
+        }
+
+
+        currentChatId =
+            data.chat.id;
+
+
+        clearChatUI();
+
+
+        await loadChatHistory();
+
+
+        if (
+            window.innerWidth < 800
+        ) {
+
+            sidebar.classList.remove(
+                "open"
+            );
+
+        }
+
+        input.focus();
+
 
     } catch (error) {
 
-        console.log("Could not clear server history.");
+        console.error(error);
 
     }
 
-    // Clear visible chat
+}
+
+
+/* ==================================================
+   OPEN CHAT
+================================================== */
+
+async function openChat(chatId) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/chats/${chatId}`
+            );
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            return;
+
+        }
+
+
+        currentChatId =
+            chatId;
+
+
+        renderMessages(
+            data.chat.messages
+        );
+
+
+        renderChatList(
+            await getChatList()
+        );
+
+
+        if (
+            window.innerWidth < 800
+        ) {
+
+            sidebar.classList.remove(
+                "open"
+            );
+
+        }
+
+
+        input.focus();
+
+
+    } catch (error) {
+
+        console.error(
+            "Open chat error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   GET CHAT LIST
+================================================== */
+
+async function getChatList() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chats"
+            );
+
+        const data =
+            await response.json();
+
+        return data.chats || [];
+
+    } catch {
+
+        return [];
+
+    }
+
+}
+
+
+/* ==================================================
+   RENDER MESSAGES
+================================================== */
+
+function renderMessages(messages) {
+
+    chatArea.innerHTML = "";
+
+
+    if (!messages.length) {
+
+        showWelcome();
+
+        return;
+
+    }
+
+
+    messages.forEach(message => {
+
+        addMessage(
+            message.role === "user"
+                ? "You"
+                : "AI",
+            message.content,
+            false
+        );
+
+    });
+
+
+    scrollToBottom();
+
+}
+
+
+/* ==================================================
+   WELCOME
+================================================== */
+
+function showWelcome() {
+
     chatArea.innerHTML = `
 
         <div class="welcome">
 
             <div class="welcome-icon">
-                ✨
+                ✦
             </div>
 
-            <h2>How can I help you?</h2>
+            <h1>
+                How can I help you?
+            </h1>
 
             <p>
-                I'm Hani's AI assistant.
-                Ask me anything and let's get started.
+                Ask me anything. I can understand
+                multiple languages and remember
+                your conversation.
             </p>
+
+
+            <div class="suggestions">
+
+                <button
+                    onclick="useSuggestion('Explain Python in simple words')"
+                >
+                    💻 Explain Python
+                </button>
+
+                <button
+                    onclick="useSuggestion('Teach me computer networking')"
+                >
+                    🌐 Learn Networking
+                </button>
+
+                <button
+                    onclick="useSuggestion('Explain this in Roman Urdu')"
+                >
+                    🇵🇰 Roman Urdu
+                </button>
+
+                <button
+                    onclick="useSuggestion('Help me with my project')"
+                >
+                    ✨ Project Help
+                </button>
+
+            </div>
 
         </div>
 
     `;
 
-    // Stop voice
-    window.speechSynthesis.cancel();
+}
+
+
+/* ==================================================
+   ADD MESSAGE
+================================================== */
+
+function addMessage(
+    sender,
+    message,
+    scroll = true
+) {
+
+    const messageWrapper =
+        document.createElement("div");
+
+    messageWrapper.className =
+        sender === "You"
+            ? "message user-message"
+            : "message ai-message";
+
+
+    const avatar =
+        sender === "You"
+            ? "👤"
+            : "✦";
+
+
+    messageWrapper.innerHTML = `
+
+        <div class="message-avatar">
+            ${avatar}
+        </div>
+
+        <div class="message-content">
+
+            <div class="message-name">
+                ${sender}
+            </div>
+
+            <div class="message-text">
+                ${formatMessage(message)}
+            </div>
+
+        </div>
+
+    `;
+
+
+    chatArea.appendChild(
+        messageWrapper
+    );
+
+
+    if (scroll) {
+
+        scrollToBottom();
+
+    }
+
+}
+
+
+/* ==================================================
+   FORMAT MESSAGE
+================================================== */
+
+function formatMessage(text) {
+
+    const escaped =
+        escapeHtml(text);
+
+
+    return escaped
+        .replace(
+            /```([\s\S]*?)```/g,
+            "<pre><code>$1</code></pre>"
+        )
+        .replace(
+            /\n/g,
+            "<br>"
+        );
+
+}
+
+
+/* ==================================================
+   ESCAPE HTML
+================================================== */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+/* ==================================================
+   SEND MESSAGE
+================================================== */
+
+async function sendMessage() {
+
+    if (isLoading) {
+        return;
+    }
+
+
+    const message =
+        input.value.trim();
+
+
+    if (!message) {
+        return;
+    }
+
+
+    if (!currentChatId) {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/chats",
+                    {
+                        method: "POST"
+                    }
+                );
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+                return;
+            }
+
+            currentChatId =
+                data.chat.id;
+
+        } catch {
+
+            return;
+
+        }
+
+    }
+
+
+    const welcome =
+        document.querySelector(
+            ".welcome"
+        );
+
+
+    if (welcome) {
+        welcome.remove();
+    }
+
+
+    addMessage(
+        "You",
+        message
+    );
+
+
+    input.value = "";
+
+    autoResize();
+
+
+    isLoading = true;
+
+    sendButton.disabled = true;
+
+    voiceButton.disabled = true;
+
+
+    showTyping();
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/chat",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        message: message,
+                        chat_id:
+                            currentChatId
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        removeTyping();
+
+
+        if (!response.ok) {
+
+            addMessage(
+                "AI",
+                data.reply ||
+                "Something went wrong."
+            );
+
+        } else {
+
+            addMessage(
+                "AI",
+                data.reply
+            );
+
+
+            if (data.chat_id) {
+
+                currentChatId =
+                    data.chat_id;
+
+            }
+
+
+            if (
+                "speechSynthesis"
+                in window
+            ) {
+
+                speak(
+                    data.reply
+                );
+
+            }
+
+
+            await loadChatHistory();
+
+        }
+
+
+    } catch (error) {
+
+        removeTyping();
+
+        addMessage(
+            "AI",
+            "⚠️ I couldn't connect to the server. Please try again."
+        );
+
+    }
+
+
+    isLoading = false;
+
+    sendButton.disabled = false;
+
+    voiceButton.disabled = false;
 
     input.focus();
+
 }
+
+
+/* ==================================================
+   TYPING
+================================================== */
+
+function showTyping() {
+
+    const typing =
+        document.createElement("div");
+
+    typing.id =
+        "typingIndicator";
+
+    typing.className =
+        "message ai-message";
+
+
+    typing.innerHTML = `
+
+        <div class="message-avatar">
+            ✦
+        </div>
+
+        <div class="message-content">
+
+            <div class="message-name">
+                AI
+            </div>
+
+            <div class="typing">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    chatArea.appendChild(
+        typing
+    );
+
+
+    scrollToBottom();
+
+}
+
+
+function removeTyping() {
+
+    const typing =
+        document.getElementById(
+            "typingIndicator"
+        );
+
+    if (typing) {
+
+        typing.remove();
+
+    }
+
+}
+
+
+/* ==================================================
+   VOICE INPUT
+================================================== */
+
+function setupVoiceRecognition() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        voiceButton.title =
+            "Voice input is not supported by this browser.";
+
+        voiceButton.style.opacity =
+            "0.5";
+
+        return;
+
+    }
+
+
+    recognition =
+        new SpeechRecognition();
+
+
+    recognition.continuous =
+        false;
+
+    recognition.interimResults =
+        true;
+
+    recognition.lang =
+        "en-US";
+
+
+    recognition.onstart =
+        function () {
+
+            voiceButton.classList.add(
+                "recording"
+            );
+
+            voiceButton.innerHTML =
+                "⏹";
+
+        };
+
+
+    recognition.onresult =
+        function (event) {
+
+            let transcript = "";
+
+
+            for (
+                let i =
+                    event.resultIndex;
+                i <
+                    event.results.length;
+                i++
+            ) {
+
+                transcript +=
+                    event.results[i][0].transcript;
+
+            }
+
+
+            input.value =
+                transcript;
+
+            autoResize();
+
+        };
+
+
+    recognition.onend =
+        function () {
+
+            voiceButton.classList.remove(
+                "recording"
+            );
+
+            voiceButton.innerHTML =
+                "🎤";
+
+        };
+
+
+    recognition.onerror =
+        function (event) {
+
+            console.error(
+                "Voice error:",
+                event.error
+            );
+
+            voiceButton.classList.remove(
+                "recording"
+            );
+
+            voiceButton.innerHTML =
+                "🎤";
+
+        };
+
+}
+
+
+/* ==================================================
+   START VOICE INPUT
+================================================== */
+
+function startVoiceInput() {
+
+    if (!recognition) {
+
+        alert(
+            "Voice input is not supported by this browser."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        voiceButton.classList.contains(
+            "recording"
+        )
+    ) {
+
+        recognition.stop();
+
+        return;
+
+    }
+
+
+    recognition.lang =
+        detectSpeechLanguage();
+
+
+    recognition.start();
+
+}
+
+
+/* ==================================================
+   DETECT SPEECH LANGUAGE
+================================================== */
+
+function detectSpeechLanguage() {
+
+    const text =
+        input.value.trim();
+
+
+    if (!text) {
+
+        return "en-US";
+
+    }
+
+
+    // Urdu / Roman Urdu commonly typed words
+    const romanUrduWords = [
+        "kya",
+        "hai",
+        "hain",
+        "mujhe",
+        "aap",
+        "kaise",
+        "kyun",
+        "mera",
+        "meri",
+        "batao",
+        "samjhao",
+        "chahiye"
+    ];
+
+
+    const lower =
+        text.toLowerCase();
+
+
+    const isRomanUrdu =
+        romanUrduWords.some(
+            word =>
+                lower.includes(word)
+        );
+
+
+    if (isRomanUrdu) {
+
+        return "ur-PK";
+
+    }
+
+
+    // Urdu / Arabic script
+    if (
+        /[\u0600-\u06FF]/.test(text)
+    ) {
+
+        return "ur-PK";
+
+    }
+
+
+    return "en-US";
+
+}
+
+
+/* ==================================================
+   AI VOICE OUTPUT
+================================================== */
 
 function speak(text) {
-    if (!("speechSynthesis" in window)) return;
-    speechSynthesis.cancel();
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.rate = 1;
-    speech.volume = 1;
-    speechSynthesis.speak(speech);
-}
 
-function attachSuggestions() {
-    document.querySelectorAll("[data-prompt]").forEach(button => {
-        button.onclick = () => {
-            input.value = button.dataset.prompt;
-            sendMessage();
-        };
-    });
-}
+    if (
+        !("speechSynthesis" in window)
+    ) {
 
-newChatButton.addEventListener("click", clearChat);
-stopVoiceButton.addEventListener("click", () => speechSynthesis?.cancel());
+        return;
 
-input.addEventListener("keydown", event => {
-    if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
     }
-});
 
-sendButton.addEventListener("click", sendMessage);
 
-themeButton.addEventListener("click", () => {
-    document.body.classList.toggle("light");
-    themeButton.textContent = document.body.classList.contains("light") ? "☾" : "☼";
-});
+    window.speechSynthesis.cancel();
 
-attachSuggestions();
-input.focus();
+
+    const utterance =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+
+    utterance.lang =
+        detectVoiceLanguage(text);
+
+
+    utterance.rate =
+        1;
+
+    utterance.pitch =
+        1;
+
+
+    window.speechSynthesis.speak(
+        utterance
+    );
+
+}
+
+
+/* ==================================================
+   DETECT OUTPUT VOICE
+================================================== */
+
+function detectVoiceLanguage(text) {
+
+    if (
+        /[\u0600-\u06FF]/.test(text)
+    ) {
+
+        return "ur-PK";
+
+    }
+
+
+    if (
+        /[\u0900-\u097F]/.test(text)
+    ) {
+
+        return "hi-IN";
+
+    }
+
+
+    if (
+        /[\u0600-\u06FF]/.test(text)
+    ) {
+
+        return "ar-SA";
+
+    }
+
+
+    return "en-US";
+
+}
+
+
+/* ==================================================
+   DELETE CHAT
+================================================== */
+
+async function deleteChat(
+    event,
+    chatId
+) {
+
+    event.stopPropagation();
+
+
+    const confirmed =
+        confirm(
+            "Delete this chat?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/chats/${chatId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+            return;
+        }
+
+
+        if (
+            currentChatId === chatId
+        ) {
+
+            currentChatId = null;
+
+            clearChatUI();
+
+        }
+
+
+        await loadChatHistory();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ==================================================
+   CLEAR ALL HISTORY
+================================================== */
+
+async function clearAllHistory() {
+
+    const confirmed =
+        confirm(
+            "Delete all your chat history?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/chats",
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            currentChatId =
+                null;
+
+            clearChatUI();
+
+            await loadChatHistory();
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ==================================================
+   CLEAR CHAT UI
+================================================== */
+
+function clearChatUI() {
+
+    showWelcome();
+
+}
+
+
+/* ==================================================
+   SUGGESTIONS
+================================================== */
+
+function useSuggestion(text) {
+
+    input.value =
+        text;
+
+    autoResize();
+
+    input.focus();
+
+}
+
+
+/* ==================================================
+   ENTER TO SEND
+================================================== */
+
+input.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   AUTO RESIZE TEXTAREA
+================================================== */
+
+input.addEventListener(
+    "input",
+    autoResize
+);
+
+
+function autoResize() {
+
+    input.style.height =
+        "auto";
+
+    input.style.height =
+        Math.min(
+            input.scrollHeight,
+            150
+        ) + "px";
+
+}
+
+
+/* ==================================================
+   SCROLL
+================================================== */
+
+function scrollToBottom() {
+
+    chatArea.scrollTop =
+        chatArea.scrollHeight;
+
+}
+
+
+/* ==================================================
+   THEME
+================================================== */
+
+function toggleTheme() {
+
+    document.body.classList.toggle(
+        "dark-mode"
+    );
+
+
+    const dark =
+        document.body.classList.contains(
+            "dark-mode"
+        );
+
+
+    localStorage.setItem(
+        "hani-theme",
+        dark
+            ? "dark"
+            : "light"
+    );
+
+}
+
+
+function loadTheme() {
+
+    const theme =
+        localStorage.getItem(
+            "hani-theme"
+        );
+
+
+    if (theme === "dark") {
+
+        document.body.classList.add(
+            "dark-mode"
+        );
+
+    }
+
+}
+
+
+loadTheme();
+
 </script>
+
 </body>
 </html>
