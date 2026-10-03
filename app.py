@@ -2,15 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from groq import Groq
 import os
 
-# =========================================================
-# PROJECT PATH
-# =========================================================
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# =========================================================
-# FLASK APP
-# =========================================================
 
 app = Flask(
     __name__,
@@ -19,9 +11,9 @@ app = Flask(
     static_url_path="/static"
 )
 
-# =========================================================
+# =====================================
 # GROQ API
-# =========================================================
+# =====================================
 
 API_KEY = os.getenv("GROQ_API_KEY")
 
@@ -30,21 +22,40 @@ if not API_KEY:
 
 client = Groq(api_key=API_KEY)
 
-# =========================================================
-# HOME PAGE
-# =========================================================
+
+# =====================================
+# CHAT HISTORY
+# =====================================
+
+conversation = [
+    {
+        "role": "system",
+        "content": (
+            "You are Hani's helpful AI assistant. "
+            "Be friendly, clear, concise, and helpful. "
+            "Use simple explanations when appropriate."
+        )
+    }
+]
+
+
+# =====================================
+# HOME
+# =====================================
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# =========================================================
+# =====================================
 # CHAT
-# =========================================================
+# =====================================
 
 @app.route("/chat", methods=["POST"])
 def chat():
+
+    global conversation
 
     try:
 
@@ -57,27 +68,25 @@ def chat():
                 "reply": "Please enter a message."
             }), 400
 
+        # Add user's message to history
+        conversation.append({
+            "role": "user",
+            "content": user_message
+        })
+
+        # Send complete conversation to Groq
         response = client.chat.completions.create(
-
             model="openai/gpt-oss-120b",
-
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are Hani's helpful AI assistant. "
-                        "Be friendly, clear, concise, and helpful. "
-                        "Use simple explanations when appropriate."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": user_message
-                }
-            ]
+            messages=conversation
         )
 
         reply = response.choices[0].message.content
+
+        # Add AI response to history
+        conversation.append({
+            "role": "assistant",
+            "content": reply
+        })
 
         return jsonify({
             "reply": reply
@@ -92,12 +101,37 @@ def chat():
         }), 500
 
 
-# =========================================================
-# RUN LOCALLY
-# =========================================================
+# =====================================
+# CLEAR CHAT
+# =====================================
+
+@app.route("/clear", methods=["POST"])
+def clear_chat():
+
+    global conversation
+
+    conversation = [
+        {
+            "role": "system",
+            "content": (
+                "You are Hani's helpful AI assistant. "
+                "Be friendly, clear, concise, and helpful. "
+                "Use simple explanations when appropriate."
+            )
+        }
+    ]
+
+    return jsonify({
+        "success": True,
+        "message": "Chat history cleared."
+    })
+
+
+# =====================================
+# RUN
+# =====================================
 
 if __name__ == "__main__":
-
     app.run(
         host="0.0.0.0",
         port=5000,
