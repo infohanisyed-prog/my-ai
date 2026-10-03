@@ -16,11 +16,9 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(
     __name__,
-    template_folder=BASE_DIR,
-    static_folder=BASE_DIR,
-    static_url_path="/static"
+    template_folder="templates",
+    static_folder="static"
 )
-
 app.secret_key = os.getenv(
     "FLASK_SECRET_KEY",
     "hani-ai-development-secret-key"
