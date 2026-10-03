@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hani AI</title>
+    <title>My AI</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
@@ -94,7 +94,7 @@
                 </div>
 
                 <div>
-                    <strong>Hani AI</strong>
+                    <strong>My AI</strong>
                     <span>AI Assistant</span>
                 </div>
 
@@ -133,7 +133,7 @@
 
                     <span></span>
 
-                    Hani AI is ready
+                    My AI is ready
 
                 </div>
 
@@ -291,7 +291,7 @@
 
                 <textarea
                     id="messageInput"
-                    placeholder="Message Hani AI..."
+                    placeholder="Message My AI..."
                     rows="1"
                     autocomplete="off"
                     aria-label="Message">
@@ -315,7 +315,7 @@
 
 
             <div class="input-hint">
-                Hani AI can make mistakes. Check important information.
+                My AI can make mistakes. Check important information.
             </div>
 
         </div>
@@ -410,7 +410,7 @@ function toggleTheme() {
         );
 
     localStorage.setItem(
-        "hani-theme",
+        "ai-theme",
         isDark ? "dark" : "light"
     );
 
@@ -422,7 +422,7 @@ function loadTheme() {
 
     const savedTheme =
         localStorage.getItem(
-            "hani-theme"
+            "ai-theme"
         );
 
 
@@ -810,7 +810,7 @@ function showWelcome() {
 
                 <span></span>
 
-                Hani AI is ready
+                My AI is ready
 
             </div>
 
@@ -948,7 +948,7 @@ function addMessage(
 
     const avatar =
         sender === "You"
-            ? "👤"
+            ? ""
             : "✦";
 
 
