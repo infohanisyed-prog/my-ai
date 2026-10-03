@@ -1,5 +1,5 @@
 /* =========================================================
-   HANI AI - MAIN STYLES
+   MY AI - MAIN STYLES
 ========================================================= */
 
 * {
@@ -35,7 +35,6 @@
 ========================================================= */
 
 body.dark-mode {
-
     --bg: #07152d;
     --surface: #0b1d3a;
     --surface-2: #10284d;
@@ -92,6 +91,7 @@ body {
 
 .app {
     display: flex;
+
     width: 100%;
     height: 100vh;
 }
@@ -105,14 +105,14 @@ body {
     width: var(--sidebar-width);
     height: 100vh;
 
-    background: var(--surface);
-
-    border-right: 1px solid var(--border);
+    flex-shrink: 0;
 
     display: flex;
     flex-direction: column;
 
-    flex-shrink: 0;
+    background: var(--surface);
+
+    border-right: 1px solid var(--border);
 
     transition:
         transform 0.25s ease,
@@ -140,6 +140,7 @@ body {
 .brand {
     display: flex;
     align-items: center;
+
     gap: 10px;
 
     font-size: 19px;
@@ -180,6 +181,7 @@ body {
     display: none;
 
     border: none;
+
     background: transparent;
 
     color: var(--muted);
@@ -224,7 +226,9 @@ body {
 
 .new-chat-button:hover {
     background: var(--primary);
+
     border-color: var(--primary);
+
     color: white;
 
     transform: translateY(-1px);
@@ -233,6 +237,7 @@ body {
 
 .new-chat-icon {
     font-size: 21px;
+
     line-height: 1;
 }
 
@@ -276,6 +281,7 @@ body {
 
 .chat-list::-webkit-scrollbar-thumb {
     background: var(--border);
+
     border-radius: 10px;
 }
 
@@ -314,6 +320,7 @@ body {
     min-width: 0;
 
     border: none;
+
     background: transparent;
 
     color: var(--text);
@@ -354,6 +361,7 @@ body {
     height: 32px;
 
     border: none;
+
     background: transparent;
 
     color: var(--muted);
@@ -368,6 +376,7 @@ body {
 
 .delete-chat:hover {
     background: var(--border);
+
     color: var(--text);
 }
 
@@ -627,10 +636,7 @@ body {
 ========================================================= */
 
 .welcome {
-    width: min(
-        850px,
-        100%
-    );
+    width: min(850px, 100%);
 
     margin: 35px auto 0;
 
@@ -839,10 +845,7 @@ body {
 ========================================================= */
 
 .message {
-    width: min(
-        850px,
-        100%
-    );
+    width: min(850px, 100%);
 
     margin: 0 auto 22px;
 
@@ -858,19 +861,23 @@ body {
 
 
 @keyframes messageAppear {
-
     from {
         opacity: 0;
+
         transform: translateY(5px);
     }
 
     to {
         opacity: 1;
+
         transform: translateY(0);
     }
-
 }
 
+
+/* =========================================================
+   AI AVATAR
+========================================================= */
 
 .message-avatar {
     width: 34px;
@@ -888,16 +895,20 @@ body {
 
     border: 1px solid var(--border);
 
+    color: var(--primary);
+
     font-size: 15px;
 }
 
 
+/*
+   User avatar is intentionally not displayed.
+   The current index.html only creates an avatar for AI.
+*/
+
+
 .user-message .message-avatar {
-    background: var(--primary);
-
-    border-color: var(--primary);
-
-    color: white;
+    display: none;
 }
 
 
@@ -950,7 +961,7 @@ body {
 
 
 /* =========================================================
-   CODE
+   CODE BLOCKS
 ========================================================= */
 
 .message-text pre {
@@ -1028,19 +1039,19 @@ body {
 
 
 @keyframes typingAnimation {
-
     0%,
     60%,
     100% {
         opacity: 0.3;
+
         transform: translateY(0);
     }
 
     30% {
         opacity: 1;
+
         transform: translateY(-4px);
     }
-
 }
 
 
@@ -1065,10 +1076,7 @@ body {
 ========================================================= */
 
 .input-box {
-    width: min(
-        850px,
-        100%
-    );
+    width: min(850px, 100%);
 
     min-height: 58px;
 
@@ -1152,8 +1160,16 @@ body {
 }
 
 
+#messageInput::-webkit-scrollbar-thumb {
+    background: var(--border);
+
+    border-radius: 5px;
+}
+
+
 /* =========================================================
-   MIC BUTTON
+   MICROPHONE BUTTON
+   RIGHT SIDE OF INPUT
 ========================================================= */
 
 .mic-button {
@@ -1194,10 +1210,17 @@ body {
 }
 
 
+.mic-button:active {
+    transform: translateY(0);
+}
+
+
 .mic-button:disabled {
     opacity: 0.45;
 
     cursor: not-allowed;
+
+    transform: none;
 }
 
 
@@ -1226,6 +1249,10 @@ body {
 }
 
 
+/* =========================================================
+   RECORDING STATE
+========================================================= */
+
 .mic-button.recording {
     background: #dc2626;
 
@@ -1239,7 +1266,6 @@ body {
 
 
 @keyframes micPulse {
-
     0% {
         box-shadow:
             0 0 0 0
@@ -1272,7 +1298,6 @@ body {
                 0
             );
     }
-
 }
 
 
@@ -1317,6 +1342,11 @@ body {
 }
 
 
+.send-button:active {
+    transform: translateY(0);
+}
+
+
 .send-button:disabled {
     opacity: 0.5;
 
@@ -1331,10 +1361,7 @@ body {
 ========================================================= */
 
 .input-hint {
-    width: min(
-        850px,
-        100%
-    );
+    width: min(850px, 100%);
 
     margin: 7px auto 0;
 
@@ -1362,8 +1389,7 @@ body {
 
         width: 280px;
 
-        transform:
-            translateX(-100%);
+        transform: translateX(-100%);
 
         box-shadow:
             10px 0 35px
@@ -1377,8 +1403,7 @@ body {
 
 
     .sidebar.open {
-        transform:
-            translateX(0);
+        transform: translateX(0);
     }
 
 
@@ -1445,6 +1470,10 @@ body {
         font-size: 13px;
     }
 
+
+    .user-message .message-text {
+        max-width: 94%;
+    }
 }
 
 
@@ -1510,6 +1539,8 @@ body {
         padding: 6px 7px;
 
         border-radius: 15px;
+
+        gap: 6px;
     }
 
 
@@ -1522,10 +1553,18 @@ body {
     }
 
 
-    #messageInput {
-        font-size: 13px;
+    .mic-svg {
+        width: 19px;
+        height: 19px;
     }
 
+
+    #messageInput {
+        font-size: 13px;
+
+        padding-left: 3px;
+        padding-right: 3px;
+    }
 }
 
 
