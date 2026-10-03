@@ -8,59 +8,49 @@ from flask import Flask, render_template, request, jsonify, session
 from groq import Groq
 
 
-# =========================================
-# BASIC CONFIGURATION
-# =========================================
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(
     __name__,
-    template_folder="templates",
-    static_folder="static"
+    template_folder=BASE_DIR,
+    static_folder=BASE_DIR,
+    static_url_path="/static"
 )
+
 app.secret_key = os.getenv(
     "FLASK_SECRET_KEY",
-    "hani-ai-development-secret-key"
+    "my-ai-development-secret-key"
 )
 
 
-# =========================================
-# API KEYS
-# =========================================
+# =========================
+# ENVIRONMENT VARIABLES
+# =========================
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
-UPSTASH_REDIS_REST_URL = os.getenv(
-    "UPSTASH_REDIS_REST_URL"
-)
-
-UPSTASH_REDIS_REST_TOKEN = os.getenv(
-    "UPSTASH_REDIS_REST_TOKEN"
-)
+UPSTASH_REDIS_REST_URL = os.getenv("UPSTASH_REDIS_REST_URL")
+UPSTASH_REDIS_REST_TOKEN = os.getenv("UPSTASH_REDIS_REST_TOKEN")
 
 
-# =========================================
-# GROQ CLIENT
-# =========================================
+# =========================
+# GROQ
+# =========================
 
 groq_client = None
 
 if GROQ_API_KEY:
-    groq_client = Groq(
-        api_key=GROQ_API_KEY
-    )
+    groq_client = Groq(api_key=GROQ_API_KEY)
 
 
 MODEL_NAME = "openai/gpt-oss-120b"
 
 
-# =========================================
+# =========================
 # AI SYSTEM PROMPT
-# =========================================
+# =========================
 
 SYSTEM_PROMPT = """
-You are Hani AI, a friendly and helpful multilingual AI assistant.
+You are My AI, a friendly and helpful multilingual AI assistant.
 
 Important instructions:
 
@@ -77,12 +67,11 @@ Important instructions:
 """
 
 
-# =========================================
+# =========================
 # REDIS FUNCTIONS
-# =========================================
+# =========================
 
 def redis_is_available():
-    """Check whether Upstash Redis credentials are available."""
     return bool(
         UPSTASH_REDIS_REST_URL
         and UPSTASH_REDIS_REST_TOKEN
@@ -90,7 +79,6 @@ def redis_is_available():
 
 
 def redis_headers():
-    """Return headers required by Upstash Redis REST API."""
     return {
         "Authorization": f"Bearer {UPSTASH_REDIS_REST_TOKEN}",
         "Content-Type": "application/json"
@@ -98,11 +86,6 @@ def redis_headers():
 
 
 def redis_command(command):
-    """
-    Execute a Redis command using the Upstash REST API.
-    Returns the Redis result or None if an error occurs.
-    """
-
     if not redis_is_available():
         return None
 
@@ -129,12 +112,11 @@ def redis_command(command):
         return None
 
 
-# =========================================
-# USER / SESSION FUNCTIONS
-# =========================================
+# =========================
+# USER ID
+# =========================
 
 def get_user_id():
-    """Create a unique user ID for the current browser session."""
 
     if "user_id" not in session:
         session["user_id"] = str(uuid.uuid4())
@@ -142,36 +124,34 @@ def get_user_id():
     return session["user_id"]
 
 
-# =========================================
-# REDIS KEY FUNCTIONS
-# =========================================
+# =========================
+# REDIS KEYS
+# =========================
 
 def user_chats_key(user_id):
-    return f"hani:user:{user_id}:chats"
+    return f"myai:user:{user_id}:chats"
 
 
 def chat_key(user_id, chat_id):
-    return f"hani:user:{user_id}:chat:{chat_id}"
+    return f"myai:user:{user_id}:chat:{chat_id}"
 
 
-# =========================================
-# CHAT STORAGE FUNCTIONS
-# =========================================
+# =========================
+# CHAT FUNCTIONS
+# =========================
 
 def get_user_chats(user_id):
-    """Get all chats belonging to a user."""
 
-    result = redis_command(
-        [
-            "GET",
-            user_chats_key(user_id)
-        ]
-    )
+    result = redis_command([
+        "GET",
+        user_chats_key(user_id)
+    ])
 
     if not result:
         return []
 
     try:
+
         chats = json.loads(result)
 
         if isinstance(chats, list):
@@ -180,79 +160,75 @@ def get_user_chats(user_id):
         return []
 
     except (json.JSONDecodeError, TypeError):
+
         return []
 
 
 def save_user_chats(user_id, chats):
-    """Save user's chat list."""
 
-    redis_command(
-        [
-            "SET",
-            user_chats_key(user_id),
-            json.dumps(
-                chats,
-                ensure_ascii=False
-            )
-        ]
-    )
+    redis_command([
+        "SET",
+        user_chats_key(user_id),
+        json.dumps(
+            chats,
+            ensure_ascii=False
+        )
+    ])
 
 
 def get_chat(user_id, chat_id):
-    """Get one specific chat."""
 
     if not chat_id:
         return None
 
-    result = redis_command(
-        [
-            "GET",
-            chat_key(user_id, chat_id)
-        ]
-    )
+    result = redis_command([
+        "GET",
+        chat_key(user_id, chat_id)
+    ])
 
     if not result:
         return None
 
     try:
+
         return json.loads(result)
 
     except (json.JSONDecodeError, TypeError):
+
         return None
 
 
 def save_chat(user_id, chat):
-    """Save one chat."""
 
-    redis_command(
-        [
-            "SET",
-            chat_key(user_id, chat["id"]),
-            json.dumps(
-                chat,
-                ensure_ascii=False
-            )
-        ]
-    )
+    redis_command([
+        "SET",
+        chat_key(
+            user_id,
+            chat["id"]
+        ),
+        json.dumps(
+            chat,
+            ensure_ascii=False
+        )
+    ])
 
 
 def delete_chat_from_redis(user_id, chat_id):
-    """Delete a chat from Redis."""
 
-    redis_command(
-        [
-            "DEL",
-            chat_key(user_id, chat_id)
-        ]
-    )
+    redis_command([
+        "DEL",
+        chat_key(
+            user_id,
+            chat_id
+        )
+    ])
 
 
-# =========================================
-# CHAT CREATION
-# =========================================
+# =========================
+# CREATE CHAT
+# =========================
 
 def create_chat_object():
-    """Create a new empty chat."""
 
     now = datetime.utcnow().isoformat()
 
@@ -265,36 +241,35 @@ def create_chat_object():
     }
 
 
-# =========================================
-# CHAT LIST MANAGEMENT
-# =========================================
+# =========================
+# CHAT LIST
+# =========================
 
 def update_chat_list(user_id, chat):
-    """Add or update a chat inside the user's chat list."""
 
     chats = get_user_chats(user_id)
 
     found = False
 
     for item in chats:
+
         if item.get("id") == chat["id"]:
 
             item["title"] = chat["title"]
             item["updated_at"] = chat["updated_at"]
 
             found = True
+
             break
 
     if not found:
 
-        chats.append(
-            {
-                "id": chat["id"],
-                "title": chat["title"],
-                "created_at": chat["created_at"],
-                "updated_at": chat["updated_at"]
-            }
-        )
+        chats.append({
+            "id": chat["id"],
+            "title": chat["title"],
+            "created_at": chat["created_at"],
+            "updated_at": chat["updated_at"]
+        })
 
     chats.sort(
         key=lambda item: item.get(
@@ -310,8 +285,10 @@ def update_chat_list(user_id, chat):
     )
 
 
-def remove_chat_from_list(user_id, chat_id):
-    """Remove one chat from user's chat list."""
+def remove_chat_from_list(
+    user_id,
+    chat_id
+):
 
     chats = get_user_chats(user_id)
 
@@ -327,25 +304,33 @@ def remove_chat_from_list(user_id, chat_id):
     )
 
 
-# =========================================
-# HOME PAGE
-# =========================================
+# =========================
+# HOME
+# =========================
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+
+    return render_template(
+        "index.html"
+    )
 
 
-# =========================================
+# =========================
 # GET ALL CHATS
-# =========================================
+# =========================
 
-@app.route("/api/chats", methods=["GET"])
+@app.route(
+    "/api/chats",
+    methods=["GET"]
+)
 def get_chats():
 
     user_id = get_user_id()
 
-    chats = get_user_chats(user_id)
+    chats = get_user_chats(
+        user_id
+    )
 
     chats.sort(
         key=lambda item: item.get(
@@ -355,19 +340,20 @@ def get_chats():
         reverse=True
     )
 
-    return jsonify(
-        {
-            "success": True,
-            "chats": chats
-        }
-    )
+    return jsonify({
+        "success": True,
+        "chats": chats
+    })
 
 
-# =========================================
-# CREATE NEW CHAT
-# =========================================
+# =========================
+# CREATE CHAT
+# =========================
 
-@app.route("/api/chats", methods=["POST"])
+@app.route(
+    "/api/chats",
+    methods=["POST"]
+)
 def create_chat():
 
     user_id = get_user_id()
@@ -384,30 +370,34 @@ def create_chat():
         chat
     )
 
-    return jsonify(
-        {
-            "success": True,
-            "chat": chat
-        }
-    )
+    return jsonify({
+        "success": True,
+        "chat": chat
+    })
 
 
-# =========================================
+# =========================
 # DELETE ALL CHATS
-# =========================================
+# =========================
 
-@app.route("/api/chats", methods=["DELETE"])
+@app.route(
+    "/api/chats",
+    methods=["DELETE"]
+)
 def delete_all_chats():
 
     user_id = get_user_id()
 
-    chats = get_user_chats(user_id)
+    chats = get_user_chats(
+        user_id
+    )
 
     for chat in chats:
 
         chat_id = chat.get("id")
 
         if chat_id:
+
             delete_chat_from_redis(
                 user_id,
                 chat_id
@@ -418,18 +408,19 @@ def delete_all_chats():
         []
     )
 
-    return jsonify(
-        {
-            "success": True
-        }
-    )
+    return jsonify({
+        "success": True
+    })
 
 
-# =========================================
-# GET ONE CHAT
-# =========================================
+# =========================
+# GET SINGLE CHAT
+# =========================
 
-@app.route("/api/chats/<chat_id>", methods=["GET"])
+@app.route(
+    "/api/chats/<chat_id>",
+    methods=["GET"]
+)
 def get_single_chat(chat_id):
 
     user_id = get_user_id()
@@ -441,26 +432,25 @@ def get_single_chat(chat_id):
 
     if not chat:
 
-        return jsonify(
-            {
-                "success": False,
-                "error": "Chat not found."
-            }
-        ), 404
+        return jsonify({
+            "success": False,
+            "error": "Chat not found."
+        }), 404
 
-    return jsonify(
-        {
-            "success": True,
-            "chat": chat
-        }
-    )
+    return jsonify({
+        "success": True,
+        "chat": chat
+    })
 
 
-# =========================================
-# DELETE ONE CHAT
-# =========================================
+# =========================
+# DELETE SINGLE CHAT
+# =========================
 
-@app.route("/api/chats/<chat_id>", methods=["DELETE"])
+@app.route(
+    "/api/chats/<chat_id>",
+    methods=["DELETE"]
+)
 def delete_single_chat(chat_id):
 
     user_id = get_user_id()
@@ -472,12 +462,10 @@ def delete_single_chat(chat_id):
 
     if not chat:
 
-        return jsonify(
-            {
-                "success": False,
-                "error": "Chat not found."
-            }
-        ), 404
+        return jsonify({
+            "success": False,
+            "error": "Chat not found."
+        }), 404
 
     delete_chat_from_redis(
         user_id,
@@ -489,23 +477,23 @@ def delete_single_chat(chat_id):
         chat_id
     )
 
-    return jsonify(
-        {
-            "success": True
-        }
-    )
+    return jsonify({
+        "success": True
+    })
 
 
-# =========================================
-# MAIN AI CHAT ROUTE
-# =========================================
+# =========================
+# AI CHAT
+# =========================
 
-@app.route("/chat", methods=["POST"])
+@app.route(
+    "/chat",
+    methods=["POST"]
+)
 def chat():
 
     user_id = get_user_id()
 
-    # Read JSON safely
     data = request.get_json(
         silent=True
     )
@@ -524,96 +512,66 @@ def chat():
         "chat_id"
     )
 
-
-    # -------------------------------------
-    # Validate message
-    # -------------------------------------
-
+    # Empty message
     if not user_message:
 
-        return jsonify(
-            {
-                "success": False,
-                "error": "Message cannot be empty."
-            }
-        ), 400
+        return jsonify({
+            "success": False,
+            "error": "Message cannot be empty."
+        }), 400
 
-
+    # Message too long
     if len(user_message) > 10000:
 
-        return jsonify(
-            {
-                "success": False,
-                "error": "Message is too long."
-            }
-        ), 400
+        return jsonify({
+            "success": False,
+            "error": "Message is too long."
+        }), 400
 
-
-    # -------------------------------------
-    # Check Groq API
-    # -------------------------------------
-
+    # Groq key missing
     if groq_client is None:
 
-        return jsonify(
-            {
-                "success": False,
-                "error": (
-                    "GROQ_API_KEY is not configured. "
-                    "Please add your Groq API key."
-                )
-            }
-        ), 500
+        return jsonify({
+            "success": False,
+            "error": "GROQ_API_KEY is not configured."
+        }), 500
 
-
-    # -------------------------------------
     # Get existing chat
-    # -------------------------------------
-
     chat_object = None
 
     if chat_id:
+
         chat_object = get_chat(
             user_id,
             chat_id
         )
 
-
-    # -------------------------------------
-    # Create chat if needed
-    # -------------------------------------
-
+    # Create new chat if needed
     if not chat_object:
+
         chat_object = create_chat_object()
 
+    # Add user message
+    chat_object["messages"].append({
 
-    # -------------------------------------
-    # Add user's message
-    # -------------------------------------
+        "role": "user",
 
-    chat_object["messages"].append(
-        {
-            "role": "user",
-            "content": user_message
-        }
-    )
+        "content": user_message
+    })
 
-
-    # -------------------------------------
-    # Prepare recent messages for Groq
-    # -------------------------------------
-
+    # Last 30 messages
     recent_messages = (
         chat_object["messages"][-30:]
     )
 
     groq_messages = [
+
         {
             "role": "system",
             "content": SYSTEM_PROMPT
         }
-    ]
 
+    ]
 
     for message in recent_messages:
 
@@ -631,25 +589,32 @@ def chat():
             "assistant"
         ):
 
-            groq_messages.append(
-                {
-                    "role": role,
-                    "content": content
-                }
-            )
+            groq_messages.append({
 
+                "role": role,
 
-    # -------------------------------------
-    # Ask Groq
-    # -------------------------------------
+                "content": content
+
+            })
+
+    # =========================
+    # CALL GROQ
+    # =========================
 
     try:
 
         completion = (
-            groq_client.chat.completions.create(
+            groq_client
+            .chat
+            .completions
+            .create(
+
                 model=MODEL_NAME,
+
                 messages=groq_messages,
+
                 max_tokens=2000,
+
                 temperature=0.7
             )
         )
@@ -662,7 +627,6 @@ def chat():
             or ""
         ).strip()
 
-
         if not assistant_message:
 
             assistant_message = (
@@ -670,78 +634,65 @@ def chat():
                 "a response right now."
             )
 
-
     except Exception as error:
 
         print(
             "Groq API error:",
-            error
+            repr(error)
         )
 
-        # Remove user's message if AI failed
         if (
             chat_object["messages"]
-            and chat_object["messages"][-1].get(
-                "role"
-            ) == "user"
+            and
+            chat_object["messages"][-1]
+            .get("role") == "user"
         ):
 
             chat_object["messages"].pop()
 
+        return jsonify({
 
-        return jsonify(
-            {
-                "success": False,
-                "error": (
-                    "AI service is temporarily "
-                    "unavailable. Please try again."
-                )
-            }
-        ), 500
+            "success": False,
 
+            "error":
+                "AI service is temporarily "
+                "unavailable. Please try again."
 
-    # -------------------------------------
+        }), 500
+
     # Add AI response
-    # -------------------------------------
+    chat_object["messages"].append({
 
-    chat_object["messages"].append(
-        {
-            "role": "assistant",
-            "content": assistant_message
-        }
-    )
+        "role": "assistant",
 
+        "content": assistant_message
 
-    # -------------------------------------
-    # Create chat title
-    # -------------------------------------
+    })
 
+    # Create title
     if chat_object["title"] == "New Chat":
 
-        title = user_message[:40].strip()
+        title = (
+            user_message[:40]
+            .strip()
+        )
 
         if len(user_message) > 40:
+
             title += "..."
 
         if not title:
+
             title = "New Chat"
 
         chat_object["title"] = title
 
-
-    # -------------------------------------
-    # Update time
-    # -------------------------------------
-
     chat_object["updated_at"] = (
-        datetime.utcnow().isoformat()
+        datetime.utcnow()
+        .isoformat()
     )
 
-
-    # -------------------------------------
     # Save chat
-    # -------------------------------------
-
     save_chat(
         user_id,
         chat_object
@@ -752,46 +703,53 @@ def chat():
         chat_object
     )
 
+    return jsonify({
 
-    # -------------------------------------
-    # Send response to frontend
-    # -------------------------------------
+        "success": True,
 
-    return jsonify(
-        {
-            "success": True,
-            "reply": assistant_message,
-            "chat_id": chat_object["id"],
-            "title": chat_object["title"]
-        }
-    )
+        "reply": assistant_message,
+
+        "chat_id":
+            chat_object["id"],
+
+        "title":
+            chat_object["title"]
+
+    })
 
 
-# =========================================
+# =========================
 # HEALTH CHECK
-# =========================================
+# =========================
 
-@app.route("/health", methods=["GET"])
+@app.route(
+    "/health",
+    methods=["GET"]
+)
 def health():
 
-    return jsonify(
-        {
-            "status": "ok",
-            "groq": bool(GROQ_API_KEY),
-            "redis": redis_is_available()
-        }
-    )
+    return jsonify({
+
+        "status": "ok",
+
+        "groq":
+            bool(GROQ_API_KEY),
+
+        "redis":
+            redis_is_available()
+
+    })
 
 
-# =========================================
-# RUN SERVER
-# =========================================
+# =========================
+# LOCAL SERVER
+# =========================
 
 if __name__ == "__main__":
 
     print()
     print("=" * 45)
-    print("              HANI AI SERVER")
+    print("              MY AI SERVER")
     print("=" * 45)
 
     print(
