@@ -1,567 +1,479 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My AI</title>
+```
+<title>My AI</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+```
+
 </head>
 
 <body>
 
-
 <!-- ================= AUTH OVERLAY ================= -->
+
 <div class="auth-overlay" id="authOverlay">
 
-    <div class="auth-shell">
+```
+<div class="auth-shell">
 
-        <section class="auth-panel">
+    <section class="auth-panel">
 
-            <div class="auth-panel-inner">
+        <div class="auth-panel-inner">
 
-                <div class="auth-heading">
+            <div class="auth-heading">
+                <h2 id="authHeading">Login</h2>
+                <p id="authHeadingText">Welcome back</p>
+            </div>
 
-                    <h2 id="authHeading">
-                        Login
-                    </h2>
+            <div class="auth-tabs">
 
-                    <p id="authHeadingText">
-                        Welcome back
-                    </p>
+                <button
+                    type="button"
+                    class="auth-tab active"
+                    id="loginTab"
+                    onclick="showAuthMode('login')">
+                    Login
+                </button>
 
-                </div>
-
-
-                <div class="auth-tabs">
-
-                    <button
-                        type="button"
-                        class="auth-tab active"
-                        id="loginTab"
-                        onclick="showAuthMode('login')">
-
-                        Login
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="auth-tab"
-                        id="signupTab"
-                        onclick="showAuthMode('signup')">
-
-                        Sign Up
-
-                    </button>
-
-                </div>
-
-
-                <form
-                    id="authForm"
-                    onsubmit="submitAuth(event)">
-
-                    <label for="authUsername">
-                        Username or Email
-                    </label>
-
-
-                    <input
-                        id="authUsername"
-                        type="text"
-                        autocomplete="username"
-                        placeholder="Enter your username or email"
-                        maxlength="100"
-                        required>
-
-
-                    <label for="authPassword">
-                        Password
-                    </label>
-
-
-                    <div class="password-field">
-
-                        <input
-                            id="authPassword"
-                            type="password"
-                            autocomplete="current-password"
-                            placeholder="Enter your password"
-                            minlength="8"
-                            required>
-
-                    </div>
-
-
-                    <label class="show-password-option">
-
-                        <input
-                            type="checkbox"
-                            id="showPassword"
-                            onchange="togglePasswordVisibility()">
-
-                        <span>
-                            Show Password
-                        </span>
-
-                    </label>
-
-
-                    <button
-                        class="auth-submit"
-                        id="authSubmit"
-                        type="submit">
-
-                        Login
-
-                    </button>
-
-                </form>
-
-
-                <div
-                    class="auth-error"
-                    id="authError">
-                </div>
-
-
-                <p
-                    class="auth-switch-text"
-                    id="authSwitchText">
-
-                    Don't have an account?
-
-                    <button
-                        type="button"
-                        onclick="showAuthMode('signup')">
-
-                        Sign Up
-
-                    </button>
-
-                </p>
-
-
-                <p class="auth-note">
-                    Your password is stored securely.
-                </p>
+                <button
+                    type="button"
+                    class="auth-tab"
+                    id="signupTab"
+                    onclick="showAuthMode('signup')">
+                    Sign Up
+                </button>
 
             </div>
 
-        </section>
+            <form
+                id="authForm"
+                onsubmit="submitAuth(event)">
 
-    </div>
+                <label for="authUsername">
+                    Username or Email
+                </label>
+
+                <input
+                    id="authUsername"
+                    type="text"
+                    autocomplete="username"
+                    placeholder="Enter your username or email"
+                    maxlength="100"
+                    required>
+
+                <label for="authPassword">
+                    Password
+                </label>
+
+                <div class="password-field">
+
+                    <input
+                        id="authPassword"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        minlength="8"
+                        required>
+
+                </div>
+
+                <label class="show-password-option">
+
+                    <input
+                        type="checkbox"
+                        id="showPassword"
+                        onchange="togglePasswordVisibility">
+
+                    <span>
+                        Show Password
+                    </span>
+
+                </label>
+
+                <button
+                    class="auth-submit"
+                    id="authSubmit"
+                    type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <div
+                class="auth-error"
+                id="authError">
+            </div>
+
+            <p
+                class="auth-switch-text"
+                id="authSwitchText">
+
+                Don't have an account?
+
+                <button
+                    type="button"
+                    onclick="showAuthMode('signup')">
+                    Sign Up
+                </button>
+
+            </p>
+
+            <p class="auth-note">
+                Your password is stored securely.
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+```
 
 </div>
 
-
-
 <div class="app" id="app">
 
+```
+<!-- ================= SIDEBAR ================= -->
 
-    <!-- ================= SIDEBAR ================= -->
+<aside
+    class="sidebar"
+    id="sidebar">
 
-    <aside
-        class="sidebar"
-        id="sidebar">
+    <div class="sidebar-header">
 
+        <div class="brand">
 
-        <div class="sidebar-header">
+            <span class="brand-icon">
+                ✦
+            </span>
 
-            <div class="brand">
+            <span>
+                My AI
+            </span>
 
-                <span class="brand-icon">
-                    ✦
+        </div>
+
+        <button
+            class="close-sidebar"
+            onclick="toggleSidebar()"
+            aria-label="Close sidebar">
+            ×
+        </button>
+
+    </div>
+
+    <button
+        class="new-chat-button"
+        onclick="createNewChat()">
+
+        <span class="new-chat-icon">
+            ＋
+        </span>
+
+        <span>
+            New Chat
+        </span>
+
+    </button>
+
+    <div class="history-title">
+        Chat History
+    </div>
+
+    <div
+        class="chat-list"
+        id="chatList">
+    </div>
+
+    <div class="sidebar-bottom">
+
+        <div
+            class="account-box"
+            id="accountBox">
+
+            <div class="account-avatar">
+                👤
+            </div>
+
+            <div class="account-info">
+
+                <span class="account-label">
+                    Logged in as
                 </span>
 
-                <span>
-                    My AI
-                </span>
+                <strong id="accountUsername">
+                    User
+                </strong>
 
             </div>
 
-
             <button
-                class="close-sidebar"
-                onclick="toggleSidebar()"
-                aria-label="Close sidebar">
-
-                ×
-
+                class="logout-button"
+                type="button"
+                onclick="logout()"
+                title="Logout">
+                ↪
             </button>
 
         </div>
 
-
-
         <button
-            class="new-chat-button"
-            onclick="createNewChat()">
+            class="clear-history"
+            onclick="clearAllHistory()">
 
-            <span class="new-chat-icon">
-                ＋
+            <span>
+                🗑️
             </span>
 
             <span>
-                New Chat
+                Clear History
             </span>
 
         </button>
 
+    </div>
+
+</aside>
 
 
-        <div class="history-title">
-            Chat History
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <!-- ================= TOP BAR ================= -->
+
+    <header class="topbar">
+
+        <button
+            class="menu-button"
+            onclick="toggleSidebar()"
+            aria-label="Open sidebar">
+            ☰
+        </button>
+
+        <div class="topbar-title">
+
+            <div class="topbar-logo">
+                ✦
+            </div>
+
+            <div>
+
+                <strong>
+                    My AI
+                </strong>
+
+                <span>
+                    AI Assistant
+                </span>
+
+            </div>
+
         </div>
 
+        <button
+            class="theme-button"
+            id="themeButton"
+            onclick="toggleTheme()"
+            title="Toggle theme">
+            ☾
+        </button>
+
+    </header>
+
+
+    <!-- ================= CHAT AREA ================= -->
+
+    <section
+        class="chat-area"
+        id="chatArea">
 
         <div
-            class="chat-list"
-            id="chatList">
-        </div>
+            class="welcome"
+            id="welcome">
 
+            <div class="welcome-content">
 
+                <p class="welcome-prompt">
+                    Ask me anything.
+                </p>
 
-        <div class="sidebar-bottom">
+                <!-- ================= 4 SUGGESTIONS ================= -->
 
+                <div class="suggestions">
 
-            <div
-                class="account-box"
-                id="accountBox">
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        onclick="useSuggestion('What is Python?')">
 
-                <div class="account-avatar">
-                    👤
-                </div>
+                        <span class="suggestion-icon">
+                            🐍
+                        </span>
 
+                        <span class="suggestion-text">
+                            What is Python?
+                        </span>
 
-                <div class="account-info">
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
 
-                    <span class="account-label">
-                        Logged in as
-                    </span>
+                    </button>
 
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        onclick="useSuggestion('Learn Networking')">
 
-                    <strong id="accountUsername">
-                        User
-                    </strong>
+                        <span class="suggestion-icon">
+                            🌐
+                        </span>
 
-                </div>
+                        <span class="suggestion-text">
+                            Learn Networking
+                        </span>
 
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
 
-                <button
-                    class="logout-button"
-                    type="button"
-                    onclick="logout()"
-                    title="Logout">
+                    </button>
 
-                    ↪
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        onclick="useSuggestion('Explain Computer Networks')">
 
-                </button>
+                        <span class="suggestion-icon">
+                            💻
+                        </span>
 
-            </div>
+                        <span class="suggestion-text">
+                            Explain Computer Networks
+                        </span>
 
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
 
+                    </button>
 
-            <button
-                class="clear-history"
-                onclick="clearAllHistory()">
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        onclick="useSuggestion('Help me with programming')">
 
-                <span>
-                    🗑️
-                </span>
+                        <span class="suggestion-icon">
+                            ⌨️
+                        </span>
 
-                <span>
-                    Clear History
-                </span>
+                        <span class="suggestion-text">
+                            Help me with programming
+                        </span>
 
-            </button>
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
 
-        </div>
-
-    </aside>
-
-
-
-    <!-- ================= MAIN ================= -->
-
-    <main class="main">
-
-
-        <!-- ================= TOP BAR ================= -->
-
-        <header class="topbar">
-
-
-            <button
-                class="menu-button"
-                onclick="toggleSidebar()"
-                aria-label="Open sidebar">
-
-                ☰
-
-            </button>
-
-
-            <div class="topbar-title">
-
-
-                <div class="topbar-logo">
-                    ✦
-                </div>
-
-
-                <div>
-
-                    <strong>
-                        My AI
-                    </strong>
-
-                    <span>
-                        AI Assistant
-                    </span>
+                    </button>
 
                 </div>
 
-            </div>
-
-
-            <button
-                class="theme-button"
-                id="themeButton"
-                onclick="toggleTheme()"
-                title="Toggle theme">
-
-                ☾
-
-            </button>
-
-        </header>
-
-
-
-        <!-- ================= CHAT AREA ================= -->
-
-        <section
-            class="chat-area"
-            id="chatArea">
-
-
-            <div
-                class="welcome"
-                id="welcome">
-
-
-                <div class="welcome-content">
-
-
-                    <p class="welcome-prompt">
-                        Ask me anything.
-                    </p>
-
-
-
-                    <!-- ================= SUGGESTIONS ================= -->
-
-                    <div class="suggestions">
-
-
-                        <button
-                            type="button"
-                            class="suggestion-button"
-                            onclick="useSuggestion('What is Python?')">
-
-                            <span class="suggestion-icon">
-                                🐍
-                            </span>
-
-                            <span class="suggestion-text">
-                                What is Python?
-                            </span>
-
-                            <span class="suggestion-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="suggestion-button"
-                            onclick="useSuggestion('Learn Networking')">
-
-                            <span class="suggestion-icon">
-                                🌐
-                            </span>
-
-                            <span class="suggestion-text">
-                                Learn Networking
-                            </span>
-
-                            <span class="suggestion-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="suggestion-button"
-                            onclick="useSuggestion('Explain Computer Networks')">
-
-                            <span class="suggestion-icon">
-                                💻
-                            </span>
-
-                            <span class="suggestion-text">
-                                Explain Computer Networks
-                            </span>
-
-                            <span class="suggestion-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="suggestion-button"
-                            onclick="useSuggestion('Help me with programming')">
-
-                            <span class="suggestion-icon">
-                                ⌨️
-                            </span>
-
-                            <span class="suggestion-text">
-                                Help me with programming
-                            </span>
-
-                            <span class="suggestion-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- ================= INPUT ================= -->
-
-        <div class="input-section">
-
-
-            <div class="input-box">
-
-
-                <textarea
-                    id="messageInput"
-                    placeholder="Message My AI..."
-                    rows="1"
-                    autocomplete="off"
-                    aria-label="Message"></textarea>
-
-
-
-                <!-- MICROPHONE -->
-
-                <button
-                    id="micButton"
-                    class="mic-button"
-                    type="button"
-                    onclick="toggleVoiceInput()"
-                    aria-label="Voice input"
-                    title="Voice input">
-
-
-                    <svg
-                        class="mic-svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-
-
-                        <rect
-                            x="9"
-                            y="3"
-                            width="6"
-                            height="11"
-                            rx="3"
-                            class="mic-stroke"/>
-
-
-                        <path
-                            d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
-                            class="mic-stroke"/>
-
-
-                        <path
-                            d="M12 18V21"
-                            class="mic-stroke"/>
-
-
-                        <path
-                            d="M8.5 21H15.5"
-                            class="mic-stroke"/>
-
-                    </svg>
-
-
-                    <span class="mic-pulse"></span>
-
-                </button>
-
-
-
-                <!-- SEND -->
-
-                <button
-                    class="send-button"
-                    id="sendButton"
-                    onclick="sendMessage()"
-                    title="Send message"
-                    aria-label="Send message">
-
-                    ↑
-
-                </button>
-
-            </div>
-
-
-            <div class="input-hint">
-                My AI can make mistakes. Check important information.
             </div>
 
         </div>
 
+    </section>
 
-    </main>
+
+    <!-- ================= INPUT ================= -->
+
+    <div class="input-section">
+
+        <div class="input-box">
+
+            <textarea
+                id="messageInput"
+                placeholder="Message My AI..."
+                rows="1"
+                autocomplete="off"
+                aria-label="Message"></textarea>
+
+            <!-- MICROPHONE -->
+
+            <button
+                id="micButton"
+                class="mic-button"
+                type="button"
+                onclick="toggleVoiceInput()"
+                aria-label="Voice input"
+                title="Voice input">
+
+                <svg
+                    class="mic-svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+
+                    <rect
+                        x="9"
+                        y="3"
+                        width="6"
+                        height="11"
+                        rx="3"
+                        class="mic-stroke"/>
+
+                    <path
+                        d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
+                        class="mic-stroke"/>
+
+                    <path
+                        d="M12 18V21"
+                        class="mic-stroke"/>
+
+                    <path
+                        d="M8.5 21H15.5"
+                        class="mic-stroke"/>
+
+                </svg>
+
+                <span class="mic-pulse"></span>
+
+            </button>
+
+            <!-- SEND -->
+
+            <button
+                class="send-button"
+                id="sendButton"
+                onclick="sendMessage()"
+                title="Send message"
+                aria-label="Send message">
+                ↑
+            </button>
+
+        </div>
+
+        <div class="input-hint">
+            My AI can make mistakes. Check important information.
+        </div>
+
+    </div>
+
+</main>
+```
 
 </div>
-
-
 
 <script>
 
@@ -677,26 +589,20 @@ async function initAuth() {
 function showAuthOverlay() {
 
     const overlay =
-        document.getElementById(
-            "authOverlay"
-        );
+        document.getElementById("authOverlay");
 
     const app =
         document.getElementById("app");
 
     if (overlay) {
 
-        overlay.classList.remove(
-            "hidden"
-        );
+        overlay.classList.remove("hidden");
 
     }
 
     if (app) {
 
-        app.classList.add(
-            "app-locked"
-        );
+        app.classList.add("app-locked");
 
     }
 
@@ -706,26 +612,20 @@ function showAuthOverlay() {
 function hideAuthOverlay() {
 
     const overlay =
-        document.getElementById(
-            "authOverlay"
-        );
+        document.getElementById("authOverlay");
 
     const app =
         document.getElementById("app");
 
     if (overlay) {
 
-        overlay.classList.add(
-            "hidden"
-        );
+        overlay.classList.add("hidden");
 
     }
 
     if (app) {
 
-        app.classList.remove(
-            "app-locked"
-        );
+        app.classList.remove("app-locked");
 
     }
 
@@ -737,9 +637,7 @@ function showApp(user) {
     hideAuthOverlay();
 
     const username =
-        document.getElementById(
-            "accountUsername"
-        );
+        document.getElementById("accountUsername");
 
     if (username && user) {
 
@@ -864,14 +762,10 @@ function showAuthMode(mode) {
 function togglePasswordVisibility() {
 
     const passwordInput =
-        document.getElementById(
-            "authPassword"
-        );
+        document.getElementById("authPassword");
 
     const showPassword =
-        document.getElementById(
-            "showPassword"
-        );
+        document.getElementById("showPassword");
 
     if (!passwordInput || !showPassword) {
         return;
@@ -889,47 +783,30 @@ async function submitAuth(event) {
 
     event.preventDefault();
 
-
     const username =
-        document.getElementById(
-            "authUsername"
-        ).value.trim();
-
+        document.getElementById("authUsername").value.trim();
 
     const password =
-        document.getElementById(
-            "authPassword"
-        ).value;
-
+        document.getElementById("authPassword").value;
 
     const submit =
-        document.getElementById(
-            "authSubmit"
-        );
-
+        document.getElementById("authSubmit");
 
     const error =
-        document.getElementById(
-            "authError"
-        );
-
+        document.getElementById("authError");
 
     if (!username || !password) {
         return;
     }
 
-
     submit.disabled = true;
-
 
     submit.textContent =
         authMode === "login"
             ? "Logging in..."
             : "Creating account...";
 
-
     error.textContent = "";
-
 
     try {
 
@@ -937,7 +814,6 @@ async function submitAuth(event) {
             authMode === "login"
                 ? "/api/auth/login"
                 : "/api/auth/signup";
-
 
         const response =
             await fetch(
@@ -951,22 +827,14 @@ async function submitAuth(event) {
                     },
 
                     body: JSON.stringify({
-
-                        username:
-                            username,
-
-                        password:
-                            password
-
+                        username: username,
+                        password: password
                     })
-
                 }
             );
 
-
         const data =
             await response.json();
-
 
         if (
             !response.ok ||
@@ -981,29 +849,21 @@ async function submitAuth(event) {
 
         }
 
-
         document.getElementById(
             "authPassword"
         ).value = "";
 
-
         showApp(data.user);
-
 
         currentChatId = null;
 
-
         clearChatUI();
-
 
         await loadChatHistory();
 
-
         autoResize();
 
-
         input.focus();
-
 
     } catch (authError) {
 
@@ -1012,14 +872,12 @@ async function submitAuth(event) {
             authError
         );
 
-
         error.textContent =
             "Could not connect to the server. Please try again.";
 
     } finally {
 
         submit.disabled = false;
-
 
         submit.textContent =
             authMode === "login"
@@ -1051,37 +909,25 @@ async function logout() {
 
     }
 
-
     currentChatId = null;
-
 
     clearChatUI();
 
-
     const username =
-        document.getElementById(
-            "authUsername"
-        );
-
+        document.getElementById("authUsername");
 
     const password =
-        document.getElementById(
-            "authPassword"
-        );
-
+        document.getElementById("authPassword");
 
     if (username) {
         username.value = "";
     }
 
-
     if (password) {
         password.value = "";
     }
 
-
     showAuthMode("login");
-
 
     showAuthOverlay();
 
@@ -1098,12 +944,10 @@ function toggleTheme() {
         "dark-mode"
     );
 
-
     const isDark =
         document.body.classList.contains(
             "dark-mode"
         );
-
 
     localStorage.setItem(
         "myai-theme",
@@ -1111,7 +955,6 @@ function toggleTheme() {
             ? "dark"
             : "light"
     );
-
 
     updateThemeIcon();
 
@@ -1125,7 +968,6 @@ function loadTheme() {
             "myai-theme"
         );
 
-
     if (savedTheme !== "light") {
 
         document.body.classList.add(
@@ -1133,7 +975,6 @@ function loadTheme() {
         );
 
     }
-
 
     updateThemeIcon();
 
@@ -1146,7 +987,6 @@ function updateThemeIcon() {
         document.body.classList.contains(
             "dark-mode"
         );
-
 
     themeButton.textContent =
         isDark
@@ -1180,20 +1020,16 @@ async function loadChatHistory() {
         const response =
             await fetch("/api/chats");
 
-
         const data =
             await response.json();
-
 
         if (!data.success) {
             return;
         }
 
-
         renderChatList(
             data.chats
         );
-
 
         if (
             data.chats.length > 0 &&
@@ -1225,13 +1061,10 @@ async function getChatList() {
         const response =
             await fetch("/api/chats");
 
-
         const data =
             await response.json();
 
-
         return data.chats || [];
-
 
     } catch (error) {
 
@@ -1245,7 +1078,6 @@ async function getChatList() {
 function renderChatList(chats) {
 
     chatList.innerHTML = "";
-
 
     if (
         !chats ||
@@ -1270,30 +1102,22 @@ function renderChatList(chats) {
 
     }
 
-
     chats.forEach(
         function (chat) {
 
             const item =
-                document.createElement(
-                    "div"
-                );
-
+                document.createElement("div");
 
             item.className =
                 "chat-history-item";
-
 
             if (
                 chat.id === currentChatId
             ) {
 
-                item.classList.add(
-                    "active"
-                );
+                item.classList.add("active");
 
             }
-
 
             item.innerHTML = `
 
@@ -1314,7 +1138,6 @@ function renderChatList(chats) {
 
                 </button>
 
-
                 <button
                     class="delete-chat"
                     onclick="deleteChat(event, '${escapeAttribute(chat.id)}')"
@@ -1326,10 +1149,7 @@ function renderChatList(chats) {
 
             `;
 
-
-            chatList.appendChild(
-                item
-            );
+            chatList.appendChild(item);
 
         }
     );
@@ -1353,10 +1173,8 @@ async function createNewChat() {
                 }
             );
 
-
         const data =
             await response.json();
-
 
         if (!data.success) {
 
@@ -1368,22 +1186,16 @@ async function createNewChat() {
 
         }
 
-
         currentChatId =
             data.chat.id;
 
-
         clearChatUI();
-
 
         await loadChatHistory();
 
-
         closeMobileSidebar();
 
-
         input.focus();
-
 
     } catch (error) {
 
@@ -1410,39 +1222,30 @@ async function openChat(chatId) {
                 `/api/chats/${encodeURIComponent(chatId)}`
             );
 
-
         const data =
             await response.json();
-
 
         if (!data.success) {
             return;
         }
 
-
         currentChatId =
             chatId;
-
 
         renderMessages(
             data.chat.messages || []
         );
 
-
         const chats =
             await getChatList();
-
 
         renderChatList(
             chats
         );
 
-
         closeMobileSidebar();
 
-
         input.focus();
-
 
     } catch (error) {
 
@@ -1464,7 +1267,6 @@ function renderMessages(messages) {
 
     chatArea.innerHTML = "";
 
-
     if (!messages.length) {
 
         showWelcome();
@@ -1472,7 +1274,6 @@ function renderMessages(messages) {
         return;
 
     }
-
 
     messages.forEach(
         function (message) {
@@ -1489,7 +1290,6 @@ function renderMessages(messages) {
 
         }
     );
-
 
     scrollToBottom();
 
@@ -1508,17 +1308,13 @@ function showWelcome() {
             class="welcome"
             id="welcome">
 
-
             <div class="welcome-content">
-
 
                 <p class="welcome-prompt">
                     Ask me anything.
                 </p>
 
-
                 <div class="suggestions">
-
 
                     <button
                         type="button"
@@ -1539,8 +1335,6 @@ function showWelcome() {
 
                     </button>
 
-
-
                     <button
                         type="button"
                         class="suggestion-button"
@@ -1559,8 +1353,6 @@ function showWelcome() {
                         </span>
 
                     </button>
-
-
 
                     <button
                         type="button"
@@ -1581,8 +1373,6 @@ function showWelcome() {
 
                     </button>
 
-
-
                     <button
                         type="button"
                         class="suggestion-button"
@@ -1602,12 +1392,9 @@ function showWelcome() {
 
                     </button>
 
-
                 </div>
 
-
             </div>
-
 
         </div>
 
@@ -1627,16 +1414,12 @@ function addMessage(
 ) {
 
     const wrapper =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     wrapper.className =
         sender === "You"
             ? "message user-message"
             : "message ai-message";
-
 
     wrapper.innerHTML = `
 
@@ -1652,13 +1435,11 @@ function addMessage(
                 : ""
         }
 
-
         <div class="message-content">
 
             <div class="message-name">
                 ${sender}
             </div>
-
 
             <div class="message-text">
                 ${formatMessage(message)}
@@ -1668,11 +1449,9 @@ function addMessage(
 
     `;
 
-
     chatArea.appendChild(
         wrapper
     );
-
 
     if (shouldScroll) {
 
@@ -1694,9 +1473,7 @@ function formatMessage(text) {
             text || ""
         );
 
-
     const codeBlocks = [];
-
 
     escaped =
         escaped.replace(
@@ -1710,730 +1487,107 @@ function formatMessage(text) {
                 const index =
                     codeBlocks.length;
 
-
                 codeBlocks.push(
                     `<pre><code>${code.trimEnd()}</code></pre>`
-                );
 
+```
+            );
 
-                return `___CODE_BLOCK_${index}___`;
-
-            }
-        );
-
-
-    escaped =
-        escaped.replace(
-            /\n/g,
-            "<br>"
-        );
-
-
-    codeBlocks.forEach(
-        function (
-            block,
-            index
-        ) {
-
-            escaped =
-                escaped.replace(
-                    `___CODE_BLOCK_${index}___`,
-                    block
-                );
+            return `___CODE_BLOCK_${index}___`;
 
         }
     );
 
+escaped =
+    escaped.replace(
+        /\n/g,
+        "<br>"
+    );
 
-    return escaped;
+codeBlocks.forEach(
+    function (
+        block,
+        index
+    ) {
+
+        escaped =
+            escaped.replace(
+                `___CODE_BLOCK_${index}___`,
+                block
+            );
+
+    }
+);
+
+return escaped;
+```
 
 }
 
-
 /* ============================================================
-   ESCAPE HTML
+ESCAPE HTML
 ============================================================ */
 
 function escapeHtml(text) {
 
-    const div =
-        document.createElement(
-            "div"
-        );
+```
+const div =
+    document.createElement("div");
 
+div.textContent =
+    String(text);
 
-    div.textContent =
-        String(text);
-
-
-    return div.innerHTML;
+return div.innerHTML;
+```
 
 }
-
 
 function escapeAttribute(text) {
 
-    return String(text)
+```
+return String(text)
 
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
 
-        .replace(
-            /'/g,
-            "\\'"
-        );
+    .replace(
+        /'/g,
+        "\\'"
+    );
+```
 
 }
 
-
 /* ============================================================
-   SEND MESSAGE
+SEND MESSAGE
 ============================================================ */
 
 async function sendMessage() {
 
-    if (isLoading) {
-        return;
-    }
-
-
-    const message =
-        input.value.trim();
-
-
-    if (!message) {
-        return;
-    }
-
-
-    if (
-        isRecording &&
-        recognition
-    ) {
-
-        recognition.stop();
-
-    }
-
-
-    if (!currentChatId) {
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/chats",
-                    {
-                        method: "POST"
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (!data.success) {
-                return;
-            }
-
-
-            currentChatId =
-                data.chat.id;
-
-
-        } catch (error) {
-
-            console.error(
-                "Create chat error:",
-                error
-            );
-
-
-            return;
-
-        }
-
-    }
-
-
-    const welcome =
-        document.querySelector(
-            ".welcome"
-        );
-
-
-    if (welcome) {
-        welcome.remove();
-    }
-
-
-    addMessage(
-        "You",
-        message
-    );
-
-
-    input.value = "";
-
-
-    autoResize();
-
-
-    isLoading = true;
-
-
-    sendButton.disabled = true;
-
-
-    if (recognition) {
-        micButton.disabled = true;
-    }
-
-
-    showTyping();
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/chat",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        message:
-                            message,
-
-                        chat_id:
-                            currentChatId
-
-                    })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        removeTyping();
-
-
-        if (!response.ok) {
-
-            addMessage(
-                "AI",
-                data.error ||
-                data.reply ||
-                "Something went wrong."
-            );
-
-        } else {
-
-            addMessage(
-                "AI",
-                data.reply ||
-                "Sorry, I couldn't generate a response."
-            );
-
-
-            if (data.chat_id) {
-
-                currentChatId =
-                    data.chat_id;
-
-            }
-
-
-            await loadChatHistory();
-
-        }
-
-
-    } catch (error) {
-
-        console.error(
-            "Chat error:",
-            error
-        );
-
-
-        removeTyping();
-
-
-        addMessage(
-            "AI",
-            "⚠️ I couldn't connect to the server. Please try again."
-        );
-
-    }
-
-
-    isLoading = false;
-
-
-    sendButton.disabled = false;
-
-
-    if (recognition) {
-        micButton.disabled = false;
-    }
-
-
-    input.focus();
-
+```
+if (isLoading) {
+    return;
 }
 
+const message =
+    input.value.trim();
 
-/* ============================================================
-   TYPING
-============================================================ */
-
-function showTyping() {
-
-    const typing =
-        document.createElement(
-            "div"
-        );
-
-
-    typing.id =
-        "typingIndicator";
-
-
-    typing.className =
-        "message ai-message";
-
-
-    typing.innerHTML = `
-
-        <div class="message-avatar">
-            ✦
-        </div>
-
-
-        <div class="message-content">
-
-            <div class="message-name">
-                AI
-            </div>
-
-
-            <div class="typing">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    chatArea.appendChild(
-        typing
-    );
-
-
-    scrollToBottom();
-
+if (!message) {
+    return;
 }
 
-
-function removeTyping() {
-
-    const typing =
-        document.getElementById(
-            "typingIndicator"
-        );
-
-
-    if (typing) {
-        typing.remove();
-    }
-
-}
-
-
-/* ============================================================
-   VOICE INPUT
-============================================================ */
-
-function setupVoiceRecognition() {
-
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-
-    if (!SpeechRecognition) {
-
-        recognition = null;
-
-
-        micButton.disabled = true;
-
-
-        micButton.title =
-            "Voice input is not supported in this browser.";
-
-
-        return;
-
-    }
-
-
-    recognition =
-        new SpeechRecognition();
-
-
-    recognition.continuous =
-        false;
-
-
-    recognition.interimResults =
-        true;
-
-
-    recognition.maxAlternatives =
-        1;
-
-
-    recognition.onstart =
-        function () {
-
-            isRecording = true;
-
-
-            micButton.classList.add(
-                "recording"
-            );
-
-
-            micButton.setAttribute(
-                "aria-label",
-                "Stop recording"
-            );
-
-
-            micButton.title =
-                "Stop recording";
-
-        };
-
-
-    recognition.onresult =
-        function (event) {
-
-            let transcript = "";
-
-
-            for (
-                let i = 0;
-                i < event.results.length;
-                i++
-            ) {
-
-                transcript +=
-                    event.results[i][0]
-                        .transcript;
-
-            }
-
-
-            input.value =
-                transcript.trim();
-
-
-            autoResize();
-
-        };
-
-
-    recognition.onend =
-        function () {
-
-            isRecording = false;
-
-
-            micButton.classList.remove(
-                "recording"
-            );
-
-
-            micButton.setAttribute(
-                "aria-label",
-                "Voice input"
-            );
-
-
-            micButton.title =
-                "Voice input";
-
-        };
-
-
-    recognition.onerror =
-        function (event) {
-
-            console.warn(
-                "Speech recognition:",
-                event.error
-            );
-
-
-            isRecording = false;
-
-
-            micButton.classList.remove(
-                "recording"
-            );
-
-
-            if (
-                event.error ===
-                "not-allowed"
-            ) {
-
-                alert(
-                    "Microphone permission allow karein."
-                );
-
-            }
-
-        };
-
-}
-
-
-/* ============================================================
-   VOICE INPUT LANGUAGE
-============================================================ */
-
-function detectSpeechInputLanguage() {
-
-    const text =
-        input.value
-            .trim()
-            .toLowerCase();
-
-
-    if (
-        /[\u0600-\u06FF]/.test(text)
-    ) {
-
-        return "ur-PK";
-
-    }
-
-
-    const romanUrduWords = [
-
-        "mujhe",
-        "mujhy",
-        "aap",
-        "apko",
-        "aapko",
-        "kya",
-        "hai",
-        "hain",
-        "kaise",
-        "kyun",
-        "kyunke",
-        "mera",
-        "meri",
-        "mere",
-        "batao",
-        "samjhao",
-        "karna",
-        "karo",
-        "krna",
-        "acha",
-        "theek",
-        "nahi",
-        "nahin",
-        "chahiye"
-
-    ];
-
-
-    const words =
-        text.split(/\s+/);
-
-
-    const romanUrduDetected =
-        romanUrduWords.some(
-            function (word) {
-
-                return words.includes(
-                    word
-                );
-
-            }
-        );
-
-
-    if (romanUrduDetected) {
-
-        return "ur-PK";
-
-    }
-
-
-    return "en-US";
-
-}
-
-
-/* ============================================================
-   START / STOP VOICE
-============================================================ */
-
-function toggleVoiceInput() {
-
-    if (!recognition) {
-
-        alert(
-            "Is browser mein voice input supported nahi hai."
-        );
-
-
-        return;
-
-    }
-
-
-    if (isRecording) {
-
-        recognition.stop();
-
-
-        return;
-
-    }
-
-
-    try {
-
-        recognition.lang =
-            detectSpeechInputLanguage();
-
-
-        recognition.start();
-
-
-    } catch (error) {
-
-        console.warn(
-            "Voice start error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ============================================================
-   DELETE CHAT
-============================================================ */
-
-async function deleteChat(
-    event,
-    chatId
+if (
+    isRecording &&
+    recognition
 ) {
 
-    event.stopPropagation();
-
-
-    const confirmed =
-        confirm(
-            "Delete this chat?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                `/api/chats/${encodeURIComponent(chatId)}`,
-                {
-                    method: "DELETE"
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-            return;
-        }
-
-
-        if (
-            currentChatId === chatId
-        ) {
-
-            currentChatId =
-                null;
-
-
-            clearChatUI();
-
-        }
-
-
-        await loadChatHistory();
-
-
-    } catch (error) {
-
-        console.error(
-            "Delete chat error:",
-            error
-        );
-
-    }
+    recognition.stop();
 
 }
 
-
-/* ============================================================
-   CLEAR ALL HISTORY
-============================================================ */
-
-async function clearAllHistory() {
-
-    const confirmed =
-        confirm(
-            "Delete all your chat history?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
+if (!currentChatId) {
 
     try {
 
@@ -2441,146 +1595,682 @@ async function clearAllHistory() {
             await fetch(
                 "/api/chats",
                 {
-                    method: "DELETE"
+                    method: "POST"
                 }
             );
-
 
         const data =
             await response.json();
 
-
-        if (data.success) {
-
-            currentChatId =
-                null;
-
-
-            clearChatUI();
-
-
-            await loadChatHistory();
-
+        if (!data.success) {
+            return;
         }
 
+        currentChatId =
+            data.chat.id;
 
     } catch (error) {
 
         console.error(
-            "Clear history error:",
+            "Create chat error:",
             error
         );
+
+        return;
 
     }
 
 }
 
+const welcome =
+    document.querySelector(
+        ".welcome"
+    );
+
+if (welcome) {
+    welcome.remove();
+}
+
+addMessage(
+    "You",
+    message
+);
+
+input.value = "";
+
+autoResize();
+
+isLoading = true;
+
+sendButton.disabled = true;
+
+if (recognition) {
+    micButton.disabled = true;
+}
+
+showTyping();
+
+try {
+
+    const response =
+        await fetch(
+            "/chat",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    message:
+                        message,
+
+                    chat_id:
+                        currentChatId
+
+                })
+
+            }
+        );
+
+    const data =
+        await response.json();
+
+    removeTyping();
+
+    if (!response.ok) {
+
+        addMessage(
+            "AI",
+            data.error ||
+            data.reply ||
+            "Something went wrong."
+        );
+
+    } else {
+
+        addMessage(
+            "AI",
+            data.reply ||
+            "Sorry, I couldn't generate a response."
+        );
+
+        if (data.chat_id) {
+
+            currentChatId =
+                data.chat_id;
+
+        }
+
+        await loadChatHistory();
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "Chat error:",
+        error
+    );
+
+    removeTyping();
+
+    addMessage(
+        "AI",
+        "⚠️ I couldn't connect to the server. Please try again."
+    );
+
+}
+
+isLoading = false;
+
+sendButton.disabled = false;
+
+if (recognition) {
+    micButton.disabled = false;
+}
+
+input.focus();
+```
+
+}
 
 /* ============================================================
-   CLEAR UI
+TYPING
+============================================================ */
+
+function showTyping() {
+
+```
+const typing =
+    document.createElement("div");
+
+typing.id =
+    "typingIndicator";
+
+typing.className =
+    "message ai-message";
+
+typing.innerHTML = `
+
+    <div class="message-avatar">
+        ✦
+    </div>
+
+    <div class="message-content">
+
+        <div class="message-name">
+            AI
+        </div>
+
+        <div class="typing">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+
+`;
+
+chatArea.appendChild(
+    typing
+);
+
+scrollToBottom();
+```
+
+}
+
+function removeTyping() {
+
+```
+const typing =
+    document.getElementById(
+        "typingIndicator"
+    );
+
+if (typing) {
+    typing.remove();
+}
+```
+
+}
+
+/* ============================================================
+VOICE INPUT
+============================================================ */
+
+function setupVoiceRecognition() {
+
+```
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+
+    recognition = null;
+
+    micButton.disabled = true;
+
+    micButton.title =
+        "Voice input is not supported in this browser.";
+
+    return;
+
+}
+
+recognition =
+    new SpeechRecognition();
+
+recognition.continuous =
+    false;
+
+recognition.interimResults =
+    true;
+
+recognition.maxAlternatives =
+    1;
+
+recognition.onstart =
+    function () {
+
+        isRecording = true;
+
+        micButton.classList.add(
+            "recording"
+        );
+
+        micButton.setAttribute(
+            "aria-label",
+            "Stop recording"
+        );
+
+        micButton.title =
+            "Stop recording";
+
+    };
+
+recognition.onresult =
+    function (event) {
+
+        let transcript = "";
+
+        for (
+            let i = 0;
+            i < event.results.length;
+            i++
+        ) {
+
+            transcript +=
+                event.results[i][0]
+                    .transcript;
+
+        }
+
+        input.value =
+            transcript.trim();
+
+        autoResize();
+
+    };
+
+recognition.onend =
+    function () {
+
+        isRecording = false;
+
+        micButton.classList.remove(
+            "recording"
+        );
+
+        micButton.setAttribute(
+            "aria-label",
+            "Voice input"
+        );
+
+        micButton.title =
+            "Voice input";
+
+    };
+
+recognition.onerror =
+    function (event) {
+
+        console.warn(
+            "Speech recognition:",
+            event.error
+        );
+
+        isRecording = false;
+
+        micButton.classList.remove(
+            "recording"
+        );
+
+        if (
+            event.error ===
+            "not-allowed"
+        ) {
+
+            alert(
+                "Microphone permission allow karein."
+            );
+
+        }
+
+    };
+```
+
+}
+
+/* ============================================================
+VOICE INPUT LANGUAGE
+============================================================ */
+
+function detectSpeechInputLanguage() {
+
+```
+const text =
+    input.value
+        .trim()
+        .toLowerCase();
+
+if (
+    /[\u0600-\u06FF]/.test(text)
+) {
+
+    return "ur-PK";
+
+}
+
+const romanUrduWords = [
+
+    "mujhe",
+    "mujhy",
+    "aap",
+    "apko",
+    "aapko",
+    "kya",
+    "hai",
+    "hain",
+    "kaise",
+    "kyun",
+    "kyunke",
+    "mera",
+    "meri",
+    "mere",
+    "batao",
+    "samjhao",
+    "karna",
+    "karo",
+    "krna",
+    "acha",
+    "theek",
+    "nahi",
+    "nahin",
+    "chahiye"
+
+];
+
+const words =
+    text.split(/\s+/);
+
+const romanUrduDetected =
+    romanUrduWords.some(
+        function (word) {
+
+            return words.includes(
+                word
+            );
+
+        }
+    );
+
+if (romanUrduDetected) {
+
+    return "ur-PK";
+
+}
+
+return "en-US";
+```
+
+}
+
+/* ============================================================
+START / STOP VOICE
+============================================================ */
+
+function toggleVoiceInput() {
+
+```
+if (!recognition) {
+
+    alert(
+        "Is browser mein voice input supported nahi hai."
+    );
+
+    return;
+
+}
+
+if (isRecording) {
+
+    recognition.stop();
+
+    return;
+
+}
+
+try {
+
+    recognition.lang =
+        detectSpeechInputLanguage();
+
+    recognition.start();
+
+} catch (error) {
+
+    console.warn(
+        "Voice start error:",
+        error
+    );
+
+}
+```
+
+}
+
+/* ============================================================
+DELETE CHAT
+============================================================ */
+
+async function deleteChat(
+event,
+chatId
+) {
+
+```
+event.stopPropagation();
+
+const confirmed =
+    confirm(
+        "Delete this chat?"
+    );
+
+if (!confirmed) {
+    return;
+}
+
+try {
+
+    const response =
+        await fetch(
+            `/api/chats/${encodeURIComponent(chatId)}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if (!data.success) {
+        return;
+    }
+
+    if (
+        currentChatId === chatId
+    ) {
+
+        currentChatId =
+            null;
+
+        clearChatUI();
+
+    }
+
+    await loadChatHistory();
+
+} catch (error) {
+
+    console.error(
+        "Delete chat error:",
+        error
+    );
+
+}
+```
+
+}
+
+/* ============================================================
+CLEAR ALL HISTORY
+============================================================ */
+
+async function clearAllHistory() {
+
+```
+const confirmed =
+    confirm(
+        "Delete all your chat history?"
+    );
+
+if (!confirmed) {
+    return;
+}
+
+try {
+
+    const response =
+        await fetch(
+            "/api/chats",
+            {
+                method: "DELETE"
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if (data.success) {
+
+        currentChatId =
+            null;
+
+        clearChatUI();
+
+        await loadChatHistory();
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "Clear history error:",
+        error
+    );
+
+}
+```
+
+}
+
+/* ============================================================
+CLEAR UI
 ============================================================ */
 
 function clearChatUI() {
 
-    showWelcome();
+```
+showWelcome();
+```
 
 }
 
-
 /* ============================================================
-   SUGGESTIONS
+SUGGESTIONS
 ============================================================ */
 
 function useSuggestion(text) {
 
-    input.value =
-        text;
+```
+input.value =
+    text;
 
+autoResize();
 
-    autoResize();
-
-
-    input.focus();
+input.focus();
+```
 
 }
 
-
 /* ============================================================
-   ENTER TO SEND
+ENTER TO SEND
 ============================================================ */
 
 input.addEventListener(
-    "keydown",
-    function (event) {
+"keydown",
+function (event) {
 
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
+```
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey
+    ) {
 
-            event.preventDefault();
+        event.preventDefault();
 
-
-            sendMessage();
-
-        }
+        sendMessage();
 
     }
+
+}
+```
+
 );
 
-
 /* ============================================================
-   AUTO RESIZE
+AUTO RESIZE
 ============================================================ */
 
 input.addEventListener(
-    "input",
-    autoResize
+"input",
+autoResize
 );
-
 
 function autoResize() {
 
-    input.style.height =
-        "auto";
+```
+input.style.height =
+    "auto";
 
-
-    input.style.height =
-        Math.min(
-            input.scrollHeight,
-            150
-        ) + "px";
+input.style.height =
+    Math.min(
+        input.scrollHeight,
+        150
+    ) + "px";
+```
 
 }
 
-
 /* ============================================================
-   SCROLL
+SCROLL
 ============================================================ */
 
 function scrollToBottom() {
 
-    chatArea.scrollTop =
-        chatArea.scrollHeight;
+```
+chatArea.scrollTop =
+    chatArea.scrollHeight;
+```
 
 }
 
-
 /* ============================================================
-   MOBILE SIDEBAR
+MOBILE SIDEBAR
 ============================================================ */
 
 function closeMobileSidebar() {
 
-    if (
-        window.innerWidth <= 800
-    ) {
+```
+if (
+    window.innerWidth <= 800
+) {
 
-        sidebar.classList.remove(
-            "open"
-        );
+    sidebar.classList.remove(
+        "open"
+    );
 
-    }
+}
+```
 
 }
 
