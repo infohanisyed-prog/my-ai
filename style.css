@@ -17,7 +17,6 @@ body {
     color: #202123; 
 } 
  
- 
 /* ========================================================= 
    APP 
 ========================================================= */ 
@@ -27,13 +26,12 @@ body {
     width: 100%; 
     height: 100vh; 
     overflow: hidden; 
-    background: #ffffff; 
+    background: #0b1736; 
 } 
  
 .app.app-locked { 
     pointer-events: none; 
 } 
- 
  
 /* ========================================================= 
    SIDEBAR 
@@ -89,7 +87,6 @@ body {
     color: #555; 
 } 
  
- 
 .new-chat-button { 
     margin: 5px 12px 18px; 
     height: 44px; 
@@ -115,7 +112,6 @@ body {
     font-size: 21px; 
     line-height: 1; 
 } 
- 
  
 .history-title { 
     padding: 0 16px 10px; 
@@ -203,7 +199,6 @@ body {
     font-size: 23px; 
 } 
  
- 
 .sidebar-bottom { 
     padding: 10px; 
     border-top: 1px solid #e5e5e5; 
@@ -272,7 +267,6 @@ body {
     color: #222; 
 } 
  
- 
 .clear-history { 
     width: 100%; 
     height: 38px; 
@@ -293,7 +287,6 @@ body {
     color: #333; 
 } 
  
- 
 /* ========================================================= 
    MAIN 
 ========================================================= */ 
@@ -304,9 +297,8 @@ body {
     height: 100vh; 
     display: flex; 
     flex-direction: column; 
-    background: #ffffff; 
+    background: #0b1736; 
 } 
- 
  
 /* ========================================================= 
    TOP BAR 
@@ -319,8 +311,8 @@ body {
     align-items: center; 
     justify-content: space-between; 
     padding: 0 20px; 
-    border-bottom: 1px solid #eeeeee; 
-    background: rgba(255, 255, 255, 0.96); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12); 
+    background: #0b1736; 
 } 
  
 .menu-button { 
@@ -332,21 +324,21 @@ body {
     background: transparent; 
     font-size: 20px; 
     cursor: pointer; 
-    color: #333; 
+    color: #ffffff; 
 } 
  
 .menu-button:hover { 
-    background: #f0f0f0; 
+    background: rgba(255, 255, 255, 0.08); 
 } 
  
- 
 .topbar-title { 
-    position: absolute; 
-    left: 50%; 
-    transform: translateX(-50%); 
+    position: static; 
+    transform: none; 
     display: flex; 
     align-items: center; 
     gap: 9px; 
+    margin-left: 0; 
+    margin-right: auto; 
 } 
  
 .topbar-logo { 
@@ -356,23 +348,23 @@ body {
     align-items: center; 
     justify-content: center; 
     border-radius: 9px; 
-    background: #202123; 
-    color: white; 
+    background: #ffffff; 
+    color: #0b1736; 
     font-size: 16px; 
 } 
  
 .topbar-title strong { 
     display: block; 
     font-size: 14px; 
+    color: #ffffff; 
 } 
  
 .topbar-title span { 
     display: block; 
     margin-top: 1px; 
     font-size: 10px; 
-    color: #999; 
+    color: #aeb9d1; 
 } 
- 
  
 .theme-button { 
     width: 38px; 
@@ -381,15 +373,14 @@ body {
     border: none; 
     border-radius: 9px; 
     background: transparent; 
-    color: #555; 
+    color: #ffffff; 
     font-size: 19px; 
     cursor: pointer; 
 } 
  
 .theme-button:hover { 
-    background: #f0f0f0; 
+    background: rgba(255, 255, 255, 0.08); 
 } 
- 
  
 /* ========================================================= 
    CHAT AREA 
@@ -412,10 +403,9 @@ body {
 } 
  
 .welcome-prompt { 
-    color: #999; 
+    color: #aeb9d1; 
     font-size: 14px; 
 } 
- 
  
 /* ========================================================= 
    MESSAGES 
@@ -436,7 +426,6 @@ body {
     justify-content: flex-end; 
 } 
  
- 
 .message-avatar { 
     width: 32px; 
     height: 32px; 
@@ -445,11 +434,10 @@ body {
     align-items: center; 
     justify-content: center; 
     border-radius: 9px; 
-    background: #202123; 
-    color: white; 
+    background: #ffffff; 
+    color: #0b1736; 
     font-size: 15px; 
 } 
- 
  
 .message-content { 
     max-width: min(720px, 78%); 
@@ -464,10 +452,9 @@ body {
     margin-right: 0; 
 } 
  
- 
 .message-name { 
     margin-bottom: 5px; 
-    color: #888; 
+    color: #aeb9d1; 
     font-size: 11px; 
     font-weight: 600; 
 } 
@@ -476,19 +463,18 @@ body {
     text-align: right; 
 } 
  
- 
 .message-text { 
     padding: 11px 14px; 
     border-radius: 13px; 
-    background: #f2f2f3; 
-    color: #292929; 
+    background: #14213d; 
+    color: #ffffff; 
     font-size: 14px; 
     line-height: 1.55; 
     word-wrap: break-word; 
     overflow-wrap: anywhere; 
 } 
  
-/* USER MESSAGE - LIGHT BLUE */ 
+/* USER = LIGHT BLUE */ 
 .user-message .message-text { 
     background: #d9efff; 
     color: #14213d; 
@@ -496,20 +482,19 @@ body {
     text-align: left; 
 } 
  
-/* AI MESSAGE - NAVY */ 
+/* AI = NAVY */ 
 .ai-message .message-text { 
     background: #14213d; 
     color: #ffffff; 
     border-bottom-left-radius: 4px; 
 } 
  
- 
 .message-text pre { 
     margin: 10px 0; 
     padding: 12px; 
     overflow-x: auto; 
     border-radius: 8px; 
-    background: #151515; 
+    background: #081126; 
     color: #f5f5f5; 
     font-family: Consolas, Monaco, monospace; 
     font-size: 12px; 
@@ -519,7 +504,6 @@ body {
 .message-text code { 
     font-family: Consolas, Monaco, monospace; 
 } 
- 
  
 /* ========================================================= 
    TYPING 
@@ -566,7 +550,6 @@ body {
     } 
 } 
  
- 
 /* ========================================================= 
    INPUT SECTION 
 ========================================================= */ 
@@ -574,7 +557,7 @@ body {
 .input-section { 
     width: 100%; 
     padding: 12px 7% 15px; 
-    background: #ffffff; 
+    background: #0b1736; 
 } 
  
 .input-box { 
@@ -586,18 +569,17 @@ body {
     align-items: flex-end; 
     gap: 7px; 
     padding: 7px 8px 7px 15px; 
-    border: 1px solid #d8d8da; 
+    border: 1px solid #8eb9d6; 
     border-radius: 17px; 
     background: #d9efff; 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04); 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
     transition: border-color 0.2s ease, box-shadow 0.2s ease; 
 } 
  
 .input-box:focus-within { 
-    border-color: #aaa; 
-    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.07); 
+    border-color: #6f9fbe; 
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.20); 
 } 
- 
  
 #messageInput { 
     flex: 1; 
@@ -618,7 +600,6 @@ body {
 #messageInput::placeholder { 
     color: #6b89a3; 
 } 
- 
  
 /* ========================================================= 
    MICROPHONE 
@@ -695,7 +676,6 @@ body {
     } 
 } 
  
- 
 /* ========================================================= 
    SEND BUTTON 
 ========================================================= */ 
@@ -728,15 +708,13 @@ body {
     transform: none; 
 } 
  
- 
 .input-hint { 
     max-width: 900px; 
     margin: 7px auto 0; 
     text-align: center; 
-    color: #999; 
+    color: #aeb9d1; 
     font-size: 10px; 
 } 
- 
  
 /* ========================================================= 
    AUTH OVERLAY 
@@ -787,7 +765,6 @@ body {
     padding: 34px; 
 } 
  
- 
 .auth-heading { 
     text-align: center; 
     margin-bottom: 24px; 
@@ -803,7 +780,6 @@ body {
     color: #888; 
     font-size: 13px; 
 } 
- 
  
 /* ========================================================= 
    AUTH TABS 
@@ -836,7 +812,6 @@ body {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); 
 } 
  
- 
 /* ========================================================= 
    AUTH FORM 
 ========================================================= */ 
@@ -852,7 +827,6 @@ body {
     font-size: 12px; 
     font-weight: 600; 
 } 
- 
  
 #authUsername, 
 #authPassword { 
@@ -881,11 +855,9 @@ body {
     color: #aaa; 
 } 
  
- 
 .password-field { 
     width: 100%; 
 } 
- 
  
 /* ========================================================= 
    SHOW PASSWORD 
@@ -906,7 +878,6 @@ body {
     height: 14px; 
     cursor: pointer; 
 } 
- 
  
 /* ========================================================= 
    AUTH BUTTON 
@@ -936,7 +907,6 @@ body {
     transform: none; 
 } 
  
- 
 /* ========================================================= 
    AUTH ERROR 
 ========================================================= */ 
@@ -949,7 +919,6 @@ body {
     font-size: 11px; 
     line-height: 1.4; 
 } 
- 
  
 /* ========================================================= 
    AUTH SWITCH 
@@ -976,7 +945,6 @@ body {
     text-decoration: underline; 
 } 
  
- 
 .auth-note { 
     margin-top: 17px; 
     text-align: center; 
@@ -984,18 +952,17 @@ body {
     font-size: 9px; 
 } 
  
- 
 /* ========================================================= 
    DARK MODE 
 ========================================================= */ 
  
 body.dark-mode { 
-    background: #171717; 
+    background: #0b1736; 
     color: #eeeeee; 
 } 
  
 body.dark-mode .app { 
-    background: #171717; 
+    background: #0b1736; 
 } 
  
 body.dark-mode .sidebar { 
@@ -1010,7 +977,7 @@ body.dark-mode .brand {
 body.dark-mode .brand-icon, 
 body.dark-mode .topbar-logo { 
     background: #eeeeee; 
-    color: #171717; 
+    color: #0b1736; 
 } 
  
 body.dark-mode .close-sidebar { 
@@ -1091,24 +1058,23 @@ body.dark-mode .clear-history:hover {
     color: #ddd; 
 } 
  
- 
 body.dark-mode .main { 
-    background: #171717; 
+    background: #0b1736; 
 } 
  
 body.dark-mode .topbar { 
-    background: rgba(23, 23, 23, 0.96); 
-    border-color: #303030; 
+    background: #0b1736; 
+    border-color: rgba(255, 255, 255, 0.12); 
 } 
  
 body.dark-mode .menu-button, 
 body.dark-mode .theme-button { 
-    color: #ddd; 
+    color: #ffffff; 
 } 
  
 body.dark-mode .menu-button:hover, 
 body.dark-mode .theme-button:hover { 
-    background: #2a2a2a; 
+    background: rgba(255, 255, 255, 0.08); 
 } 
  
 body.dark-mode .topbar-title strong { 
@@ -1116,26 +1082,22 @@ body.dark-mode .topbar-title strong {
 } 
  
 body.dark-mode .topbar-title span { 
-    color: #777; 
+    color: #aeb9d1; 
 } 
- 
  
 body.dark-mode .welcome-prompt { 
-    color: #777; 
+    color: #aeb9d1; 
 } 
- 
  
 body.dark-mode .message-name { 
-    color: #888; 
+    color: #aeb9d1; 
 } 
  
-/* DARK MODE AI - NAVY */ 
 body.dark-mode .ai-message .message-text { 
     background: #14213d; 
     color: #ffffff; 
 } 
  
-/* DARK MODE USER - LIGHT BLUE */ 
 body.dark-mode .user-message .message-text { 
     background: #d9efff; 
     color: #14213d; 
@@ -1143,7 +1105,7 @@ body.dark-mode .user-message .message-text {
  
 body.dark-mode .message-avatar { 
     background: #eeeeee; 
-    color: #171717; 
+    color: #0b1736; 
 } 
  
 body.dark-mode .typing { 
@@ -1154,19 +1116,18 @@ body.dark-mode .typing span {
     background: #ffffff; 
 } 
  
- 
 body.dark-mode .input-section { 
-    background: #171717; 
+    background: #0b1736; 
 } 
  
 body.dark-mode .input-box { 
     background: #d9efff; 
-    border-color: #3a3a3a; 
+    border-color: #8eb9d6; 
     box-shadow: none; 
 } 
  
 body.dark-mode .input-box:focus-within { 
-    border-color: #555; 
+    border-color: #6f9fbe; 
 } 
  
 body.dark-mode #messageInput { 
@@ -1195,9 +1156,8 @@ body.dark-mode .send-button:hover {
 } 
  
 body.dark-mode .input-hint { 
-    color: #666; 
+    color: #aeb9d1; 
 } 
- 
  
 /* ========================================================= 
    DARK MODE AUTH 
@@ -1289,7 +1249,6 @@ body.dark-mode .auth-note {
     color: #666; 
 } 
  
- 
 /* ========================================================= 
    SCROLLBARS 
 ========================================================= */ 
@@ -1319,7 +1278,6 @@ body.dark-mode ::-webkit-scrollbar-thumb {
 body.dark-mode ::-webkit-scrollbar-thumb:hover { 
     background: #555; 
 } 
- 
  
 /* ========================================================= 
    MOBILE 
@@ -1374,7 +1332,6 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
     } 
  
 } 
- 
  
 /* ========================================================= 
    SMALL MOBILE 
@@ -1446,7 +1403,6 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
  
 } 
  
- 
 /* ========================================================= 
    ACCESSIBILITY 
 ========================================================= */ 
@@ -1457,7 +1413,6 @@ textarea:focus-visible {
     outline: 2px solid #888; 
     outline-offset: 2px; 
 } 
- 
  
 /* ========================================================= 
    SELECTION 
