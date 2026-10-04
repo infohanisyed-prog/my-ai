@@ -1619,3 +1619,117 @@ body.dark-mode ::selection {
     background: #07124e;
     color: #fff;
 }
+/* ============================================================
+   FORCE SHOW WELCOME SUGGESTIONS
+============================================================ */
+
+.welcome {
+    width: 100%;
+    min-height: 100%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-content {
+    width: 100%;
+    max-width: 760px;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-prompt {
+    display: block !important;
+    width: 100%;
+    margin: 0 0 24px 0;
+    padding: 0;
+    background: transparent !important;
+    text-align: center;
+    color: #aeb9d1;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.suggestions {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.suggestion-button {
+    width: 100%;
+    min-height: 72px;
+    display: flex !important;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 17px;
+
+    border: 2px solid #29466f !important;
+    border-radius: 15px;
+
+    background: #14213d !important;
+    color: #ffffff !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    cursor: pointer;
+    text-align: left;
+}
+
+.suggestion-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+    background: #0b1736 !important;
+
+    font-size: 19px;
+}
+
+.suggestion-text {
+    flex: 1;
+    display: block !important;
+
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.suggestion-arrow {
+    display: block !important;
+    flex-shrink: 0;
+
+    color: #aeb9d1 !important;
+    font-size: 20px;
+}
+
+
+/* HOVER */
+
+.suggestion-button:hover {
+    background: #1d3157 !important;
+    border-color: #5275a8 !important;
+    transform: translateY(-2px);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .suggestions {
+        grid-template-columns: 1fr;
+    }
+
+}
