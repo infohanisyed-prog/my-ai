@@ -1144,26 +1144,87 @@ h1 {
 }
 
 
-/* Show password option */
-.show-password-option {
+/* Small Show Password checkbox below the password field, aligned left */
+#authForm .show-password-option {
     display: flex;
+    align-self: flex-start;
     align-items: center;
-    gap: 7px;
-    margin-top: 10px;
-    font-size: 13px;
+    width: auto;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
     color: #666;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.2;
     cursor: pointer;
     user-select: none;
 }
 
-.show-password-option input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
+#authForm .show-password-option input[type="checkbox"] {
+    appearance: auto;
+    flex: 0 0 12px;
+    width: 12px;
+    min-width: 12px;
+    height: 12px;
     margin: 0;
+    padding: 0;
+    border: initial;
+    border-radius: initial;
+    background: initial;
+    box-shadow: none;
     cursor: pointer;
     accent-color: #2563eb;
 }
 
-.show-password-option span {
+#authForm .show-password-option span {
+    line-height: 1.2;
+}
+
+
+/* Show Password: small checkbox below the password field, aligned left */
+#authForm > .show-password-option {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    max-width: 100%;
+    gap: 5px;
+    margin: 0 0 4px 0;
+    padding: 0;
+    color: #666;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.2;
+    cursor: pointer;
+    user-select: none;
+}
+
+#authForm > .show-password-option input[type="checkbox"] {
+    appearance: auto;
+    -webkit-appearance: checkbox;
+    flex: 0 0 12px;
+    width: 12px;
+    min-width: 12px;
+    max-width: 12px;
+    height: 12px;
+    min-height: 12px;
+    margin: 0;
+    padding: 0;
+    border: initial;
+    border-radius: 2px;
+    background: initial;
+    box-shadow: none;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+#authForm > .show-password-option input[type="checkbox"]:focus {
+    box-shadow: none;
+}
+
+#authForm > .show-password-option span {
+    display: inline-block;
     line-height: 1.2;
 }
