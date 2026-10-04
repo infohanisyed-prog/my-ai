@@ -403,122 +403,198 @@ body {
 .welcome {
     width: 100%;
     min-height: 100%;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
+    padding: 30px 20px 45px;
+    background: transparent !important;
 }
 
 .welcome-content {
     width: 100%;
     max-width: 760px;
 
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
 .welcome-prompt {
-    margin-bottom: 24px;
+    display: block !important;
+    width: 100%;
+    margin: 0 0 30px;
+    padding: 0;
 
-    /* TRANSPARENT BACKGROUND */
-    background: transparent;
+    background: transparent !important;
 
-    color: #aeb9d1;
-    font-size: 16px;
-    font-weight: 500;
+    color: #ffffff;
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 600;
+    letter-spacing: -0.5px;
     text-align: center;
 }
 
-/* SUGGESTION CARDS */
+/* =========================================================
+   SUGGESTION CARDS
+========================================================= */
 
 .suggestions {
-    width: 100%;
+    width: min(720px, 100%);
 
-    display: grid;
+    display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
     gap: 15px;
+
+    margin: 0 auto;
+
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .suggestion-button {
-    width: 100%;
-    min-height: 72px;
+    position: relative;
 
-    display: flex;
+    width: 100%;
+    min-height: 76px;
+
+    display: flex !important;
     align-items: center;
+
     gap: 14px;
 
-    padding: 13px 17px;
+    padding: 17px 19px;
 
-    /* LARGER BORDER */
-    border: 2px solid #29466f;
-    border-radius: 15px;
+    border: 1.5px solid rgba(148, 163, 184, 0.38);
+    border-radius: 18px;
 
-    background: #14213d;
+    background: rgba(255, 255, 255, 0.025);
     color: #ffffff;
 
     cursor: pointer;
     text-align: left;
 
+    overflow: hidden;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        background 0.22s ease,
+        box-shadow 0.22s ease;
 }
+
+/* CARD SHINE */
+
+.suggestion-button::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.07),
+        transparent 70%
+    );
+
+    opacity: 0;
+    transition: opacity 0.22s ease;
+
+    pointer-events: none;
+}
+
+/* HOVER */
 
 .suggestion-button:hover {
-    background: #1d3157;
-    border-color: #5275a8;
-    transform: translateY(-2px);
-    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.20);
+    transform: translateY(-3px);
+
+    border-color: rgba(82, 117, 168, 0.75);
+
+    background: #14213d;
+
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.20);
 }
+
+.suggestion-button:hover::before {
+    opacity: 1;
+}
+
+/* CLICK */
 
 .suggestion-button:active {
-    transform: translateY(0);
+    transform: translateY(-1px) scale(0.99);
 }
 
-/* ICON */
+/* =========================================================
+   SUGGESTION ICON
+========================================================= */
 
 .suggestion-icon {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
 
     flex-shrink: 0;
 
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
 
-    border-radius: 11px;
-    background: #0b1736;
+    border-radius: 12px;
 
-    font-size: 19px;
+    background: rgba(37, 99, 235, 0.10);
+
+    font-size: 21px;
+
+    transition:
+        transform 0.22s ease,
+        background 0.22s ease;
 }
 
-/* TEXT */
+.suggestion-button:hover .suggestion-icon {
+    transform: scale(1.08);
+    background: rgba(37, 99, 235, 0.18);
+}
+
+/* =========================================================
+   SUGGESTION TEXT
+========================================================= */
 
 .suggestion-text {
     flex: 1;
+    min-width: 0;
+
+    display: block !important;
 
     color: #ffffff;
-    font-size: 13px;
+
+    font-size: 14px;
     font-weight: 500;
+
     line-height: 1.4;
 }
 
-/* ARROW */
+/* =========================================================
+   SUGGESTION ARROW
+========================================================= */
 
 .suggestion-arrow {
     flex-shrink: 0;
 
+    display: block !important;
+
     color: #aeb9d1;
+
     font-size: 20px;
 
     transition:
-        transform 0.2s ease,
-        color 0.2s ease;
+        transform 0.22s ease,
+        color 0.22s ease;
 }
 
 .suggestion-button:hover .suggestion-arrow {
@@ -1203,24 +1279,36 @@ body.dark-mode .topbar-title span {
     color: #aeb9d1;
 }
 
+/* =========================================================
+   DARK MODE - WELCOME + SUGGESTIONS
+========================================================= */
+
+body.dark-mode .welcome {
+    background: transparent !important;
+}
+
 body.dark-mode .welcome-prompt {
-    color: #aeb9d1;
-    background: transparent;
+    color: #ffffff;
+    background: transparent !important;
 }
 
 body.dark-mode .suggestion-button {
-    background: #14213d;
-    border-color: #29466f;
+    background: rgba(255, 255, 255, 0.025);
+    border-color: rgba(148, 163, 184, 0.38);
     color: #ffffff;
 }
 
 body.dark-mode .suggestion-button:hover {
-    background: #1d3157;
-    border-color: #5275a8;
+    background: #14213d;
+    border-color: rgba(82, 117, 168, 0.75);
 }
 
 body.dark-mode .suggestion-icon {
-    background: #0b1736;
+    background: rgba(37, 99, 235, 0.10);
+}
+
+body.dark-mode .suggestion-button:hover .suggestion-icon {
+    background: rgba(37, 99, 235, 0.18);
 }
 
 body.dark-mode .suggestion-text {
@@ -1477,19 +1565,29 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
         max-width: 82%;
     }
 
-    /* MOBILE SUGGESTIONS */
+    /* MOBILE WELCOME */
+
+    .welcome {
+        padding: 25px 15px 35px;
+    }
 
     .welcome-content {
         max-width: 620px;
     }
 
+    .welcome-prompt {
+        margin-bottom: 24px;
+        font-size: 25px;
+    }
+
     .suggestions {
+        width: min(500px, 100%);
         grid-template-columns: 1fr;
         gap: 12px;
     }
 
     .suggestion-button {
-        min-height: 64px;
+        min-height: 68px;
     }
 }
 
@@ -1561,11 +1659,11 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
         font-size: 13px;
     }
 
-    /* SMALL MOBILE SUGGESTIONS */
+    /* SMALL MOBILE WELCOME */
 
     .welcome-prompt {
         margin-bottom: 18px;
-        font-size: 14px;
+        font-size: 22px;
     }
 
     .suggestions {
@@ -1618,118 +1716,4 @@ textarea:focus-visible {
 body.dark-mode ::selection {
     background: #07124e;
     color: #fff;
-}
-/* ============================================================
-   FORCE SHOW WELCOME SUGGESTIONS
-============================================================ */
-
-.welcome {
-    width: 100%;
-    min-height: 100%;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-}
-
-.welcome-content {
-    width: 100%;
-    max-width: 760px;
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.welcome-prompt {
-    display: block !important;
-    width: 100%;
-    margin: 0 0 24px 0;
-    padding: 0;
-    background: transparent !important;
-    text-align: center;
-    color: #aeb9d1;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.suggestions {
-    width: 100%;
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.suggestion-button {
-    width: 100%;
-    min-height: 72px;
-    display: flex !important;
-    align-items: center;
-    gap: 14px;
-    padding: 13px 17px;
-
-    border: 2px solid #29466f !important;
-    border-radius: 15px;
-
-    background: #14213d !important;
-    color: #ffffff !important;
-
-    visibility: visible !important;
-    opacity: 1 !important;
-
-    cursor: pointer;
-    text-align: left;
-}
-
-.suggestion-icon {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 11px;
-    background: #0b1736 !important;
-
-    font-size: 19px;
-}
-
-.suggestion-text {
-    flex: 1;
-    display: block !important;
-
-    color: #ffffff !important;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.suggestion-arrow {
-    display: block !important;
-    flex-shrink: 0;
-
-    color: #aeb9d1 !important;
-    font-size: 20px;
-}
-
-
-/* HOVER */
-
-.suggestion-button:hover {
-    background: #1d3157 !important;
-    border-color: #5275a8 !important;
-    transform: translateY(-2px);
-}
-
-
-/* MOBILE */
-
-@media (max-width: 800px) {
-
-    .suggestions {
-        grid-template-columns: 1fr;
-    }
-
 }
