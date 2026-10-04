@@ -17,73 +17,97 @@
 
 <!-- ================= AUTH OVERLAY ================= -->
 <div class="auth-overlay" id="authOverlay">
-    <div class="auth-card">
-        <div class="auth-logo">✦</div>
+    <div class="auth-shell">
 
-        <div class="auth-brand">My AI</div>
-        <p class="auth-subtitle">Your personal AI assistant</p>
-
-        <div class="auth-tabs">
-            <button
-                type="button"
-                class="auth-tab active"
-                id="loginTab"
-                onclick="showAuthMode('login')">
-                Login
-            </button>
-
-            <button
-                type="button"
-                class="auth-tab"
-                id="signupTab"
-                onclick="showAuthMode('signup')">
-                Sign Up
-            </button>
-        </div>
-
-        <form id="authForm" onsubmit="submitAuth(event)">
-            <label for="authUsername">Username</label>
-            <input
-                id="authUsername"
-                type="text"
-                autocomplete="username"
-                placeholder="Enter username"
-                maxlength="30"
-                required>
-
-            <label for="authPassword">Password</label>
-            <div class="password-field">
-                <input
-                    id="authPassword"
-                    type="password"
-                    autocomplete="current-password"
-                    placeholder="Minimum 8 characters"
-                    minlength="8"
-                    required>
-                <button
-                    type="button"
-                    class="password-toggle"
-                    id="passwordToggle"
-                    aria-label="Show password"
-                    title="Show password"
-                    onclick="togglePasswordVisibility()">
-                    <span id="passwordEye">&#128065;</span>
-                </button>
+        <section class="auth-showcase">
+            <div class="showcase-brand">
+                <span class="showcase-logo">✦</span>
+                <span>My AI</span>
             </div>
 
-            <button
-                class="auth-submit"
-                id="authSubmit"
-                type="submit">
-                Login
-            </button>
-        </form>
+            <div class="showcase-content">
+                <p class="showcase-eyebrow">MY AI</p>
+                <h1>Ask me anything.</h1>
+            </div>
 
-        <div class="auth-error" id="authError"></div>
+            <div class="showcase-orb orb-one"></div>
+            <div class="showcase-orb orb-two"></div>
+            <div class="showcase-orb orb-three"></div>
+        </section>
 
-        <p class="auth-note">
-            Your password is stored as a secure hash. Never share your password.
-        </p>
+        <section class="auth-panel">
+            <div class="auth-panel-inner">
+                <div class="auth-heading">
+                    <h2 id="authHeading">Login</h2>
+                    <p id="authHeadingText">Welcome back</p>
+                </div>
+
+                <div class="auth-tabs">
+                    <button
+                        type="button"
+                        class="auth-tab active"
+                        id="loginTab"
+                        onclick="showAuthMode('login')">
+                        Login
+                    </button>
+
+                    <button
+                        type="button"
+                        class="auth-tab"
+                        id="signupTab"
+                        onclick="showAuthMode('signup')">
+                        Sign Up
+                    </button>
+                </div>
+
+                <form id="authForm" onsubmit="submitAuth(event)">
+                    <label for="authUsername">Username</label>
+                    <input
+                        id="authUsername"
+                        type="text"
+                        autocomplete="username"
+                        placeholder="Enter your username"
+                        maxlength="30"
+                        required>
+
+                    <label for="authPassword">Password</label>
+                    <div class="password-field">
+                        <input
+                            id="authPassword"
+                            type="password"
+                            autocomplete="current-password"
+                            placeholder="Enter your password"
+                            minlength="8"
+                            required>
+                    </div>
+                    <label class="show-password-option">
+                        <input
+                            type="checkbox"
+                            id="showPassword"
+                            onchange="togglePasswordVisibility()">
+                        <span>Show Password</span>
+                    </label>
+
+                    <button
+                        class="auth-submit"
+                        id="authSubmit"
+                        type="submit">
+                        Login
+                    </button>
+                </form>
+
+                <div class="auth-error" id="authError"></div>
+
+                <p class="auth-switch-text" id="authSwitchText">
+                    Don't have an account? <button type="button" onclick="showAuthMode('signup')">Sign Up</button>
+                </p>
+
+                <p class="auth-note">
+                    Your password is stored securely.
+                </p>
+            </div>
+        </section>
+
     </div>
 </div>
 
@@ -494,6 +518,15 @@ function showAuthMode(mode) {
     const error =
         document.getElementById("authError");
 
+    const heading =
+        document.getElementById("authHeading");
+
+    const headingText =
+        document.getElementById("authHeadingText");
+
+    const switchText =
+        document.getElementById("authSwitchText");
+
     if (loginTab) {
         loginTab.classList.toggle(
             "active",
@@ -515,6 +548,26 @@ function showAuthMode(mode) {
                 : "Create Account";
     }
 
+    if (heading) {
+        heading.textContent =
+            mode === "login"
+                ? "Login"
+                : "Create account";
+    }
+
+    if (headingText) {
+        headingText.textContent =
+            mode === "login"
+                ? "Welcome back"
+                : "Create your My AI account";
+    }
+
+    if (switchText) {
+        switchText.innerHTML = mode === "login"
+            ? `Don't have an account? <button type="button" onclick="showAuthMode('signup')">Sign Up</button>`
+            : `Already have an account? <button type="button" onclick="showAuthMode('login')">Login</button>`;
+    }
+
     if (password) {
         password.autocomplete =
             mode === "login"
@@ -531,16 +584,11 @@ function showAuthMode(mode) {
 
 function togglePasswordVisibility() {
     const passwordInput = document.getElementById("authPassword");
-    const toggle = document.getElementById("passwordToggle");
-    const eye = document.getElementById("passwordEye");
+    const showPassword = document.getElementById("showPassword");
 
-    if (!passwordInput || !toggle) return;
+    if (!passwordInput || !showPassword) return;
 
-    const isVisible = passwordInput.type === "text";
-    passwordInput.type = isVisible ? "password" : "text";
-    toggle.setAttribute("aria-label", isVisible ? "Show password" : "Hide password");
-    toggle.setAttribute("title", isVisible ? "Show password" : "Hide password");
-    if (eye) eye.innerHTML = isVisible ? "&#128065;" : "&#128064;";
+    passwordInput.type = showPassword.checked ? "text" : "password";
 }
 
 function submitAuth(event) {
