@@ -1318,3 +1318,12 @@ h1 {
         border-radius: 22px;
     }
 }
+
+/* Final login background override */
+.auth-overlay {
+    background: #0b1f4d !important;
+}
+
+.light .auth-overlay {
+    background: #0b1f4d !important;
+}
