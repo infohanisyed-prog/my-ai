@@ -52,13 +52,22 @@
                 required>
 
             <label for="authPassword">Password</label>
-            <input
-                id="authPassword"
-                type="password"
-                autocomplete="current-password"
-                placeholder="Minimum 8 characters"
-                minlength="8"
-                required>
+            <div class="password-field">
+                <input
+                    id="authPassword"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="Minimum 8 characters"
+                    minlength="8"
+                    required>
+                <label class="show-password">
+                    <input
+                        id="showPassword"
+                        type="checkbox"
+                        onchange="togglePasswordVisibility()">
+                    <span>Show password</span>
+                </label>
+            </div>
 
             <button
                 class="auth-submit"
@@ -518,7 +527,16 @@ function showAuthMode(mode) {
 }
 
 
-async function submitAuth(event) {
+async function togglePasswordVisibility() {
+    const passwordInput = document.getElementById("authPassword");
+    const showPassword = document.getElementById("showPassword");
+
+    if (!passwordInput || !showPassword) return;
+
+    passwordInput.type = showPassword.checked ? "text" : "password";
+}
+
+function submitAuth(event) {
 
     event.preventDefault();
 
