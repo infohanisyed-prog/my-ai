@@ -501,7 +501,7 @@ h1 {
     display: grid;
     place-items: center;
     padding: 28px;
-    background: #f3f6fb;
+    background: #0b1f4d;
 }
 
 .auth-overlay.hidden {
