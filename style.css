@@ -1335,3 +1335,9 @@ h1 {
 .light .auth-shell {
     background: #0b1f4d !important;
 }
+
+/* FINAL LOGIN PAGE BACKGROUND */
+.auth-overlay,
+.light .auth-overlay {
+    background: #0b1f4d !important;
+}
