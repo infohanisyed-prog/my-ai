@@ -1327,3 +1327,11 @@ h1 {
 .light .auth-overlay {
     background: #0b1f4d !important;
 }
+
+/* Final: keep the login page background the same dark blue */
+.auth-overlay,
+.auth-shell,
+.light .auth-overlay,
+.light .auth-shell {
+    background: #0b1f4d !important;
+}
