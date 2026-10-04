@@ -49,7 +49,6 @@
 
                 <form id="authForm" onsubmit="submitAuth(event)">
 
-                    <!-- USERNAME / EMAIL -->
                     <label for="authUsername">
                         Username or Email
                     </label>
@@ -63,7 +62,6 @@
                         required>
 
 
-                    <!-- PASSWORD -->
                     <label for="authPassword">
                         Password
                     </label>
@@ -81,7 +79,6 @@
                     </div>
 
 
-                    <!-- SHOW PASSWORD -->
                     <label class="show-password-option">
 
                         <input
@@ -94,7 +91,6 @@
                     </label>
 
 
-                    <!-- SUBMIT -->
                     <button
                         class="auth-submit"
                         id="authSubmit"
@@ -201,7 +197,6 @@
 
 
         <div class="sidebar-bottom">
-
 
             <div
                 class="account-box"
@@ -327,6 +322,76 @@
                 <p class="welcome-prompt">
                     Ask me anything.
                 </p>
+
+
+                <!-- ================= SUGGESTIONS ================= -->
+
+                <div class="suggestions">
+
+                    <button
+                        class="suggestion-card"
+                        type="button"
+                        onclick="useSuggestion('What is Python?')">
+
+                        <span class="suggestion-icon">
+                            🐍
+                        </span>
+
+                        <span>
+                            What is Python?
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="suggestion-card"
+                        type="button"
+                        onclick="useSuggestion('Learn Networking')">
+
+                        <span class="suggestion-icon">
+                            🌐
+                        </span>
+
+                        <span>
+                            Learn Networking
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="suggestion-card"
+                        type="button"
+                        onclick="useSuggestion('Explain Computer Networks')">
+
+                        <span class="suggestion-icon">
+                            💻
+                        </span>
+
+                        <span>
+                            Explain Computer Networks
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="suggestion-card"
+                        type="button"
+                        onclick="useSuggestion('Help me with programming')">
+
+                        <span class="suggestion-icon">
+                            ⌨️
+                        </span>
+
+                        <span>
+                            Help me with programming
+                        </span>
+
+                    </button>
+
+                </div>
 
             </div>
 
@@ -1378,6 +1443,74 @@ function showWelcome() {
             <p class="welcome-prompt">
                 Ask me anything.
             </p>
+
+
+            <div class="suggestions">
+
+                <button
+                    class="suggestion-card"
+                    type="button"
+                    onclick="useSuggestion('What is Python?')">
+
+                    <span class="suggestion-icon">
+                        🐍
+                    </span>
+
+                    <span>
+                        What is Python?
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="suggestion-card"
+                    type="button"
+                    onclick="useSuggestion('Learn Networking')">
+
+                    <span class="suggestion-icon">
+                        🌐
+                    </span>
+
+                    <span>
+                        Learn Networking
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="suggestion-card"
+                    type="button"
+                    onclick="useSuggestion('Explain Computer Networks')">
+
+                    <span class="suggestion-icon">
+                        💻
+                    </span>
+
+                    <span>
+                        Explain Computer Networks
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="suggestion-card"
+                    type="button"
+                    onclick="useSuggestion('Help me with programming')">
+
+                    <span class="suggestion-icon">
+                        ⌨️
+                    </span>
+
+                    <span>
+                        Help me with programming
+                    </span>
+
+                </button>
+
+            </div>
 
         </div>
 
