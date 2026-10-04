@@ -14,7 +14,69 @@
 
 <body>
 
-<div class="app">
+
+<!-- ================= AUTH OVERLAY ================= -->
+<div class="auth-overlay" id="authOverlay">
+    <div class="auth-card">
+        <div class="auth-logo">✦</div>
+
+        <div class="auth-brand">My AI</div>
+        <p class="auth-subtitle">Your personal AI assistant</p>
+
+        <div class="auth-tabs">
+            <button
+                type="button"
+                class="auth-tab active"
+                id="loginTab"
+                onclick="showAuthMode('login')">
+                Login
+            </button>
+
+            <button
+                type="button"
+                class="auth-tab"
+                id="signupTab"
+                onclick="showAuthMode('signup')">
+                Sign Up
+            </button>
+        </div>
+
+        <form id="authForm" onsubmit="submitAuth(event)">
+            <label for="authUsername">Username</label>
+            <input
+                id="authUsername"
+                type="text"
+                autocomplete="username"
+                placeholder="Enter username"
+                maxlength="30"
+                required>
+
+            <label for="authPassword">Password</label>
+            <input
+                id="authPassword"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Minimum 8 characters"
+                minlength="8"
+                required>
+
+            <button
+                class="auth-submit"
+                id="authSubmit"
+                type="submit">
+                Login
+            </button>
+        </form>
+
+        <div class="auth-error" id="authError"></div>
+
+        <p class="auth-note">
+            Your password is stored as a secure hash. Never share your password.
+        </p>
+    </div>
+</div>
+
+<div class="app" id="app">
 
     <!-- ================= SIDEBAR ================= -->
 
@@ -56,6 +118,24 @@
 
 
         <div class="sidebar-bottom">
+
+
+            <div class="account-box" id="accountBox">
+                <div class="account-avatar">👤</div>
+
+                <div class="account-info">
+                    <span class="account-label">Logged in as</span>
+                    <strong id="accountUsername">User</strong>
+                </div>
+
+                <button
+                    class="logout-button"
+                    type="button"
+                    onclick="logout()"
+                    title="Logout">
+                    ↪
+                </button>
+            </div>
 
             <button
                 class="clear-history"
@@ -377,14 +457,332 @@ document.addEventListener(
 
         setupVoiceRecognition();
 
+        const authenticated = await initAuth();
+
+        if (authenticated) {
+            await loadChatHistory();
+            autoResize();
+            input.focus();
+        }
+
+    }
+);
+
+
+
+/* ============================================================
+   AUTHENTICATION
+============================================================ */
+
+let authMode = "login";
+
+
+async function initAuth() {
+
+    try {
+
+        const response =
+            await fetch("/api/auth/me");
+
+        const data =
+            await response.json();
+
+        if (
+            data.success &&
+            data.authenticated
+        ) {
+
+            showApp(data.user);
+
+            return true;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Auth check error:",
+            error
+        );
+
+    }
+
+    showAuthOverlay();
+
+    return false;
+}
+
+
+function showAuthOverlay() {
+
+    const overlay =
+        document.getElementById(
+            "authOverlay"
+        );
+
+    const app =
+        document.getElementById("app");
+
+    if (overlay) {
+        overlay.classList.remove("hidden");
+    }
+
+    if (app) {
+        app.classList.add("app-locked");
+    }
+
+}
+
+
+function hideAuthOverlay() {
+
+    const overlay =
+        document.getElementById(
+            "authOverlay"
+        );
+
+    const app =
+        document.getElementById("app");
+
+    if (overlay) {
+        overlay.classList.add("hidden");
+    }
+
+    if (app) {
+        app.classList.remove("app-locked");
+    }
+
+}
+
+
+function showApp(user) {
+
+    hideAuthOverlay();
+
+    const username =
+        document.getElementById(
+            "accountUsername"
+        );
+
+    if (username && user) {
+        username.textContent =
+            user.username;
+    }
+
+}
+
+
+function showAuthMode(mode) {
+
+    authMode = mode;
+
+    const loginTab =
+        document.getElementById("loginTab");
+
+    const signupTab =
+        document.getElementById("signupTab");
+
+    const submit =
+        document.getElementById("authSubmit");
+
+    const password =
+        document.getElementById("authPassword");
+
+    const error =
+        document.getElementById("authError");
+
+    if (loginTab) {
+        loginTab.classList.toggle(
+            "active",
+            mode === "login"
+        );
+    }
+
+    if (signupTab) {
+        signupTab.classList.toggle(
+            "active",
+            mode === "signup"
+        );
+    }
+
+    if (submit) {
+        submit.textContent =
+            mode === "login"
+                ? "Login"
+                : "Create Account";
+    }
+
+    if (password) {
+        password.autocomplete =
+            mode === "login"
+                ? "current-password"
+                : "new-password";
+    }
+
+    if (error) {
+        error.textContent = "";
+    }
+
+}
+
+
+async function submitAuth(event) {
+
+    event.preventDefault();
+
+    const username =
+        document.getElementById(
+            "authUsername"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "authPassword"
+        ).value;
+
+    const submit =
+        document.getElementById(
+            "authSubmit"
+        );
+
+    const error =
+        document.getElementById(
+            "authError"
+        );
+
+    if (!username || !password) {
+        return;
+    }
+
+    submit.disabled = true;
+    submit.textContent =
+        authMode === "login"
+            ? "Logging in..."
+            : "Creating account...";
+
+    error.textContent = "";
+
+    try {
+
+        const endpoint =
+            authMode === "login"
+                ? "/api/auth/login"
+                : "/api/auth/signup";
+
+        const response =
+            await fetch(
+                endpoint,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!response.ok || !data.success) {
+
+            error.textContent =
+                data.error ||
+                "Authentication failed.";
+
+            return;
+        }
+
+        document.getElementById(
+            "authPassword"
+        ).value = "";
+
+        showApp(data.user);
+
+        currentChatId = null;
+
+        clearChatUI();
+
         await loadChatHistory();
 
         autoResize();
 
         input.focus();
 
+    } catch (authError) {
+
+        console.error(
+            "Authentication error:",
+            authError
+        );
+
+        error.textContent =
+            "Could not connect to the server. Please try again.";
+
+    } finally {
+
+        submit.disabled = false;
+
+        submit.textContent =
+            authMode === "login"
+                ? "Login"
+                : "Create Account";
+
     }
-);
+
+}
+
+
+async function logout() {
+
+    try {
+
+        await fetch(
+            "/api/auth/logout",
+            {
+                method: "POST"
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Logout error:",
+            error
+        );
+
+    }
+
+    currentChatId = null;
+
+    clearChatUI();
+
+    const username =
+        document.getElementById(
+            "authUsername"
+        );
+
+    const password =
+        document.getElementById(
+            "authPassword"
+        );
+
+    if (username) {
+        username.value = "";
+    }
+
+    if (password) {
+        password.value = "";
+    }
+
+    showAuthMode("login");
+
+    showAuthOverlay();
+
+}
 
 
 /* ============================================================
