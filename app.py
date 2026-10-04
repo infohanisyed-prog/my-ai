@@ -1,6 +1,7 @@
 import os
 import json
 import uuid
+import re
 from datetime import datetime
 
 import requests
@@ -185,14 +186,21 @@ def current_user():
 
 def login_required():
     user = current_user()
+
     if not user:
         session.clear()
         return None
+
     return user
 
 
+# ============================================================
+# SIGNUP
+# ============================================================
+
 @app.route("/api/auth/signup", methods=["POST"])
 def signup():
+
     if not redis_is_available():
         return jsonify({
             "success": False,
@@ -201,23 +209,75 @@ def signup():
 
     data = request.get_json(silent=True) or {}
 
-    username = normalize_username(data.get("username"))
-    password = str(data.get("password") or "")
+    username = normalize_username(
+        data.get("username")
+    )
 
-    if len(username) < 3 or len(username) > 30:
+    password = str(
+        data.get("password") or ""
+    )
+
+    # --------------------------------------------------------
+    # Username / Email length
+    # --------------------------------------------------------
+
+    if len(username) < 3 or len(username) > 100:
         return jsonify({
             "success": False,
-            "error": "Username must be 3 to 30 characters."
+            "error": "Username or email must be 3 to 100 characters."
         }), 400
 
-    if not all(
-        character.isalnum() or character in "._-"
-        for character in username
+    # --------------------------------------------------------
+    # Allowed characters
+    # --------------------------------------------------------
+    # Normal username:
+    # hani.1454
+    #
+    # Email:
+    # hani@gmail.com
+    #
+    # Allowed:
+    # letters, numbers, dot, underscore, percent,
+    # plus, hyphen and @
+    # --------------------------------------------------------
+
+    allowed_pattern = r"^[A-Za-z0-9._%+\-@]+$"
+
+    if not re.fullmatch(
+        allowed_pattern,
+        username
     ):
         return jsonify({
             "success": False,
-            "error": "Username can contain letters, numbers, dot, underscore and hyphen only."
+            "error": "Username can contain letters, numbers, dot, underscore, hyphen and @ only."
         }), 400
+
+    # --------------------------------------------------------
+    # Email validation
+    # --------------------------------------------------------
+
+    if "@" in username:
+
+        email_pattern = (
+            r"^[A-Za-z0-9._%+\-]+"
+            r"@"
+            r"[A-Za-z0-9.-]+"
+            r"\."
+            r"[A-Za-z]{2,}$"
+        )
+
+        if not re.fullmatch(
+            email_pattern,
+            username
+        ):
+            return jsonify({
+                "success": False,
+                "error": "Please enter a valid email address."
+            }), 400
+
+    # --------------------------------------------------------
+    # Password validation
+    # --------------------------------------------------------
 
     if len(password) < 8:
         return jsonify({
@@ -225,20 +285,36 @@ def signup():
             "error": "Password must be at least 8 characters."
         }), 400
 
+    # --------------------------------------------------------
+    # Check existing username / email
+    # --------------------------------------------------------
+
     if get_user_by_username(username):
         return jsonify({
             "success": False,
-            "error": "That username is already registered."
+            "error": "That username or email is already registered."
         }), 409
 
-    user_id = str(uuid.uuid4())
+    # --------------------------------------------------------
+    # Create new user
+    # --------------------------------------------------------
+
+    user_id = str(
+        uuid.uuid4()
+    )
 
     user = {
         "id": user_id,
         "username": username,
-        "password_hash": generate_password_hash(password),
+        "password_hash": generate_password_hash(
+            password
+        ),
         "created_at": datetime.utcnow().isoformat()
     }
+
+    # --------------------------------------------------------
+    # Save user
+    # --------------------------------------------------------
 
     save_user(user)
 
@@ -248,19 +324,28 @@ def signup():
         user_id
     ])
 
+    # --------------------------------------------------------
+    # Login user automatically
+    # --------------------------------------------------------
+
     set_logged_in_user(user)
 
     return jsonify({
         "success": True,
         "user": {
             "id": user_id,
-            "username": username
+            "username": user["username"]
         }
     })
 
 
+# ============================================================
+# LOGIN
+# ============================================================
+
 @app.route("/api/auth/login", methods=["POST"])
 def login():
+
     if not redis_is_available():
         return jsonify({
             "success": False,
@@ -269,10 +354,17 @@ def login():
 
     data = request.get_json(silent=True) or {}
 
-    username = normalize_username(data.get("username"))
-    password = str(data.get("password") or "")
+    username = normalize_username(
+        data.get("username")
+    )
 
-    user = get_user_by_username(username)
+    password = str(
+        data.get("password") or ""
+    )
+
+    user = get_user_by_username(
+        username
+    )
 
     if not user or not check_password_hash(
         user.get("password_hash", ""),
@@ -294,14 +386,27 @@ def login():
     })
 
 
+# ============================================================
+# LOGOUT
+# ============================================================
+
 @app.route("/api/auth/logout", methods=["POST"])
 def logout():
-    session.clear()
-    return jsonify({"success": True})
 
+    session.clear()
+
+    return jsonify({
+        "success": True
+    })
+
+
+# ============================================================
+# CURRENT USER
+# ============================================================
 
 @app.route("/api/auth/me", methods=["GET"])
 def auth_me():
+
     user = current_user()
 
     if not user:
@@ -325,6 +430,7 @@ def auth_me():
 # ============================================================
 
 def get_user_id():
+
     user = login_required()
 
     if not user:
@@ -342,6 +448,7 @@ def chat_key(user_id, chat_id):
 
 
 def get_user_chats(user_id):
+
     result = redis_command([
         "GET",
         user_chats_key(user_id)
@@ -352,20 +459,31 @@ def get_user_chats(user_id):
 
     try:
         chats = json.loads(result)
-        return chats if isinstance(chats, list) else []
+
+        return (
+            chats
+            if isinstance(chats, list)
+            else []
+        )
+
     except (json.JSONDecodeError, TypeError):
         return []
 
 
 def save_user_chats(user_id, chats):
+
     redis_command([
         "SET",
         user_chats_key(user_id),
-        json.dumps(chats, ensure_ascii=False)
+        json.dumps(
+            chats,
+            ensure_ascii=False
+        )
     ])
 
 
 def get_chat(user_id, chat_id):
+
     if not chat_id:
         return None
 
@@ -379,26 +497,42 @@ def get_chat(user_id, chat_id):
 
     try:
         return json.loads(result)
+
     except (json.JSONDecodeError, TypeError):
         return None
 
 
 def save_chat(user_id, chat):
+
     redis_command([
         "SET",
-        chat_key(user_id, chat["id"]),
-        json.dumps(chat, ensure_ascii=False)
+        chat_key(
+            user_id,
+            chat["id"]
+        ),
+        json.dumps(
+            chat,
+            ensure_ascii=False
+        )
     ])
 
 
-def delete_chat_from_redis(user_id, chat_id):
+def delete_chat_from_redis(
+    user_id,
+    chat_id
+):
+
     redis_command([
         "DEL",
-        chat_key(user_id, chat_id)
+        chat_key(
+            user_id,
+            chat_id
+        )
     ])
 
 
 def create_chat_object():
+
     now = datetime.utcnow().isoformat()
 
     return {
@@ -410,18 +544,30 @@ def create_chat_object():
     }
 
 
-def update_chat_list(user_id, chat):
-    chats = get_user_chats(user_id)
+def update_chat_list(
+    user_id,
+    chat
+):
+
+    chats = get_user_chats(
+        user_id
+    )
+
     found = False
 
     for item in chats:
+
         if item.get("id") == chat["id"]:
+
             item["title"] = chat["title"]
             item["updated_at"] = chat["updated_at"]
+
             found = True
+
             break
 
     if not found:
+
         chats.append({
             "id": chat["id"],
             "title": chat["title"],
@@ -430,15 +576,27 @@ def update_chat_list(user_id, chat):
         })
 
     chats.sort(
-        key=lambda item: item.get("updated_at", ""),
+        key=lambda item: item.get(
+            "updated_at",
+            ""
+        ),
         reverse=True
     )
 
-    save_user_chats(user_id, chats)
+    save_user_chats(
+        user_id,
+        chats
+    )
 
 
-def remove_chat_from_list(user_id, chat_id):
-    chats = get_user_chats(user_id)
+def remove_chat_from_list(
+    user_id,
+    chat_id
+):
+
+    chats = get_user_chats(
+        user_id
+    )
 
     chats = [
         chat
@@ -446,7 +604,10 @@ def remove_chat_from_list(user_id, chat_id):
         if chat.get("id") != chat_id
     ]
 
-    save_user_chats(user_id, chats)
+    save_user_chats(
+        user_id,
+        chats
+    )
 
 
 # ============================================================
@@ -454,43 +615,69 @@ def remove_chat_from_list(user_id, chat_id):
 # ============================================================
 
 def call_groq(messages):
-    if not groq_client:
-        raise RuntimeError("Groq is not configured.")
 
-    completion = groq_client.chat.completions.create(
-        model=GROQ_MODEL,
-        messages=messages,
-        max_tokens=2000,
-        temperature=0.7
+    if not groq_client:
+        raise RuntimeError(
+            "Groq is not configured."
+        )
+
+    completion = (
+        groq_client
+        .chat
+        .completions
+        .create(
+            model=GROQ_MODEL,
+            messages=messages,
+            max_tokens=2000,
+            temperature=0.7
+        )
     )
 
     text = (
-        completion.choices[0].message.content
+        completion
+        .choices[0]
+        .message
+        .content
         or ""
     ).strip()
 
     if not text:
-        raise RuntimeError("Groq returned an empty response.")
+        raise RuntimeError(
+            "Groq returned an empty response."
+        )
 
     return text
 
 
 def call_gemini(messages):
+
     if not GEMINI_API_KEY:
-        raise RuntimeError("Gemini is not configured.")
+        raise RuntimeError(
+            "Gemini is not configured."
+        )
 
     system_text = SYSTEM_PROMPT
     contents = []
 
     for message in messages:
+
         role = message.get("role")
-        content = message.get("content", "")
+        content = message.get(
+            "content",
+            ""
+        )
 
         if role == "system":
+
             system_text = content
+
             continue
 
-        gemini_role = "model" if role == "assistant" else "user"
+        gemini_role = (
+            "model"
+            if role == "assistant"
+            else "user"
+        )
 
         contents.append({
             "role": gemini_role,
@@ -502,14 +689,19 @@ def call_gemini(messages):
         })
 
     url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
+        "https://generativelanguage.googleapis.com/"
+        "v1beta/models/"
         f"{GEMINI_MODEL}:generateContent"
     )
 
     response = requests.post(
         url,
-        params={"key": GEMINI_API_KEY},
-        headers={"Content-Type": "application/json"},
+        params={
+            "key": GEMINI_API_KEY
+        },
+        headers={
+            "Content-Type": "application/json"
+        },
         json={
             "systemInstruction": {
                 "parts": [
@@ -531,10 +723,15 @@ def call_gemini(messages):
 
     data = response.json()
 
-    candidates = data.get("candidates") or []
+    candidates = (
+        data.get("candidates")
+        or []
+    )
 
     if not candidates:
-        raise RuntimeError("Gemini returned no candidates.")
+        raise RuntimeError(
+            "Gemini returned no candidates."
+        )
 
     parts = (
         candidates[0]
@@ -549,25 +746,37 @@ def call_gemini(messages):
     ).strip()
 
     if not text:
-        raise RuntimeError("Gemini returned an empty response.")
+        raise RuntimeError(
+            "Gemini returned an empty response."
+        )
 
     return text
 
 
 def call_openrouter(messages):
+
     if not OPENROUTER_API_KEY:
-        raise RuntimeError("OpenRouter is not configured.")
+        raise RuntimeError(
+            "OpenRouter is not configured."
+        )
 
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-            "Content-Type": "application/json",
-            "HTTP-Referer": os.getenv(
-                "APP_URL",
-                "https://my-ai-six-orpin.vercel.app"
-            ),
-            "X-Title": "My AI"
+            "Authorization":
+                f"Bearer {OPENROUTER_API_KEY}",
+
+            "Content-Type":
+                "application/json",
+
+            "HTTP-Referer":
+                os.getenv(
+                    "APP_URL",
+                    "https://my-ai-six-orpin.vercel.app"
+                ),
+
+            "X-Title":
+                "My AI"
         },
         json={
             "model": OPENROUTER_MODEL,
@@ -582,10 +791,15 @@ def call_openrouter(messages):
 
     data = response.json()
 
-    choices = data.get("choices") or []
+    choices = (
+        data.get("choices")
+        or []
+    )
 
     if not choices:
-        raise RuntimeError("OpenRouter returned no choices.")
+        raise RuntimeError(
+            "OpenRouter returned no choices."
+        )
 
     text = (
         choices[0]
@@ -595,43 +809,71 @@ def call_openrouter(messages):
     ).strip()
 
     if not text:
-        raise RuntimeError("OpenRouter returned an empty response.")
+        raise RuntimeError(
+            "OpenRouter returned an empty response."
+        )
 
     return text
 
 
 def generate_ai_response(messages):
+
     """
     Provider priority:
+
     1. Groq
     2. Gemini
     3. OpenRouter free router
 
-    A failed provider is skipped and the next configured provider
-    is tried automatically.
+    A failed provider is skipped and
+    the next configured provider is
+    tried automatically.
     """
 
     providers = [
-        ("Groq", call_groq),
-        ("Gemini", call_gemini),
-        ("OpenRouter", call_openrouter)
+        (
+            "Groq",
+            call_groq
+        ),
+        (
+            "Gemini",
+            call_gemini
+        ),
+        (
+            "OpenRouter",
+            call_openrouter
+        )
     ]
 
     errors = []
 
-    for provider_name, provider_function in providers:
+    for (
+        provider_name,
+        provider_function
+    ) in providers:
+
         try:
-            answer = provider_function(messages)
+
+            answer = provider_function(
+                messages
+            )
 
             if answer:
-                print(f"AI provider used: {provider_name}")
+
+                print(
+                    f"AI provider used: "
+                    f"{provider_name}"
+                )
+
                 return answer
 
         except Exception as error:
+
             print(
                 f"{provider_name} failed:",
                 repr(error)
             )
+
             errors.append(
                 f"{provider_name}: {error}"
             )
@@ -648,27 +890,40 @@ def generate_ai_response(messages):
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+
+    return render_template(
+        "index.html"
+    )
 
 
 # ============================================================
 # CHAT API
 # ============================================================
 
-@app.route("/api/chats", methods=["GET"])
+@app.route(
+    "/api/chats",
+    methods=["GET"]
+)
 def get_chats():
+
     user_id = get_user_id()
 
     if not user_id:
+
         return jsonify({
             "success": False,
             "error": "Login required."
         }), 401
 
-    chats = get_user_chats(user_id)
+    chats = get_user_chats(
+        user_id
+    )
 
     chats.sort(
-        key=lambda item: item.get("updated_at", ""),
+        key=lambda item: item.get(
+            "updated_at",
+            ""
+        ),
         reverse=True
     )
 
@@ -678,11 +933,16 @@ def get_chats():
     })
 
 
-@app.route("/api/chats", methods=["POST"])
+@app.route(
+    "/api/chats",
+    methods=["POST"]
+)
 def create_chat():
+
     user_id = get_user_id()
 
     if not user_id:
+
         return jsonify({
             "success": False,
             "error": "Login required."
@@ -690,8 +950,15 @@ def create_chat():
 
     chat = create_chat_object()
 
-    save_chat(user_id, chat)
-    update_chat_list(user_id, chat)
+    save_chat(
+        user_id,
+        chat
+    )
+
+    update_chat_list(
+        user_id,
+        chat
+    )
 
     return jsonify({
         "success": True,
@@ -699,39 +966,56 @@ def create_chat():
     })
 
 
-@app.route("/api/chats", methods=["DELETE"])
+@app.route(
+    "/api/chats",
+    methods=["DELETE"]
+)
 def delete_all_chats():
+
     user_id = get_user_id()
 
     if not user_id:
+
         return jsonify({
             "success": False,
             "error": "Login required."
         }), 401
 
-    chats = get_user_chats(user_id)
+    chats = get_user_chats(
+        user_id
+    )
 
     for chat in chats:
+
         chat_id = chat.get("id")
 
         if chat_id:
+
             delete_chat_from_redis(
                 user_id,
                 chat_id
             )
 
-    save_user_chats(user_id, [])
+    save_user_chats(
+        user_id,
+        []
+    )
 
     return jsonify({
         "success": True
     })
 
 
-@app.route("/api/chats/<chat_id>", methods=["GET"])
+@app.route(
+    "/api/chats/<chat_id>",
+    methods=["GET"]
+)
 def get_single_chat(chat_id):
+
     user_id = get_user_id()
 
     if not user_id:
+
         return jsonify({
             "success": False,
             "error": "Login required."
@@ -743,6 +1027,7 @@ def get_single_chat(chat_id):
     )
 
     if not chat:
+
         return jsonify({
             "success": False,
             "error": "Chat not found."
@@ -754,11 +1039,16 @@ def get_single_chat(chat_id):
     })
 
 
-@app.route("/api/chats/<chat_id>", methods=["DELETE"])
+@app.route(
+    "/api/chats/<chat_id>",
+    methods=["DELETE"]
+)
 def delete_single_chat(chat_id):
+
     user_id = get_user_id()
 
     if not user_id:
+
         return jsonify({
             "success": False,
             "error": "Login required."
@@ -770,6 +1060,7 @@ def delete_single_chat(chat_id):
     )
 
     if not chat:
+
         return jsonify({
             "success": False,
             "error": "Chat not found."
@@ -794,31 +1085,45 @@ def delete_single_chat(chat_id):
 # AI CHAT
 # ============================================================
 
-@app.route("/chat", methods=["POST"])
+@app.route(
+    "/chat",
+    methods=["POST"]
+)
 def chat():
+
     user_id = get_user_id()
 
     if not user_id:
+
         return jsonify({
             "success": False,
             "error": "Please login first."
         }), 401
 
-    data = request.get_json(silent=True) or {}
+    data = request.get_json(
+        silent=True
+    ) or {}
 
     user_message = str(
-        data.get("message", "")
+        data.get(
+            "message",
+            ""
+        )
     ).strip()
 
-    chat_id = data.get("chat_id")
+    chat_id = data.get(
+        "chat_id"
+    )
 
     if not user_message:
+
         return jsonify({
             "success": False,
             "error": "Message cannot be empty."
         }), 400
 
     if len(user_message) > 10000:
+
         return jsonify({
             "success": False,
             "error": "Message is too long."
@@ -829,6 +1134,7 @@ def chat():
         or GEMINI_API_KEY
         or OPENROUTER_API_KEY
     ):
+
         return jsonify({
             "success": False,
             "error": "No AI API is configured. Add at least one AI API key in Vercel."
@@ -837,12 +1143,14 @@ def chat():
     chat_object = None
 
     if chat_id:
+
         chat_object = get_chat(
             user_id,
             chat_id
         )
 
     if not chat_object:
+
         chat_object = create_chat_object()
 
     chat_object["messages"].append({
@@ -862,7 +1170,11 @@ def chat():
     ]
 
     for message in recent_messages:
-        role = message.get("role")
+
+        role = message.get(
+            "role"
+        )
+
         content = message.get(
             "content",
             ""
@@ -872,17 +1184,22 @@ def chat():
             "user",
             "assistant"
         ):
+
             ai_messages.append({
                 "role": role,
                 "content": content
             })
 
     try:
-        assistant_message = generate_ai_response(
-            ai_messages
+
+        assistant_message = (
+            generate_ai_response(
+                ai_messages
+            )
         )
 
     except Exception as error:
+
         print(
             "All AI providers failed:",
             repr(error)
@@ -890,9 +1207,11 @@ def chat():
 
         if (
             chat_object["messages"]
-            and chat_object["messages"][-1].get("role")
-            == "user"
+            and chat_object["messages"][-1].get(
+                "role"
+            ) == "user"
         ):
+
             chat_object["messages"].pop()
 
         return jsonify({
@@ -906,15 +1225,18 @@ def chat():
     })
 
     if chat_object["title"] == "New Chat":
+
         title = (
             user_message[:40]
             .strip()
         )
 
         if len(user_message) > 40:
+
             title += "..."
 
         if not title:
+
             title = "New Chat"
 
         chat_object["title"] = title
@@ -945,8 +1267,12 @@ def chat():
 # HEALTH CHECK
 # ============================================================
 
-@app.route("/health", methods=["GET"])
+@app.route(
+    "/health",
+    methods=["GET"]
+)
 def health():
+
     return jsonify({
         "status": "ok",
         "groq": bool(GROQ_API_KEY),
@@ -961,15 +1287,36 @@ def health():
 # ============================================================
 
 if __name__ == "__main__":
+
     print()
     print("=" * 50)
     print("                  MY AI SERVER")
     print("=" * 50)
-    print("Groq configured:", bool(GROQ_API_KEY))
-    print("Gemini configured:", bool(GEMINI_API_KEY))
-    print("OpenRouter configured:", bool(OPENROUTER_API_KEY))
-    print("Redis configured:", redis_is_available())
-    print("Server: http://127.0.0.1:5000")
+
+    print(
+        "Groq configured:",
+        bool(GROQ_API_KEY)
+    )
+
+    print(
+        "Gemini configured:",
+        bool(GEMINI_API_KEY)
+    )
+
+    print(
+        "OpenRouter configured:",
+        bool(OPENROUTER_API_KEY)
+    )
+
+    print(
+        "Redis configured:",
+        redis_is_available()
+    )
+
+    print(
+        "Server: http://127.0.0.1:5000"
+    )
+
     print("=" * 50)
     print()
 
