@@ -372,103 +372,90 @@
 
                 <!-- ================= SUGGESTIONS ================= -->
 
-                <div class="suggestions">
+            function showWelcome() {
+    chatArea.innerHTML = `
+        <div class="welcome" id="welcome">
+            <div class="welcome-content">
 
+                <p class="welcome-prompt">
+                    Ask me anything.
+                </p>
+
+                <div class="suggestions">
 
                     <button
                         type="button"
                         class="suggestion-button"
+                        style="display:flex !important; visibility:visible !important; opacity:1 !important;"
                         onclick="useSuggestion('What is Python?')">
 
-                        <span class="suggestion-icon">
-                            🐍
-                        </span>
+                        <span class="suggestion-icon">🐍</span>
 
                         <span class="suggestion-text">
                             What is Python?
                         </span>
 
-                        <span class="suggestion-arrow">
-                            →
-                        </span>
+                        <span class="suggestion-arrow">→</span>
 
                     </button>
-
 
 
                     <button
                         type="button"
                         class="suggestion-button"
+                        style="display:flex !important; visibility:visible !important; opacity:1 !important;"
                         onclick="useSuggestion('Learn Networking')">
 
-                        <span class="suggestion-icon">
-                            🌐
-                        </span>
+                        <span class="suggestion-icon">🌐</span>
 
                         <span class="suggestion-text">
                             Learn Networking
                         </span>
 
-                        <span class="suggestion-arrow">
-                            →
-                        </span>
+                        <span class="suggestion-arrow">→</span>
 
                     </button>
-
 
 
                     <button
                         type="button"
                         class="suggestion-button"
+                        style="display:flex !important; visibility:visible !important; opacity:1 !important;"
                         onclick="useSuggestion('Explain Computer Networks')">
 
-                        <span class="suggestion-icon">
-                            💻
-                        </span>
+                        <span class="suggestion-icon">💻</span>
 
                         <span class="suggestion-text">
                             Explain Computer Networks
                         </span>
 
-                        <span class="suggestion-arrow">
-                            →
-                        </span>
+                        <span class="suggestion-arrow">→</span>
 
                     </button>
-
 
 
                     <button
                         type="button"
                         class="suggestion-button"
+                        style="display:flex !important; visibility:visible !important; opacity:1 !important;"
                         onclick="useSuggestion('Help me with programming')">
 
-                        <span class="suggestion-icon">
-                            ⌨️
-                        </span>
+                        <span class="suggestion-icon">⌨️</span>
 
                         <span class="suggestion-text">
                             Help me with programming
                         </span>
 
-                        <span class="suggestion-arrow">
-                            →
-                        </span>
+                        <span class="suggestion-arrow">→</span>
 
                     </button>
 
-
                 </div>
 
-
             </div>
-
-
         </div>
-
-
-    </section>
-
+    `;
+}
 
 
     <!-- ================= INPUT ================= -->
