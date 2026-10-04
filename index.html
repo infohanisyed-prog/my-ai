@@ -331,7 +331,7 @@
             padding: 14px 16px !important;
         }
 
-        #welcome .welcome-prompt,
+        #welcome .welcome-prompt
         .welcome .welcome-prompt {
 
             font-size: 25px !important;
@@ -391,6 +391,92 @@
             font-size: 19px !important;
         }
 
+    }
+
+
+
+    /* ============================================================
+       FINAL WELCOME LAYOUT OVERRIDE
+       Keep Ask me anything + suggestion cards together in center
+    ============================================================ */
+
+    #chatArea #welcome {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0 !important;
+        padding: 0 24px 24px !important;
+        box-sizing: border-box !important;
+    }
+
+    #chatArea #welcome .welcome-prompt {
+        width: auto !important;
+        margin: 0 0 20px 0 !important;
+        padding: 0 !important;
+        text-align: center !important;
+        flex: 0 0 auto !important;
+    }
+
+    #chatArea #welcome .suggestions {
+        width: min(760px, 100%) !important;
+        max-width: 760px !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex: 0 0 auto !important;
+    }
+
+    #chatArea #welcome .suggestion-card {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        min-height: 74px !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        box-sizing: border-box !important;
+        padding: 14px 18px !important;
+        margin: 0 !important;
+        position: relative !important;
+        z-index: 20 !important;
+    }
+
+    #chatArea #welcome .suggestion-card::after {
+        content: "→" !important;
+        margin-left: auto !important;
+        padding-left: 12px !important;
+        font-size: 22px !important;
+        line-height: 1 !important;
+        opacity: 0.9 !important;
+    }
+
+    #chatArea #welcome .suggestion-card > span:last-child {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+    }
+
+    @media (max-width: 700px) {
+        #chatArea #welcome {
+            padding: 0 14px 18px !important;
+        }
+
+        #chatArea #welcome .suggestions {
+            width: 100% !important;
+            grid-template-columns: 1fr !important;
+            gap: 11px !important;
+        }
+
+        #chatArea #welcome .welcome-prompt {
+            margin-bottom: 16px !important;
+        }
     }
 
 </style>
