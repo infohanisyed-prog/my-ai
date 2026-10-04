@@ -1,470 +1,98 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-
-```
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>My AI</title>
-
-<link rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}">
-```
-
-</head>
-
-<body>
-
-<!-- ================= AUTH OVERLAY ================= -->
-
-<div class="auth-overlay" id="authOverlay">
-
-```
-<div class="auth-shell">
-
-    <section class="auth-panel">
-
-        <div class="auth-panel-inner">
-
-            <div class="auth-heading">
-
-                <h2 id="authHeading">
-                    Login
-                </h2>
-
-                <p id="authHeadingText">
-                    Welcome back
-                </p>
-
-            </div>
-
-
-            <div class="auth-tabs">
-
-                <button
-                    type="button"
-                    class="auth-tab active"
-                    id="loginTab"
-                    onclick="showAuthMode('login')">
-
-                    Login
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="auth-tab"
-                    id="signupTab"
-                    onclick="showAuthMode('signup')">
-
-                    Sign Up
-
-                </button>
-
-            </div>
-
-
-            <form
-                id="authForm"
-                onsubmit="submitAuth(event)">
-
-                <label for="authUsername">
-                    Username or Email
-                </label>
-
-
-                <input
-                    id="authUsername"
-                    type="text"
-                    autocomplete="username"
-                    placeholder="Enter your username or email"
-                    maxlength="100"
-                    required>
-
-
-                <label for="authPassword">
-                    Password
-                </label>
-
-
-                <div class="password-field">
-
-                    <input
-                        id="authPassword"
-                        type="password"
-                        autocomplete="current-password"
-                        placeholder="Enter your password"
-                        minlength="8"
-                        required>
-
-                </div>
-
-
-                <label class="show-password-option">
-
-                    <input
-                        type="checkbox"
-                        id="showPassword"
-                        onchange="togglePasswordVisibility()">
-
-                    <span>
-                        Show Password
-                    </span>
-
-                </label>
-
-
-                <button
-                    class="auth-submit"
-                    id="authSubmit"
-                    type="submit">
-
-                    Login
-
-                </button>
-
-            </form>
-
-
-            <div
-                class="auth-error"
-                id="authError">
-            </div>
-
-
-            <p
-                class="auth-switch-text"
-                id="authSwitchText">
-
-                Don't have an account?
-
-                <button
-                    type="button"
-                    onclick="showAuthMode('signup')">
-
-                    Sign Up
-
-                </button>
-
-            </p>
-
-
-            <p class="auth-note">
-                Your password is stored securely.
-            </p>
-
-        </div>
-
-    </section>
-
-</div>
-```
-
-</div>
-
-<div class="app" id="app">
-
-```
-<!-- ================= SIDEBAR ================= -->
-
-<aside
-    class="sidebar"
-    id="sidebar">
-
-
-    <div class="sidebar-header">
-
-        <div class="brand">
-
-            <span class="brand-icon">
-                ✦
-            </span>
-
-            <span>
-                My AI
-            </span>
-
-        </div>
-
-
-        <button
-            class="close-sidebar"
-            onclick="toggleSidebar()"
-            aria-label="Close sidebar">
-
-            ×
-
-        </button>
-
-    </div>
-
-
-
-    <button
-        class="new-chat-button"
-        onclick="createNewChat()">
-
-        <span class="new-chat-icon">
-            ＋
-        </span>
-
-        <span>
-            New Chat
-        </span>
-
-    </button>
-
-
-
-    <div class="history-title">
-        Chat History
-    </div>
-
+<!-- ================= CHAT AREA ================= -->
+
+<section
+    class="chat-area"
+    id="chatArea">
 
     <div
-        class="chat-list"
-        id="chatList">
+        class="welcome"
+        id="welcome">
+
+        <div class="welcome-content">
+
+            <p class="welcome-prompt">
+                Ask me anything.
+            </p>
+
+            <!-- ================= SUGGESTIONS ================= -->
+
+            <div class="suggestions">
+
+                <button
+                    type="button"
+                    class="suggestion-button"
+                    onclick="useSuggestion('What is Python?')">
+
+                    <span class="suggestion-icon">🐍</span>
+
+                    <span class="suggestion-text">
+                        What is Python?
+                    </span>
+
+                    <span class="suggestion-arrow">→</span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-button"
+                    onclick="useSuggestion('Learn Networking')">
+
+                    <span class="suggestion-icon">🌐</span>
+
+                    <span class="suggestion-text">
+                        Learn Networking
+                    </span>
+
+                    <span class="suggestion-arrow">→</span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-button"
+                    onclick="useSuggestion('Explain Computer Networks')">
+
+                    <span class="suggestion-icon">💻</span>
+
+                    <span class="suggestion-text">
+                        Explain Computer Networks
+                    </span>
+
+                    <span class="suggestion-arrow">→</span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="suggestion-button"
+                    onclick="useSuggestion('Help me with programming')">
+
+                    <span class="suggestion-icon">⌨️</span>
+
+                    <span class="suggestion-text">
+                        Help me with programming
+                    </span>
+
+                    <span class="suggestion-arrow">→</span>
+
+                </button>
+
+            </div>
+
+        </div>
+
     </div>
-
-
-
-    <div class="sidebar-bottom">
-
-
-        <div
-            class="account-box"
-            id="accountBox">
-
-            <div class="account-avatar">
-                👤
-            </div>
-
-
-            <div class="account-info">
-
-                <span class="account-label">
-                    Logged in as
-                </span>
-
-
-                <strong id="accountUsername">
-                    User
-                </strong>
-
-            </div>
-
-
-            <button
-                class="logout-button"
-                type="button"
-                onclick="logout()"
-                title="Logout">
-
-                ↪
-
-            </button>
-
-        </div>
-
-
-
-        <button
-            class="clear-history"
-            onclick="clearAllHistory()">
-
-            <span>
-                🗑️
-            </span>
-
-            <span>
-                Clear History
-            </span>
-
-        </button>
-
-    </div>
-
-</aside>
-
-
-
-<!-- ================= MAIN ================= -->
-
-<main class="main">
-
-
-    <!-- ================= TOP BAR ================= -->
-
-    <header class="topbar">
-
-
-        <button
-            class="menu-button"
-            onclick="toggleSidebar()"
-            aria-label="Open sidebar">
-
-            ☰
-
-        </button>
-
-
-        <div class="topbar-title">
-
-
-            <div class="topbar-logo">
-                ✦
-            </div>
-
-
-            <div>
-
-                <strong>
-                    My AI
-                </strong>
-
-                <span>
-                    AI Assistant
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <button
-            class="theme-button"
-            id="themeButton"
-            onclick="toggleTheme()"
-            title="Toggle theme">
-
-            ☾
-
-        </button>
-
-    </header>
-
-
-
-    <!-- ================= CHAT AREA ================= -->
-
-    <section
-        class="chat-area"
-        id="chatArea">
-
-
-        <div
-            class="welcome"
-            id="welcome">
-
-
-            <div class="welcome-content">
-
-
-                <p class="welcome-prompt">
-                    Ask me anything.
-                </p>
-
-
-
-                <!-- ================= SUGGESTIONS ================= -->
-
-            function showWelcome() {
-    chatArea.innerHTML = `
-        <div class="welcome" id="welcome">
-            <div class="welcome-content">
-
-                <p class="welcome-prompt">
-                    Ask me anything.
-                </p>
-
-                <div class="suggestions">
-
-                    <button
-                        type="button"
-                        class="suggestion-button"
-                        style="display:flex !important; visibility:visible !important; opacity:1 !important;"
-                        onclick="useSuggestion('What is Python?')">
-
-                        <span class="suggestion-icon">🐍</span>
-
-                        <span class="suggestion-text">
-                            What is Python?
-                        </span>
-
-                        <span class="suggestion-arrow">→</span>
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="suggestion-button"
-                        style="display:flex !important; visibility:visible !important; opacity:1 !important;"
-                        onclick="useSuggestion('Learn Networking')">
-
-                        <span class="suggestion-icon">🌐</span>
-
-                        <span class="suggestion-text">
-                            Learn Networking
-                        </span>
-
-                        <span class="suggestion-arrow">→</span>
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="suggestion-button"
-                        style="display:flex !important; visibility:visible !important; opacity:1 !important;"
-                        onclick="useSuggestion('Explain Computer Networks')">
-
-                        <span class="suggestion-icon">💻</span>
-
-                        <span class="suggestion-text">
-                            Explain Computer Networks
-                        </span>
-
-                        <span class="suggestion-arrow">→</span>
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="suggestion-button"
-                        style="display:flex !important; visibility:visible !important; opacity:1 !important;"
-                        onclick="useSuggestion('Help me with programming')">
-
-                        <span class="suggestion-icon">⌨️</span>
-
-                        <span class="suggestion-text">
-                            Help me with programming
-                        </span>
-
-                        <span class="suggestion-arrow">→</span>
-
-                    </button>
-
-                </div>
-
-            </div>
-        </div>
-    `;
-}
 
 
     <!-- ================= INPUT ================= -->
 
     <div class="input-section">
 
-
         <div class="input-box">
-
 
             <textarea
                 id="messageInput"
@@ -472,7 +100,6 @@
                 rows="1"
                 autocomplete="off"
                 aria-label="Message"></textarea>
-
 
 
             <!-- MICROPHONE -->
@@ -485,13 +112,11 @@
                 aria-label="Voice input"
                 title="Voice input">
 
-
                 <svg
                     class="mic-svg"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg">
-
 
                     <rect
                         x="9"
@@ -501,16 +126,13 @@
                         rx="3"
                         class="mic-stroke"/>
 
-
                     <path
                         d="M5.5 11.5C5.5 15.09 8.41 18 12 18C15.59 18 18.5 15.09 18.5 11.5"
                         class="mic-stroke"/>
 
-
                     <path
                         d="M12 18V21"
                         class="mic-stroke"/>
-
 
                     <path
                         d="M8.5 21H15.5"
@@ -518,11 +140,9 @@
 
                 </svg>
 
-
                 <span class="mic-pulse"></span>
 
             </button>
-
 
 
             <!-- SEND -->
@@ -544,4 +164,7 @@
         <div class="input-hint">
             My AI can make mistakes. Check important information.
         </div>
-```
+
+    </div>
+
+</section>
