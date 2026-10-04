@@ -17,14 +17,25 @@
 
 <!-- ================= AUTH OVERLAY ================= -->
 <div class="auth-overlay" id="authOverlay">
+
     <div class="auth-shell">
+
         <section class="auth-panel">
+
             <div class="auth-panel-inner">
 
                 <div class="auth-heading">
-                    <h2 id="authHeading">Login</h2>
-                    <p id="authHeadingText">Welcome back</p>
+
+                    <h2 id="authHeading">
+                        Login
+                    </h2>
+
+                    <p id="authHeadingText">
+                        Welcome back
+                    </p>
+
                 </div>
+
 
                 <div class="auth-tabs">
 
@@ -33,26 +44,33 @@
                         class="auth-tab active"
                         id="loginTab"
                         onclick="showAuthMode('login')">
+
                         Login
+
                     </button>
+
 
                     <button
                         type="button"
                         class="auth-tab"
                         id="signupTab"
                         onclick="showAuthMode('signup')">
+
                         Sign Up
+
                     </button>
 
                 </div>
 
 
-                <form id="authForm" onsubmit="submitAuth(event)">
+                <form
+                    id="authForm"
+                    onsubmit="submitAuth(event)">
 
-                    <!-- USERNAME / EMAIL -->
                     <label for="authUsername">
                         Username or Email
                     </label>
+
 
                     <input
                         id="authUsername"
@@ -63,10 +81,10 @@
                         required>
 
 
-                    <!-- PASSWORD -->
                     <label for="authPassword">
                         Password
                     </label>
+
 
                     <div class="password-field">
 
@@ -81,7 +99,6 @@
                     </div>
 
 
-                    <!-- SHOW PASSWORD -->
                     <label class="show-password-option">
 
                         <input
@@ -89,17 +106,20 @@
                             id="showPassword"
                             onchange="togglePasswordVisibility()">
 
-                        <span>Show Password</span>
+                        <span>
+                            Show Password
+                        </span>
 
                     </label>
 
 
-                    <!-- SUBMIT -->
                     <button
                         class="auth-submit"
                         id="authSubmit"
                         type="submit">
+
                         Login
+
                     </button>
 
                 </form>
@@ -120,7 +140,9 @@
                     <button
                         type="button"
                         onclick="showAuthMode('signup')">
+
                         Sign Up
+
                     </button>
 
                 </p>
@@ -131,18 +153,24 @@
                 </p>
 
             </div>
+
         </section>
 
     </div>
+
 </div>
 
 
 
 <div class="app" id="app">
 
+
     <!-- ================= SIDEBAR ================= -->
 
-    <aside class="sidebar" id="sidebar">
+    <aside
+        class="sidebar"
+        id="sidebar">
+
 
         <div class="sidebar-header">
 
@@ -218,6 +246,7 @@
                         Logged in as
                     </span>
 
+
                     <strong id="accountUsername">
                         User
                     </strong>
@@ -264,9 +293,10 @@
     <main class="main">
 
 
-        <!-- TOP BAR -->
+        <!-- ================= TOP BAR ================= -->
 
         <header class="topbar">
+
 
             <button
                 class="menu-button"
@@ -279,6 +309,7 @@
 
 
             <div class="topbar-title">
+
 
                 <div class="topbar-logo">
                     ✦
@@ -320,18 +351,22 @@
             class="chat-area"
             id="chatArea">
 
+
             <div
                 class="welcome"
                 id="welcome">
 
+
                 <div class="welcome-content">
+
 
                     <p class="welcome-prompt">
                         Ask me anything.
                     </p>
 
 
-                    <!-- SUGGESTIONS -->
+
+                    <!-- ================= SUGGESTIONS ================= -->
 
                     <div class="suggestions">
 
@@ -342,22 +377,12 @@
                             onclick="useSuggestion('What is Python?')">
 
                             <span class="suggestion-icon">
-                                ⌘
+                                🐍
                             </span>
-
 
                             <span class="suggestion-text">
-
-                                <strong>
-                                    What is Python?
-                                </strong>
-
-                                <small>
-                                    Learn the basics of Python
-                                </small>
-
+                                What is Python?
                             </span>
-
 
                             <span class="suggestion-arrow">
                                 →
@@ -373,22 +398,54 @@
                             onclick="useSuggestion('Learn Networking')">
 
                             <span class="suggestion-icon">
-                                ⌘
+                                🌐
                             </span>
-
 
                             <span class="suggestion-text">
-
-                                <strong>
-                                    Learn Networking
-                                </strong>
-
-                                <small>
-                                    Explore computer networking
-                                </small>
-
+                                Learn Networking
                             </span>
 
+                            <span class="suggestion-arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="suggestion-button"
+                            onclick="useSuggestion('Explain Computer Networks')">
+
+                            <span class="suggestion-icon">
+                                💻
+                            </span>
+
+                            <span class="suggestion-text">
+                                Explain Computer Networks
+                            </span>
+
+                            <span class="suggestion-arrow">
+                                →
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="suggestion-button"
+                            onclick="useSuggestion('Help me with programming')">
+
+                            <span class="suggestion-icon">
+                                ⌨️
+                            </span>
+
+                            <span class="suggestion-text">
+                                Help me with programming
+                            </span>
 
                             <span class="suggestion-arrow">
                                 →
@@ -399,9 +456,12 @@
 
                     </div>
 
+
                 </div>
 
+
             </div>
+
 
         </section>
 
@@ -411,10 +471,9 @@
 
         <div class="input-section">
 
+
             <div class="input-box">
 
-
-                <!-- TEXT INPUT -->
 
                 <textarea
                     id="messageInput"
@@ -496,6 +555,7 @@
             </div>
 
         </div>
+
 
     </main>
 
@@ -1437,7 +1497,7 @@ function renderMessages(messages) {
 
 
 /* ============================================================
-   WELCOME
+   WELCOME + SUGGESTIONS
 ============================================================ */
 
 function showWelcome() {
@@ -1448,7 +1508,9 @@ function showWelcome() {
             class="welcome"
             id="welcome">
 
+
             <div class="welcome-content">
+
 
                 <p class="welcome-prompt">
                     Ask me anything.
@@ -1464,22 +1526,12 @@ function showWelcome() {
                         onclick="useSuggestion('What is Python?')">
 
                         <span class="suggestion-icon">
-                            ⌘
+                            🐍
                         </span>
-
 
                         <span class="suggestion-text">
-
-                            <strong>
-                                What is Python?
-                            </strong>
-
-                            <small>
-                                Learn the basics of Python
-                            </small>
-
+                            What is Python?
                         </span>
-
 
                         <span class="suggestion-arrow">
                             →
@@ -1495,22 +1547,54 @@ function showWelcome() {
                         onclick="useSuggestion('Learn Networking')">
 
                         <span class="suggestion-icon">
-                            ⌘
+                            🌐
                         </span>
-
 
                         <span class="suggestion-text">
-
-                            <strong>
-                                Learn Networking
-                            </strong>
-
-                            <small>
-                                Explore computer networking
-                            </small>
-
+                            Learn Networking
                         </span>
 
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        onclick="useSuggestion('Explain Computer Networks')">
+
+                        <span class="suggestion-icon">
+                            💻
+                        </span>
+
+                        <span class="suggestion-text">
+                            Explain Computer Networks
+                        </span>
+
+                        <span class="suggestion-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <button
+                        type="button"
+                        class="suggestion-button"
+                        onclick="useSuggestion('Help me with programming')">
+
+                        <span class="suggestion-icon">
+                            ⌨️
+                        </span>
+
+                        <span class="suggestion-text">
+                            Help me with programming
+                        </span>
 
                         <span class="suggestion-arrow">
                             →
@@ -1521,7 +1605,9 @@ function showWelcome() {
 
                 </div>
 
+
             </div>
+
 
         </div>
 
