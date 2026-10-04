@@ -60,13 +60,15 @@
                     placeholder="Minimum 8 characters"
                     minlength="8"
                     required>
-                <label class="show-password">
-                    <input
-                        id="showPassword"
-                        type="checkbox"
-                        onchange="togglePasswordVisibility()">
-                    <span>Show password</span>
-                </label>
+                <button
+                    type="button"
+                    class="password-toggle"
+                    id="passwordToggle"
+                    aria-label="Show password"
+                    title="Show password"
+                    onclick="togglePasswordVisibility()">
+                    <span id="passwordEye">&#128065;</span>
+                </button>
             </div>
 
             <button
@@ -527,13 +529,18 @@ function showAuthMode(mode) {
 }
 
 
-async function togglePasswordVisibility() {
+function togglePasswordVisibility() {
     const passwordInput = document.getElementById("authPassword");
-    const showPassword = document.getElementById("showPassword");
+    const toggle = document.getElementById("passwordToggle");
+    const eye = document.getElementById("passwordEye");
 
-    if (!passwordInput || !showPassword) return;
+    if (!passwordInput || !toggle) return;
 
-    passwordInput.type = showPassword.checked ? "text" : "password";
+    const isVisible = passwordInput.type === "text";
+    passwordInput.type = isVisible ? "password" : "text";
+    toggle.setAttribute("aria-label", isVisible ? "Show password" : "Hide password");
+    toggle.setAttribute("title", isVisible ? "Show password" : "Hide password");
+    if (eye) eye.innerHTML = isVisible ? "&#128065;" : "&#128064;";
 }
 
 function submitAuth(event) {
