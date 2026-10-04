@@ -801,3 +801,32 @@ h1 {
         font-size: 19px;
     }
 }
+
+
+/* Show password */
+.password-field {
+    width: 100%;
+}
+
+.password-field > #authPassword {
+    width: 100%;
+}
+
+.show-password {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    user-select: none;
+}
+
+.show-password input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: currentColor;
+}
